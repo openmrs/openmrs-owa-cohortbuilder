@@ -25,7 +25,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WebpackOnBuildPlugin = require('on-build-webpack');
- const ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
+
 
 const nodeModulesDir = path.resolve(__dirname, '../node_modules');
 
@@ -66,7 +66,7 @@ var config = getConfig();
 
 /** Minify for production */
 if (env === 'production') {
- plugins.push(new ngAnnotatePlugin());
+
 	  plugins.push(new UglifyPlugin({
 	    output: {
 	      comments: false,
@@ -134,10 +134,7 @@ plugins.push(new CopyWebpackPlugin([{
     to: 'img/omrs-button.png'
 }]));
 
- plugins.push(new ngAnnotatePlugin({
-  add: true,
-  map: false
-}));
+
 
 var webpackConfig = {
   quiet: false,
@@ -146,7 +143,12 @@ var webpackConfig = {
 	  css: `${__dirname}/app/css/cohortbuilder.css`,
 	  vendor : [
 	        	
-	        	 'angular', 'openmrs-contrib-uicommons'
+	        	
+                
+                    'react', 'react-router'
+                    
+                        , 'redux', 'redux-promise-middleware', 'redux-thunk', 'react-redux'
+                    
                 
 	            ]
   },
@@ -162,7 +164,7 @@ var webpackConfig = {
 	    loader: 'babel-loader',
 	    exclude: /node_modules/,
 	    query: {
-	        presets: [ 'es2015' ],
+	        presets: [ 'es2015', 'react' ],
 	        cacheDirectory : true
 	    }
     },{
@@ -178,7 +180,7 @@ var webpackConfig = {
   },
   resolve: {
     root: path.resolve('./src'),
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.jsx'],
   },
   plugins,
   externals: nodeModules,

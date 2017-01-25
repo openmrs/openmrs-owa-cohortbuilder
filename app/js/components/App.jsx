@@ -9,7 +9,14 @@
  * under the License.
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-import angular from 'angular'
-import Main from './main/main'
+import React from 'react';
 
-export default angular.module('main', [ Main.name ])
+export default class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Hello, world</h1>
+      </div>
+    )
+  }
+}

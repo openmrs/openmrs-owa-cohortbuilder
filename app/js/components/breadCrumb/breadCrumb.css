@@ -1,0 +1,22 @@
+.breadcrumb {
+    background: none;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+}
+
+.breadcrumb .breadcrumb-item {
+    color: #363463;
+}
+
+.breadcrumb>.separator {
+    font-size: 10px;
+}
+
+.breadcrumb>.breadcrumb-item:not(:last-child) {
+    margin-right: 10px;
+}
+
+.breadcrumb .glyphicon {
+    color: #555;
+}

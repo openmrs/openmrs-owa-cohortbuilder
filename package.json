@@ -4,7 +4,7 @@
   "description": "modern refresh of the OpenMRS Cohort Builder tool",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openmrs/openmrs-owa-cohortbuilder"
+    "url": "https://github.com/andela-odaniel/openmrs-module-cohortbuilder"
   },
   "dependencies": {
 	

@@ -1,4 +1,5 @@
 //  enable runtime transpilation to use ES6/7 in node
+/* eslint-disable no-console */
 const fs = require('fs');
 
 const babelrc = fs.readFileSync('./.babelrc');
@@ -10,5 +11,6 @@ try {
     console.error('==>     ERROR: Error parsing your .babelrc.');
     console.error(err);
 }
+
 
 require('babel-register')(config);

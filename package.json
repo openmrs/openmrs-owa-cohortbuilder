@@ -7,6 +7,8 @@
         "url": "https://github.com/openmrs/openmrs-owa-cohortbuilder"
     },
     "dependencies": {
+        "eslint-plugin-import": "^2.2.0",
+        "eslint-plugin-react": "^6.9.0",
         "mocha": "^3.2.0",
         "react": "^15.4.1",
         "react-dom": "^15.4.1",
@@ -14,7 +16,8 @@
         "react-router": "^3.0.0",
         "redux": "^3.6.0",
         "redux-promise-middleware": "^4.2.0",
-        "redux-thunk": "^2.1.0"
+        "redux-thunk": "^2.1.0",
+        "sinon": "^1.17.7"
     },
     "devDependencies": {
         "archiver": "^1.0.0",
@@ -53,7 +56,9 @@
         "build:prod": "npm run test && npm run build",
         "build:deploy": "webpack --progress --colors --mode=deploy --target=web",
         "watch": "webpack --progress --colors --watch --mode=deploy --target=web",
-        "test": "node_modules/.bin/mocha tests/**/*.test.* --require tests/setUp.js"
+        "test": "node_modules/.bin/mocha tests/**/*.test.* --require tests/setUp.js",
+        "lint": "node_modules/.bin/esw webpack.config.* app",
+        "lint:watch": "npm run lint -- --watch"
     },
     "keywords": [
         "OpenMRS",

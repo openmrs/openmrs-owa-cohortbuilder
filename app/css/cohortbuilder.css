@@ -19,6 +19,10 @@ body {
     font-size: 16px;
 }
 
+#app {
+  width: 100%;
+}
+
 header {
     position: relative;
     background-color: #00463f;
@@ -73,4 +77,67 @@ header .logo img {
 
 .instructions {
     align-self: center;
+}
+
+.nav-header li {
+  color: #eeeeee;
+  font-size: 15px;
+  height: 100%;
+  padding-right: 20px;
+  display: inline;
+  list-style: none;
+}
+
+header>ul, a {
+  color: #eeeeee;
+  padding-right: 2px;
+  margin-top: 15px;
+}
+
+.glyphicon {
+  color: #eeeeee;
+  font-size: 12px;
+}
+
+li>a:hover {
+  color: #eeeeee;
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid gold;
+}
+
+li>a:focus {
+  color: gold;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.dropdown-large {
+  position: static !important;
+}
+.dropdown-menu-large {
+  margin-left: 16px;
+  margin-right: 16px;
+  padding: 20px 0px;
+}
+
+.dropdown-menu-large > li > a:hover {
+   background-color: transparent;
+   margin-right: 0px;
+   border-bottom: 0px;
+   color: purple;
+}
+
+.user {
+  padding-top: 0px;
+  padding-left: 15px;
+}
+
+.user > li > a:hover {
+   background-color: transparent;
+   margin-right: 0px;
+   border-bottom: 0px;
+   color: purple;
 }

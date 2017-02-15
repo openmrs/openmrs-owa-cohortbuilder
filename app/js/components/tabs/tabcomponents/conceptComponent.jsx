@@ -1,11 +1,21 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-const ConceptComponent = React.createClass({
-    render: function(){
+class ConceptComponent extends Component {
+    componentDidMount(){}
+    render(){
         return (
-            <h1>The Concept Component</h1>
+            <div className="content">
+                <label htmlFor="">
+                    Search by Concepts and Observations
+                    <input type="text" className="form-control" placeholder="Input Value"/>
+                </label>
+                <label htmlFor="">
+                    Include Verbose
+                    <input type="checkbox"/>
+                </label>
+            </div>
         );
     }
-});
+}
 
 export default ConceptComponent;

@@ -56,7 +56,7 @@
         "build:prod": "npm run test && npm run build",
         "build:deploy": "webpack --progress --colors --mode=deploy --target=web",
         "watch": "webpack --progress --colors --watch --mode=deploy --target=web",
-        "test": "node_modules/.bin/mocha tests/**/*.test.* --require tests/setUp.js",
+        "test": "node_modules/.bin/mocha tests/*.test.* tests/**/*.test.* --require tests/setUp.js",
         "lint": "node_modules/.bin/esw webpack.config.* app",
         "lint:watch": "npm run lint -- --watch"
     },

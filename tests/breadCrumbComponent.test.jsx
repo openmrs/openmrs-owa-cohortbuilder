@@ -18,5 +18,4 @@ describe('<BreadCrumbComponent />', () => {
         expect(wrapper.find('.glyphicon')).to.have.length(2);
         expect(wrapper.find('.title').text()).to.equal('Cohort Builder');
     });
-
 });

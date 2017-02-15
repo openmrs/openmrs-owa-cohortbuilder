@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import AppComponent from '../app/js/components/App';
-import PageComponent from '../app/js/components/pageComponent';
+import PageComponent from '../app/js/components/page/pageComponent';
 import BreadCrumbComponent from '../app/js/components/breadCrumb/breadCrumbComponent';
 
 describe('<AppComponent />', () => {

@@ -11,7 +11,7 @@
  */
 import React, {Component} from 'react';
 import { Header } from './common/Header';
-import PageComponent from './pageComponent';
+import PageComponent from './page/pageComponent';
 import BreadCrumbComponent from './breadCrumb/breadCrumbComponent';
 
 class App extends Component {

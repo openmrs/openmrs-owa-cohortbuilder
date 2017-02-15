@@ -1,0 +1,4 @@
+.page-wrapper {
+    flex-direction: column;
+    justify-content: unset !important;
+}

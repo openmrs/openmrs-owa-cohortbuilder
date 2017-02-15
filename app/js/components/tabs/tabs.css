@@ -10,8 +10,6 @@ ul.nav-tabs>li {
 .nav-tabs>li>a {
     border: none;
     color: #363463;
-    /*background-color: #cccccc;*/
-    height: 100%;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     -o-border-radius: 3px;
@@ -29,13 +27,6 @@ ul.nav-tabs>li {
 }
 
 .nav-tabs>li>a:hover {
-    /*background-color: #00463f !important;*/
-    /*background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #277F6C), color-stop(100%, #00CC9F));
-    background: -webkit-linear-gradient(top, #00CCB8, #00FFE5);
-    background: -moz-linear-gradient(top, #00CCB8, #00FFE5);
-    background: -o-linear-gradient(top, #00CCB8, #00FFE5);
-    background: -ms-linear-gradient(top, #00CCB8, #00FFE5);
-    background: linear-gradient(top, #00CCB8, #00FFE5);*/
     background: #dddddd;
 }
 
@@ -44,4 +35,28 @@ ul.nav-tabs>li {
 .nav-tabs>li.active>a:hover {
     background: #363463;
     color: #fff;
+}
+
+.tab-content {
+    margin-top: 20px;
+}
+
+.tab-content .content {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin: auto;
+    font-size: 1.3em;
+    font-weight: normal;
+}
+
+.tab-content .content label {
+    font-weight: 400;
+    margin-right: 20px;
+}
+
+.tab-content .content input {
+    margin-left: 20px;
+    width: 50%;
+    display: inline-block
 }

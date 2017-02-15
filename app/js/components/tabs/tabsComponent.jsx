@@ -27,7 +27,7 @@ class TabsComponent extends Component {
     drawTabHeader(tab,index){
         return (
             <li key={index} className={tab.active ? 'active' : ""}><a data-toggle="tab" href={"#"+tab.divId}>{tab.name}</a></li>
-        )
+        );
     }
 
     drawComponent(tab,index){

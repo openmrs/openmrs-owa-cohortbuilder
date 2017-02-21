@@ -168,3 +168,32 @@ a:hover {
 .cancelBtn {
   margin-left: 5px;
 }
+
+#compositions-wrapper {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: white;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border: 1px solid lightgrey;
+  border-radius: 7px;
+}
+
+.compositionsTitle {
+  border-radius: 3px;
+  padding: 0 0 0 5px;
+}
+
+.compositionsText {
+  padding: 3px;
+  margin-top: 0px;
+  margin-bottom: 30px;
+}
+
+#composition-search-query {
+  margin-top: 10px;
+  letter-spacing: 3px;
+}

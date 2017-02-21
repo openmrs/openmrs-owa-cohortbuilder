@@ -60,3 +60,14 @@ ul.nav-tabs>li {
     width: 50%;
     display: inline-block
 }
+
+.inline-label {
+    display: block;
+    float: left;
+    height: 34px;
+    line-height: 34px;
+}
+
+.patient-status label {
+    margin-right: 20px;
+}

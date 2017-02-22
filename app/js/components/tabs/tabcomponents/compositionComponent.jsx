@@ -1,9 +1,31 @@
 import React from 'react';
 
 const CompositionComponent = React.createClass({
+    componentDidMount(){},
     render: function(){
         return (
-            <h1>The Composition Component</h1>
+            <div id="compositions-wrapper">
+                <div className="compositionsTitle">
+                <h4 className="compositionsText">Boolean Search</h4>
+                </div>
+                <p>Enter a search query and click search button below to execute:</p>
+                <i>e.g: "(1 and 2) or not"<br/>
+                    Query parameters supported are: AND, OR, NOT, UNION, INTERSECTION, !, +
+                </i> <br/>
+                <form className="form-horizontal col-md">
+                <div className="form-group">
+                    <div className="col-sm-12">
+                    <input id="composition-search-query" type="text" className="form-control" placeholder="Enter search query. . ." />
+                    </div>
+                </div>
+                <div className="form-group">
+                    <div className="col-sm col-sm-10">
+                    <button type="submit" className="btn btn-success">Search</button>
+                    <button className="btn btn-default cancelBtn">Cancel</button>
+                    </div>
+                </div>
+                </form>
+            </div>
         );
     }
 });

@@ -11,4 +11,6 @@ Before you submit this PR:
 - Make sure your tests pass
 - Include screenshots if necessary but do so on the JIRA page not here.
 - Include a meaningful summary
+- Add the pull request link to the issue after creation
+- Remember to delete these directions. they should not be in your PR.
 - Avoid multiple PRs for the same issue

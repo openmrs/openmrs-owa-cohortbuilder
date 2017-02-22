@@ -61,6 +61,26 @@ ul.nav-tabs>li {
     display: inline-block
 }
 
+.tab-content .sql-component {
+    width: 70%;
+}
+
+.tab-content .sql-component>.button-div {
+    margin-top: 10px;
+    width: 100%;
+    text-align: right;
+}
+
+.tab-content .sql-component>.button-div>button {
+    background-color: #00463f;
+    color: #fff;
+    width: 100px;
+}
+
+.tab-content .sql-component>h2.query-warning {
+    font-size: 0.8em;
+    text-align: center;
+}
 .inline-label {
     display: block;
     float: left;

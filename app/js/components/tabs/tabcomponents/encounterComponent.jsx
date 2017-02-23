@@ -3,13 +3,10 @@ import React from 'react';
 const EncounterComponent = React.createClass({
     render: function(){
         return (
-            <div>
-              <div className="actionsTitle">
-                <h4 className="actionsText">Search by encounter:</h4>
-              </div>
-
+            <div className="encounter-component">
+              <h3>Search by encounter</h3>
               <div>
-                <h3 className="text-center">Patients having encounters</h3>
+                <h4 className="text-center">Patients having encounters</h4>
                 <form className="form-horizontal text-center">
                   <div className="form-group">
                     <label htmlFor="type" className="col-sm-2 control-label">
@@ -114,12 +111,11 @@ const EncounterComponent = React.createClass({
                     <span className="inline-label">day(s)    (Optional)</span>
                   </div>
 
-                  <div className="form-group encounter-submit">
-                    <div className="col-sm-10">
+                  <div className="form-group submit-btn">
+                    <div className="col-sm-offset-2 col-sm-6">
                       <button type="submit" className="btn btn-success">Search</button>
                     </div>
                   </div>
-                  <div className="clear"></div>
                 </form>
               </div>
             </div>

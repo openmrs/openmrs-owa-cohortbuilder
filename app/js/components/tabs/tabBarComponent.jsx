@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 
 const TabBarComponent = (props) => {
         return (
-            <div className="tab-bar">
+            <div>
                 <ul className="nav nav-tabs">
                     {props.tabs.map(props.drawTabHeader)}
                 </ul>

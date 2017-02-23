@@ -6,7 +6,7 @@ const CompositionComponent = React.createClass({
         return (
             <div id="compositions-wrapper">
                 <div className="compositionsTitle">
-                <h4 className="compositionsText">Boolean Search</h4>
+                <h3>Boolean Search</h3>
                 </div>
                 <p>Enter a search query and click search button below to execute:</p>
                 <i>e.g: "(1 and 2) or not"<br/>
@@ -21,7 +21,6 @@ const CompositionComponent = React.createClass({
                 <div className="form-group">
                     <div className="col-sm col-sm-10">
                     <button type="submit" className="btn btn-success">Search</button>
-                    <button className="btn btn-default cancelBtn">Cancel</button>
                     </div>
                 </div>
                 </form>

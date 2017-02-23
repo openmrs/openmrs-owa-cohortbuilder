@@ -1,129 +1,142 @@
 import React from 'react';
 
-const ProgrammeComponent = React.createClass({
-    render: function(){
-        return (
-            <div>
-              <div className="actionsTitle">
-                <h4 className="actionsText">Search by encounter:</h4>
-              </div>
-
-              <div>
-                <h3 className="text-center">Patients having encounters</h3>
-                <form className="form-horizontal text-center">
-                  <div className="form-group">
-                    <label htmlFor="type" className="col-sm-2 control-label">
-                      Of Type
-                    </label>
+const ProgrammeComponent = () => {
+    return (
+        <div className="programme-component">
+            <h3>Search By Program Enrollement and Status</h3>
+            <form className="form-horizontal">
+                <div className="form-group">
+                    <label htmlFor="gender" className="col-sm-2 control-label">Program:</label>
                     <div className="col-sm-6">
-                      <select multiple="multiple" name="type" id="type" className="form-control">
-                        <option value="Admission">Admission</option>
-                        <option value="Checkin">Checkin</option>
-                        <option value="Checkout">Checkout</option>
-                        <option value="Discharge">Discharge</option>
-                        <option value="Paged Numeric vital test form">Paged Numeric vital test form</option>
-                        <option value="Vital">Vitals</option>
-                        <option value="Vital">Transfer</option>
-                        <option value="Vital">Visit Noter</option>
-                      </select>
+                        <select className="form-control" id="" name="">
+                            <option value="all">All</option>
+                            <option value="male">Program 1</option>
+                            <option value="female">Program 2</option>
+                        </select>
                     </div>
-                    <span className="inline-label">(Leave blank for all encounter types)</span>
-                  </div>
+                </div>
 
-                  <div className="form-group">
-                    <label htmlFor="location" className="col-sm-2 control-label">At Location</label>
-                    <div className="col-sm-3">
-                        <select className="form-control" id="location">
-                            <option value="">Select option</option>
-                            <option value="">Location</option>
-                            <option value="">Location 2</option>
+                <div className="form-group">
+                    <label htmlFor="gender" className="col-sm-2 control-label">Workflow:</label>
+                    <div className="col-sm-6">
+                        <select className="form-control" id="gender" name="gender">
+                            <option value="all">All</option>
+                            <option value="male">Workflow 1</option>
+                            <option value="female">Workflow  2</option>
                         </select>
                     </div>
-                    <span className="inline-label">(Optional)</span>
-                  </div>
+                </div>
 
-                  <div className="form-group">
-                    <label htmlFor="form" className="col-sm-2 control-label">From Form</label>
-                    <div className="col-sm-3">
-                        <select className="form-control" id="form">
-                            <option value="">Select option</option>
-                            <option value="">Form</option>
-                            <option value="">Form 2</option>
+                <div className="form-group">
+                    <label htmlFor="gender" className="col-sm-2 control-label">State:</label>
+                    <div className="col-sm-6">
+                        <select className="form-control" id="gender" name="gender">
+                            <option value="all">All</option>
+                            <option value="male">State 1</option>
+                            <option value="female">State 2</option>
                         </select>
                     </div>
-                    <span className="inline-label">(Optional)</span>
-                  </div>
+                </div>
 
-                  <div className="form-group">
-                    <label htmlFor="atLeast" className="col-sm-2 control-label">Atleast this many: </label>
-                    <div className="col-sm-3">
-                        <select className="form-control" id="atLeast">
-                            <option value="">0</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">Age</label>
+                   
+                    <div className="col-sm-1">
+                         <span className="inline-label">Between:</span>
                     </div>
-                    <label htmlFor="atMost" className="col-sm-2 control-label">Upto this many: </label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="atMost">
-                            <option value="">100</option>
-                            <option value="">150</option>
-                            <option value="">200</option>
-                        </select>
+                        <input  type="date" className="form-control" />
                     </div>
-                    <span className="inline-label">(Optional)</span>
-                  </div>
+                    <span className="inline-label">And:</span>
+                    <div className="col-sm-3">
+                        <input type="date" className="form-control" />
+                    </div>
+                </div>
 
-                  <div className="form-group">
-                    <label htmlFor="atLeast" className="col-sm-2 control-label">Within the last: </label>
-                    <div className="col-sm-3">
-                        <select className="form-control" id="atLeast">
-                            <option value="">0</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">In the programme</label>
+                   
+                    <div className="col-sm-1">
+                         <span className="inline-label">On or after:</span>
                     </div>
-                    <label htmlFor="atMost" className="col-sm-2 control-label">month(s) and : </label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="atMost">
-                            <option value="">3</option>
-                            <option value="">6</option>
-                            <option value="">12</option>
-                        </select>
+                        <input className="form-control" type="date" name="from-date" />
                     </div>
-                    <span className="inline-label">days    (Optional)</span>
-                  </div>
+                    <span className="inline-label">On or before:</span>
+                    <div className="col-sm-3">
+                        <input className="form-control" name="to-date" type="date" />
+                    </div>
+                </div>
 
-                  <div className="form-group">
-                    <label htmlFor="since" className="col-sm-2 control-label">Since: </label>
-                    <div className="col-sm-3">
-                        <select className="form-control" id="since">
-                            <option value="">0</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">Enrolled in the programme</label>
+                   
+                    <div className="col-sm-1">
+                         <span className="inline-label">On or after:</span>
                     </div>
-                    <label htmlFor="until" className="col-sm-2 control-label">Until: </label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="until">
-                            <option value="">100</option>
-                            <option value="">150</option>
-                            <option value="">200</option>
-                        </select>
+                        <input className="form-control" type="date" name="from-date" />
                     </div>
-                    <span className="inline-label">day(s)    (Optional)</span>
-                  </div>
+                    <span className="inline-label">On or before:</span>
+                    <div className="col-sm-3">
+                        <input className="form-control" name="to-date" type="date" />
+                    </div>
+                </div>
 
-                  <div className="form-group">
-                    <div className="col-sm-10">
-                      <button type="submit" className="btn btn-success">Search</button>
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">Completed in the programme</label>
+                   
+                    <div className="col-sm-1">
+                         <span className="inline-label">On or after:</span>
                     </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-        );
-    }
-});
+                    <div className="col-sm-3">
+                        <input className="form-control" type="date" name="from-date" />
+                    </div>
+                    <span className="inline-label">On or before:</span>
+                    <div className="col-sm-3">
+                        <input className="form-control" name="to-date" type="date" />
+                    </div>
+                </div>
+                
+                <div className="form-group">
+                    <div className="col-sm-offset-2 col-sm-6">
+                        <button type="submit" className="btn btn-success">Search</button>
+                    </div>
+                </div>
+            </form>
+            
+            <h3>Search By Location</h3>
+            <form className="form-horizontal">
+                <div className="form-group">
+                    <label htmlFor="gender" className="col-sm-2 control-label">Patients belonging to?:</label>
+                    <div className="col-sm-6">
+                        <select className="form-control" id="" name="">
+                            <option value="all">All</option>
+                            <option value="male">Category 1</option>
+                            <option value="female">Category 2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="gender" className="col-sm-2 control-label">According to Method:</label>
+                    <div className="col-sm-6">
+                        <select className="form-control" id="" name="">
+                            <option value="all">All</option>
+                            <option value="male">Method 1</option>
+                            <option value="female">Method 2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <div className="col-sm-offset-2 col-sm-6">
+                        <button type="submit" className="btn btn-success">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    );
+}
 
 export default ProgrammeComponent;

@@ -9,6 +9,7 @@
  * under the License.
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 body {
     font-family: "OpenSans", Arial, sans-serif;
     -webkit-font-smoothing: subpixel-antialiased;
@@ -20,7 +21,7 @@ body {
 }
 
 #app {
-  width: 100%;
+    width: 100%;
 }
 
 header {
@@ -49,9 +50,7 @@ header .logo img {
 }
 
 #body-wrapper {
-    margin-top: 10px;
     padding: 10px;
-    background-color: white;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     -o-border-radius: 5px;
@@ -80,120 +79,122 @@ header .logo img {
 }
 
 .nav-header li {
-  color: #eeeeee;
-  font-size: 15px;
-  height: 100%;
-  padding-right: 20px;
-  display: inline;
-  list-style: none;
+    color: #eeeeee;
+    font-size: 15px;
+    padding-right: 20px;
+    display: inline;
+    list-style: none;
 }
 
-header>ul, a {
-  color: #eeeeee;
-  padding-right: 2px;
-  margin-top: 15px;
+header>ul,
+a {
+    color: #eeeeee;
+    padding-right: 2px;
+    margin-top: 15px;
 }
 
 .glyphicon {
-  color: #eeeeee;
-  font-size: 12px;
+    color: #eeeeee;
+    font-size: 12px;
 }
 
 li>a:hover {
-  color: #eeeeee;
-  cursor: pointer;
-  text-decoration: none;
-  border-bottom: 1px solid gold;
+    color: #eeeeee;
+    cursor: pointer;
+    text-decoration: none;
+    border-bottom: 1px solid gold;
 }
 
 li>a:focus {
-  color: gold;
+    color: gold;
 }
 
 a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .dropdown-large {
-  position: static !important;
-}
-.dropdown-menu-large {
-  margin-left: 16px;
-  margin-right: 16px;
-  padding: 20px 0px;
+    position: static !important;
 }
 
-.dropdown-menu-large > li > a:hover {
-   background-color: transparent;
-   margin-right: 0px;
-   border-bottom: 0px;
-   color: purple;
+.dropdown-menu-large {
+    margin-left: 16px;
+    margin-right: 16px;
+    padding: 20px 0px;
+}
+
+.dropdown-menu-large>li>a:hover {
+    background-color: transparent;
+    margin-right: 0px;
+    border-bottom: 0px;
+    color: purple;
 }
 
 .user {
-  padding-top: 0px;
-  padding-left: 15px;
+    padding-top: 0px;
+    padding-left: 15px;
 }
 
-.user > li > a:hover {
-   background-color: transparent;
-   margin-right: 0px;
-   border-bottom: 0px;
-   color: purple;
+.user>li>a:hover {
+    background-color: transparent;
+    margin-right: 0px;
+    border-bottom: 0px;
+    color: purple;
 }
 
 #actions-wrapper {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: white;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -khtml-border-radius: 5px;
-  border-radius: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: white;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .actionsTitle {
-  background: #00463f;
-  color: #fff;
-  border-radius: 3px;
-  padding: 0 0 0 5px;
+    background: #00463f;
+    color: #fff;
+    border-radius: 3px;
+    padding: 0 0 0 5px;
 }
 
 .actionsText {
-  padding: 3px;
+    padding: 3px;
 }
 
 .cancelBtn {
-  margin-left: 5px;
+    margin-left: 5px;
 }
 
 #compositions-wrapper {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: white;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -khtml-border-radius: 5px;
-  border: 1px solid lightgrey;
-  border-radius: 7px;
+    padding-left: 10px;
+    background-color: white;
 }
 
 .compositionsTitle {
-  border-radius: 3px;
-  padding: 0 0 0 5px;
+    border-radius: 3px;
+    padding: 0 0 0 5px;
+}
+
+.compositionsTitle>h3 {
+    margin-top: 0px;
 }
 
 .compositionsText {
-  padding: 3px;
-  margin-top: 0px;
-  margin-bottom: 30px;
+    padding: 3px;
+    margin-top: 0px;
+    margin-bottom: 30px;
 }
 
 #composition-search-query {
-  margin-top: 10px;
-  letter-spacing: 3px;
+    margin-top: 10px;
+    letter-spacing: 3px;
+}
+
+.section {
+    background-color: #fff;
+    margin-bottom: 15px;
 }

@@ -13,7 +13,6 @@ import React, {Component} from 'react';
 import { Header } from './common/Header';
 import PageComponent from './page/pageComponent';
 import BreadCrumbComponent from './breadCrumb/breadCrumbComponent';
-import ActionsComponent from './actionsComponent';
 
 class App extends Component {
   componentDidMount(){}
@@ -24,7 +23,6 @@ class App extends Component {
         <Header/>
         <BreadCrumbComponent />
         <PageComponent />
-        <ActionsComponent />
       </div>
     );
   }

@@ -3,13 +3,10 @@ import React, {Component} from 'react';
 class ActionsComponent extends Component {
   render() {
     return (
-      <div id="actions-wrapper">
-        <p className="text-left">Actions</p>
-        <div className="actionsTitle">
-          <h4 className="actionsText">Save Cohort</h4>
-        </div>
+      <div className="col-sm-12 section">
+        <h3>Save Cohort</h3>
 
-        <form className="form-horizontal col-md-offset-3">
+        <form className="form-horizontal">
           <div className="form-group">
             <label className="control-label col-sm-2" >Name:</label>
             <div className="col-sm-5">

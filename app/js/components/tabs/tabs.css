@@ -24,6 +24,7 @@ ul.nav-tabs>li {
     background: linear-gradient(top, #ffffff, #dddddd);
     background-color: #dddddd;
     border: #dddddd 1px solid;
+    font-size: 15px;
 }
 
 .nav-tabs>li>a:hover {
@@ -68,11 +69,10 @@ ul.nav-tabs>li {
 .tab-content .sql-component>.button-div {
     margin-top: 10px;
     width: 100%;
-    text-align: right;
+    text-align: left;
 }
 
 .tab-content .sql-component>.button-div>button {
-    background-color: #00463f;
     color: #fff;
     width: 100px;
 }
@@ -96,4 +96,8 @@ ul.nav-tabs>li {
 .programme-component .inline-label {
     line-height: 17px;
     margin-top: 8px;
+}
+
+.encounter-component .submit-btn {
+    text-align: left;
 }

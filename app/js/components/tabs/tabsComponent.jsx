@@ -40,7 +40,7 @@ class TabsComponent extends Component {
 
     render(){
         return (
-            <div className="tabs-div">
+            <div className="col-sm-12 section">
                 <TabBarComponent tabs={this.state.tabs} drawTabHeader={this.drawTabHeader}/>
                 <TabContentComponent tabs={this.state.tabs} drawComponent={this.drawComponent}/>
             </div>

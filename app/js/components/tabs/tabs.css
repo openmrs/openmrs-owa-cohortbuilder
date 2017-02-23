@@ -92,3 +92,8 @@ ul.nav-tabs>li {
 .patient-status label {
     margin-right: 20px;
 }
+
+.programme-component .inline-label {
+    line-height: 17px;
+    margin-top: 8px;
+}

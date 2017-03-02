@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
+import shortId from 'shortid';
 
-const DrugOrderComponent = React.createClass({
-    render: function(){
+class DrugOrderComponent extends Component {
+    constructor() {
+        super();
+        this.state = {
+            drugs: []
+        };
+    }
+
+    componentWillMount() {
+        this.props.fetchData('/drug')
+            .then(data => {
+                this.setState({drugs: data.results});
+            });
+    }
+
+    getOptions() {
+        const allOptions = this.state.drugs.map((each) =>
+            <option value={each.uuid} key={shortId.generate()}>{each.display}</option>
+         );
+         return allOptions;
+    }
+
+    render() {
         return (
             <div>
                 <h3>Patients taking specific drugs</h3>
@@ -10,14 +32,7 @@ const DrugOrderComponent = React.createClass({
                         <label htmlFor="drug" className="col-sm-2 control-label">Drug(s)</label>
                         <div className="col-sm-6">
                             <select className="form-control" multiple="multiple" id="drug" name="drug">
-                                <option value="1">Drug 1</option>
-                                <option value="2">Drug 2</option>
-                                <option value="3">Drug 3</option>
-                                <option value="4">Drug 4</option>
-                                <option value="5">Drug 5</option>
-                                <option value="6">Drug 6</option>
-                                <option value="7">Drug 7</option>
-                                <option value="8">Drug 8</option>
+                                {this.getOptions()}
                             </select>
                         </div>
                     </div>
@@ -121,14 +136,7 @@ const DrugOrderComponent = React.createClass({
                         <div className="col-md-4">
                             <p className="text-center">Only these drugs</p>
                             <select className="form-control" multiple="multiple" id="drug" name="drug">
-                                <option value="1">Drug 1</option>
-                                <option value="2">Drug 2</option>
-                                <option value="3">Drug 3</option>
-                                <option value="4">Drug 4</option>
-                                <option value="5">Drug 5</option>
-                                <option value="6">Drug 6</option>
-                                <option value="7">Drug 7</option>
-                                <option value="8">Drug 8</option>
+                                {this.getOptions()}
                             </select>
                         </div>
 
@@ -155,6 +163,6 @@ const DrugOrderComponent = React.createClass({
             </div>
         );
     }
-});
+}
 
 export default DrugOrderComponent;

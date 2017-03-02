@@ -1,5 +1,7 @@
 import fetchPolyfill from 'whatwg-fetch';
 
+const BASE_URL = '/openmrs-standalone/ws/rest/v1/';
+
 export class ApiHelper {
   constructor(requestLibrary) {
     this.ALLOWED_TYPES = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
@@ -24,12 +26,13 @@ export class ApiHelper {
   }
 
   send() {
-    const response = this.requestLibrary(this.requestUrl, this.requestOptions)
+    const request = this.requestLibrary;
+    const response = request(`${BASE_URL}${this.requestUrl}`, this.requestOptions)
       .then((data) => {
         return this.mocked ? data : data.json();
       })
       .catch((error) => {
-        return error.json;
+        // return error.json;
       });
     return response;
   }

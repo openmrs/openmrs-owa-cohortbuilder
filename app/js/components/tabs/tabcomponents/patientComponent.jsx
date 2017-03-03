@@ -1,6 +1,26 @@
-import React from 'react';
+import React, {Component} from 'react';
+import {ApiHelper} from '../../../helpers/apiHelper';
 
-const PatientComponent = () => {
+class PatientComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { patientAttributes: []};
+    }
+    componentDidMount(props) {
+        this.props.fetchData('/personattributetype').then(data => {
+            this.setState({
+                patientAttributes: data.results
+            });
+        });
+    }
+    render() {
+        let attributes = this.state.patientAttributes.map((attribute) => {
+            return (
+                <option key={attribute.uuid} value={attribute.display}>
+                    {attribute.display}
+                </option>
+            );
+        });
     return (
         <div>
             <h3>Search By Demographic</h3>
@@ -73,8 +93,7 @@ const PatientComponent = () => {
                     <div className="col-sm-3">
                         <select className="form-control" id="gender">
                             <option value="">Any</option>
-                            <option value="">Attribute 1</option>
-                            <option value="">Attribute 2</option>
+                            {attributes}
                         </select>
                     </div>
                     <label className="col-sm-1 control-label">Value</label>
@@ -91,6 +110,7 @@ const PatientComponent = () => {
             </form>
         </div>
     );
+    }
 }
 
 export default PatientComponent;

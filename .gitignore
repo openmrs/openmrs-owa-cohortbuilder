@@ -6,3 +6,4 @@ config.json
 *.log
 webpack.config.js
 cohortbuilder.zip
+~/

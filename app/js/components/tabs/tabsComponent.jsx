@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Components from './tabcomponents';
 import TabBarComponent from './tabBarComponent';
 import TabContentComponent from './tabContentComponent';
+import { ApiHelper } from '../../helpers/apiHelper';
 
 import './tabs.css';
 
@@ -30,19 +31,33 @@ class TabsComponent extends Component {
         );
     }
 
-    drawComponent(tab,index){
-        return(
-            <div id={tab.divId} key={index} className={'tab-pane ' + (tab.active ? 'active' : '')}>
-                <tab.component/>
-            </div>
-        );
+    fetchData(url) {
+        const apiHelper = new ApiHelper(null);
+        const getData = new Promise(function(resolve, reject) {
+            apiHelper.get(url).then(response => {
+                response.json().then(data => {
+                    resolve(data);
+                });
+            });
+        });
+        return getData;
+    }
+
+    drawComponent(tabs, fetchData) {
+        return tabs.map((tab,index) => {
+            return(
+                <div id={tab.divId} key={index} className={'tab-pane ' + (tab.active ? 'active' : '')}>
+                    <tab.component fetchData={fetchData}/>
+                </div>
+            );
+        });
     }
 
     render(){
         return (
             <div className="col-sm-12 section">
-                <TabBarComponent tabs={this.state.tabs} drawTabHeader={this.drawTabHeader}/>
-                <TabContentComponent tabs={this.state.tabs} drawComponent={this.drawComponent}/>
+                <TabBarComponent tabs={this.state.tabs} drawTabHeader={this.drawTabHeader} />
+                <TabContentComponent tabs={this.state.tabs} drawComponent={this.drawComponent} fetchData={this.fetchData} />
             </div>
         )
     }

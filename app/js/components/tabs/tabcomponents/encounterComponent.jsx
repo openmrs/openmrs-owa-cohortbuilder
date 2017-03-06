@@ -1,7 +1,56 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
+import shortId from 'shortid';
 
-const EncounterComponent = React.createClass({
-    render: function(){
+const FORMS_API_ENDPOINT = '/form';
+const LOCATIONS_API_ENDPOINT = '/location';
+const ENCOUNTER_TYPES_API_ENDPOINT = '/encountertype';
+
+class EncounterComponent extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            locations: [],
+            encouterTypes: [],
+            forms: []
+        };
+    }
+
+    componentWillMount(){
+        this.props.fetchData(FORMS_API_ENDPOINT)
+          .then(response => {
+              const displayData = [];
+              response.results.map(result=>{
+                  displayData.push({id: result.uuid, value: result.display});
+              });
+              this.setState({forms: displayData});
+          });
+
+        this.props.fetchData(LOCATIONS_API_ENDPOINT)
+          .then(response => {
+              const displayData = [];
+              response.results.map(result=>{
+                  displayData.push({id: result.uuid, value: result.display});
+              });
+              this.setState({locations: displayData});
+          });
+
+        this.props.fetchData(ENCOUNTER_TYPES_API_ENDPOINT)
+          .then(response => {
+              const displayData = [];
+              response.results.map(result=>{
+                  displayData.push({id: result.uuid, value: result.display});
+              });
+              this.setState({encouterTypes: displayData});
+          });
+    }
+
+    displaySelectOption(data){
+        return (
+            <option value={data.id} key={shortId.generate()}>{data.value}</option>
+        );
+    }
+
+    render(){
         return (
             <div className="encounter-component">
               <h3>Search by encounter</h3>
@@ -14,15 +63,9 @@ const EncounterComponent = React.createClass({
                     </label>
                     <div className="col-sm-6">
                       <select multiple="multiple" name="type" id="type" className="form-control">
-                        <option value="">Admission</option>
-                        <option value="">Check In</option>
-                        <option value="">Check Out</option>
-                        <option value="">Discharge</option>
-                        <option value="">Paged Numeric vital test form</option>
-                        <option value="">Vitals</option>
-                        <option value="">Transfer</option>
-                        <option value="">Visit Noter</option>
+                        {this.state.encouterTypes.map(encounterType => this.displaySelectOption(encounterType))}
                       </select>
+                      { }
                     </div>
                     <span className="inline-label">(Leave blank for all encounter types)</span>
                   </div>
@@ -31,9 +74,7 @@ const EncounterComponent = React.createClass({
                     <label htmlFor="location" className="col-sm-2 control-label">At Location</label>
                     <div className="col-sm-3">
                         <select className="form-control" id="location">
-                            <option value="">Select option</option>
-                            <option value="">Location</option>
-                            <option value="">Location 2</option>
+                            {this.state.locations.map(location => this.displaySelectOption(location))}
                         </select>
                     </div>
                     <span className="inline-label">(Optional)</span>
@@ -43,9 +84,7 @@ const EncounterComponent = React.createClass({
                     <label htmlFor="form" className="col-sm-2 control-label">From Form</label>
                     <div className="col-sm-3">
                         <select className="form-control" id="form">
-                            <option value="">Select option</option>
-                            <option value="">Form</option>
-                            <option value="">Form 2</option>
+                            {this.state.forms.map(form => this.displaySelectOption(form))}
                         </select>
                     </div>
                     <span className="inline-label">(Optional)</span>
@@ -54,19 +93,11 @@ const EncounterComponent = React.createClass({
                   <div className="form-group">
                     <label htmlFor="atLeast" className="col-sm-2 control-label">Atleast this many: </label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="atLeast">
-                            <option value="">0</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>
+                        <input type="number" className="form-control" id="atLeast"/>
                     </div>
                     <label htmlFor="atMost" className="col-sm-2 control-label">Upto this many: </label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="atMost">
-                            <option value="">100</option>
-                            <option value="">150</option>
-                            <option value="">200</option>
-                        </select>
+                        <input type="number" className="form-control" id="atMost"/>
                     </div>
                     <span className="inline-label">(Optional)</span>
                   </div>
@@ -74,19 +105,11 @@ const EncounterComponent = React.createClass({
                   <div className="form-group">
                     <label htmlFor="atLeast" className="col-sm-2 control-label">Within the last: </label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="atLeast">
-                            <option value="">0</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>
+                        <input type="number" className="form-control" id="atLeast"/>
                     </div>
                     <label htmlFor="atMost" className="col-sm-2 control-label">month(s) and : </label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="atMost">
-                            <option value="">3</option>
-                            <option value="">6</option>
-                            <option value="">12</option>
-                        </select>
+                        <input type="number" className="form-control" id="atMost"/>
                     </div>
                     <span className="inline-label">days    (Optional)</span>
                   </div>
@@ -94,19 +117,11 @@ const EncounterComponent = React.createClass({
                   <div className="form-group">
                     <label htmlFor="since" className="col-sm-2 control-label">Since: </label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="since">
-                            <option value="">0</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>
+                       <input type="number" className="form-control" id="atLeast"/>
                     </div>
                     <label htmlFor="until" className="col-sm-2 control-label">Until: </label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="until">
-                            <option value="">100</option>
-                            <option value="">150</option>
-                            <option value="">200</option>
-                        </select>
+                        <input type="number" className="form-control" id="atMost"/>
                     </div>
                     <span className="inline-label">day(s)    (Optional)</span>
                   </div>
@@ -121,6 +136,10 @@ const EncounterComponent = React.createClass({
             </div>
         );
     }
-});
+}
+
+EncounterComponent.propTypes = {
+    fetchData: PropTypes.func.isRequired
+};
 
 export default EncounterComponent;

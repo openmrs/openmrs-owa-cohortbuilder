@@ -3,7 +3,7 @@ import {mount, shallow} from 'enzyme';
 import {expect} from 'chai';
 import DrugComponent from '../../app/js/components/tabs/tabcomponents/drugOrderComponent';
 
-describe('DrugComponent', () => {
+describe('<DrugComponent />', () => {
   let drugComponent = null;
   beforeEach(() => {
     drugComponent = shallow(<DrugComponent />);

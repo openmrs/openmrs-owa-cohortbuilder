@@ -1,74 +1,119 @@
-import React from 'react';
-import { Link, IndexLink } from 'react-router';
+import React, {Component} from 'react';
+import {Link, IndexLink} from 'react-router';
+import {ApiHelper} from '../../helpers/apiHelper';
 
 const NUMBER_OF_COLUMNS = 3;
 
-// Dropdown data to be displayed
-const menu = [
-  'Inpatient ward',
-  'Isolation ward',
-  'Laboratory',
-  'Outpatient Clinic',
-  'Pharmacy',
-  'Registration desk'
-];
-
-// Renders the menu data in columns of three and rows determined by menu.length
-export const dropDownMenu = () => {
-  const menuDisplay = [];
-  const numPerColumn = Math.ceil(menu.length / NUMBER_OF_COLUMNS);
-  for(let cols = 0; cols < NUMBER_OF_COLUMNS; cols++) {
-    const menuInColumns = [];
-    let colStart = cols * numPerColumn;
-    let colEnd = (cols+1) * numPerColumn;
-    for(let menuIndex = colStart; menuIndex < colEnd; menuIndex++) {
-      menuInColumns.push(<a href="#" key={menuIndex}>{menu[menuIndex]}</a>);
+export class Header extends Component {
+    constructor() {
+        super();
+        this.state = {
+            locationTags: [],
+            currentLocationTag: "",
+            defaultLocation: ""
+        };
     }
-    menuDisplay.push(<li className="col-sm-4" key={cols}>{menuInColumns}</li>);
-  }
+    componentWillMount() {
+        this.fetchLocation('/location').then((response) => {
+            this.setState({locationTags: response.results});
+            this.setState({defaultLocation: response.results[0].display});
+        });
+    }
 
-  return menuDisplay;
-};
+    getLocations() {
+        return this.state.locationTags.map((location) => {
+            return location.display;
+        });
+    }
 
-export const Header = () => {
-  return (
-    <header>
-      <div className="logo" id="logoId">
-        <a href="../../">
-          <img src="img/openmrs-with-title-small.png"/>
-        </a>
-      </div>
+    fetchLocation(url) {
+        const apiHelper = new ApiHelper(null);
+        const getData = new Promise(function(resolve, reject) {
+            apiHelper.get(url).then(response => {
+                response.json().then(data => {
+                    resolve(data);
+                });
+            });
+        });
+        return getData;
+    }
 
-      <ul className="navbar-right nav-header">
-        <Link to="" activeClassName="active">
-          <li className="dropdown">
-            <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              <span className="glyphicon glyphicon-user" /> User <span className="caret" />
-            </a>
-            <ul className="dropdown-menu user">
-              <li><a href="#">My Account</a></li>
-            </ul>
-          </li>
-        </Link>
+    handleClick(e) {
+        e.preventDefault();
+        this.setState({currentLocationTag: e.target.id});
+    }
 
-        <Link to="" activeClassName="active">
-          <li className="dropdown dropdown-large">
-            <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              <span className="glyphicon glyphicon glyphicon-map-marker" /> Inpatient ward <span className="caret" />
-            </a>
-            <ul className="dropdown-menu dropdown-menu-large row">
-              {/*Execute the function*/}
-              {dropDownMenu()}
-            </ul>
-          </li>
-        </Link>
+    dropDownMenu(locationTags) {
+        const menuDisplay = [];
+        const numPerColumn = Math.ceil(locationTags.length / NUMBER_OF_COLUMNS);
+        for (let cols = 0; cols < NUMBER_OF_COLUMNS; cols++) {
+            const menuInColumns = [];
+            let colStart = cols * numPerColumn;
+            let colEnd = (cols + 1) * numPerColumn;
+            for (let menuIndex = colStart; menuIndex < colEnd; menuIndex++) {
+                menuInColumns.push(
+                    <a href="#" key={menuIndex} id={locationTags[menuIndex]} onClick={(e) => {
+                        e.preventDefault();
+                        this.handleClick(e);
+                    }}>{locationTags[menuIndex]}</a>
+                );
+            }
+            menuDisplay.push(
+                <li className="col-sm-4" key={cols}>{menuInColumns}</li>
+            );
+        }
 
-        <Link to="" activeClassName="active">
-          <li>
-            <a href="#">Logout <span className="glyphicon glyphicon-log-out" /></a>
-          </li>
-        </Link>
-      </ul>
-    </header>
-  );
-};
+        return menuDisplay;
+    }
+
+    render() {
+        return (
+            <header>
+                <div className="logo" id="logoId">
+                    <a href="../../">
+                        <img src="img/openmrs-with-title-small.png"/>
+                    </a>
+                </div>
+
+                <ul className="navbar-right nav-header">
+                    <Link to="" activeClassName="active">
+                        <li className="dropdown">
+                            <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span className="glyphicon glyphicon-user"/>
+                                User
+                                <span className="caret"/>
+                            </a>
+                            <ul className="dropdown-menu user">
+                                <li>
+                                    <a href="#">My Account</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </Link>
+
+                    <Link to="" activeClassName="active">
+                        <li className="dropdown dropdown-large">
+                            <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span className="glyphicon glyphicon glyphicon-map-marker"/> {(this.state.currentLocationTag != "")
+                                    ? this.state.currentLocationTag
+                                    : this.state.defaultLocation}
+                                <span className="caret"/>
+                            </a>
+                            <ul className="dropdown-menu dropdown-menu-large row">
+                                {/*Execute the function*/}
+                                {this.dropDownMenu(this.getLocations())}
+                            </ul>
+                        </li>
+                    </Link>
+
+                    <Link to="" activeClassName="active">
+                        <li>
+                            <a href="#">Logout
+                                <span className="glyphicon glyphicon-log-out"/></a>
+                        </li>
+                    </Link>
+                </ul>
+            </header>
+        );
+    }
+}

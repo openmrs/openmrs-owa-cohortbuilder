@@ -13,7 +13,7 @@ class DrugOrderComponent extends Component {
             loading: true
         };
     }
-    
+
     componentWillMount() {
         this.props.fetchData('drug')
             .then((drugs) => {
@@ -60,7 +60,7 @@ class DrugOrderComponent extends Component {
             <option value={eachOption.uuid} key={shortid.generate()}>{eachOption.display}</option>
         );
     }
-    
+
     render() {
         if(this.state.loading) {
             return (

@@ -10,22 +10,21 @@
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 import React, {Component} from 'react';
-import { Header } from './common/Header';
+import {Header} from './common/Header';
 import PageComponent from './page/pageComponent';
 import BreadCrumbComponent from './breadCrumb/breadCrumbComponent';
 
 class App extends Component {
-  componentDidMount(){}
 
-  render() {
-    return (
-      <div>
-        <Header/>
-        <BreadCrumbComponent />
-        <PageComponent />
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div>
+                <Header/>
+                <BreadCrumbComponent/>
+                <PageComponent/>
+            </div>
+        );
+    }
 }
 
 export default App;

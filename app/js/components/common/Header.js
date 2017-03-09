@@ -10,13 +10,18 @@ export class Header extends Component {
         this.state = {
             locationTags: [],
             currentLocationTag: "",
-            defaultLocation: ""
+            defaultLocation: "",
+            currentUser: ""
         };
     }
     componentWillMount() {
         this.fetchLocation('/location').then((response) => {
             this.setState({locationTags: response.results});
             this.setState({defaultLocation: response.results[0].display});
+        });
+
+        this.fetchLocation('/session').then((response) => {
+            this.setState({currentUser: response.user.display});
         });
     }
 
@@ -79,8 +84,7 @@ export class Header extends Component {
                     <Link to="" activeClassName="active">
                         <li className="dropdown">
                             <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                <span className="glyphicon glyphicon-user"/>
-                                User
+                                <span className="glyphicon glyphicon-user"/> {' ' + this.state.currentUser}
                                 <span className="caret"/>
                             </a>
                             <ul className="dropdown-menu user">
@@ -108,7 +112,7 @@ export class Header extends Component {
 
                     <Link to="" activeClassName="active">
                         <li>
-                            <a href="#">Logout
+                            <a href="#">Logout {' '}
                                 <span className="glyphicon glyphicon-log-out"/></a>
                         </li>
                     </Link>

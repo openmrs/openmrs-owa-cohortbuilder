@@ -45,7 +45,7 @@ class ProgrammeComponent extends Component {
     render() {
         let programs = this.state.programs.map((program) => {
             return (
-                <option key={program.uuid} value={program.uuid}>
+                <option key={program.uuid} value={program.name}>
                     {program.name}
                 </option>
             );

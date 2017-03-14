@@ -11,11 +11,12 @@ class ConceptComponent extends Component {
             pages: [],
             currentPage: 0,
             currentDisplay: [],
-            selectedConcept: null
+            selectedConcept: null,
+            conceptObject: {}
         };
         this.resultsPerPage = 10
         this.allConcepts = [];
-        this.searchConcept = this.searchConcept.bind(this);
+        this.setConcept = this.setConcept.bind(this);
         this.checkVerbose = this.checkVerbose.bind(this);
         this.loadConcepts = this.loadConcepts.bind(this);
         this.displayNewPage = this.displayNewPage.bind(this);
@@ -54,6 +55,7 @@ class ConceptComponent extends Component {
                             const searchInput = conceptName.toUpperCase();
                             if(!!name.match(searchInput)) {
                                 const conceptData = {
+                                    uuid: concept.uuid,
                                     name: concept.display,
                                     description: concept.descriptions[0].description
                                 }
@@ -145,16 +147,13 @@ class ConceptComponent extends Component {
         }
     }
     /**
-     * Search concepts based on the selected concept
-     * @TODO: make search request to fetch observations
-     * for patients belonging to the selected concept
-     * @param {*} event 
+     * setConcept set concept object
+     * @param {*} concept 
      */
-    searchConcept(event) {
-        event.preventDefault();
-        const searchQuery = event.target.textContent;
+    setConcept(concept) {
         this.setState({
-            selectedConcept: searchQuery
+            selectedConcept: concept.name,
+            conceptObject: concept
         })
     }
     render(){
@@ -165,7 +164,7 @@ class ConceptComponent extends Component {
                     key={this.state.currentDisplay.indexOf(concept) + Math.random()}
                     value={concept.name}>
                 <tr>
-                    <td id="concept-name" onClick={this.searchConcept}>
+                    <td id="concept-name" onClick={() => { this.setConcept(concept); }}>
                         {concept.name}
                     </td>
                 </tr>
@@ -198,7 +197,7 @@ class ConceptComponent extends Component {
                 return(
                     <option
                         key={this.state.conceptsResults.indexOf(concept)}
-                        onClick={this.searchConcept}
+                        onClick={() => { this.setConcept; }}
                         value={concept}>
                     </option>
                 )
@@ -268,12 +267,18 @@ class ConceptComponent extends Component {
                     )}
                 </div>
                 {(this.state.selectedConcept)
-                    ? <ObservationComponent conceptName={this.state.selectedConcept} />
+                    ? <ObservationComponent search={this.props.search} addToHistory={this.props.addToHistory} conceptName={this.state.conceptObject} />
                     : null
                 }
             </div>
         );
     }
 }
+
+ConceptComponent.propTypes = {
+    search: React.PropTypes.func.isRequired,
+    fetchData: React.PropTypes.func.isRequired,
+    addToHistory: React.PropTypes.func.isRequired
+};
 
 export default ConceptComponent;

@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 const TabContentComponent = (props) => {
      return (
             <div className="tab-content">
-                {props.drawComponent(props.tabs, props.fetchData)}
+                {props.drawComponent(props.tabs, props.fetchData, props.search)}
             </div>
         );
 };
@@ -11,7 +11,8 @@ const TabContentComponent = (props) => {
 TabContentComponent.propTypes = {
     tabs: PropTypes.array.isRequired,
     drawComponent: PropTypes.func.isRequired,
-    fetchData: PropTypes.func.isRequired
+    fetchData: PropTypes.func.isRequired,
+    search: PropTypes.func.isRequired
 }
 
 export default TabContentComponent;

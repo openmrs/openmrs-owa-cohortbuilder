@@ -4,6 +4,7 @@ import Components from './tabcomponents';
 import TabBarComponent from './tabBarComponent';
 import TabContentComponent from './tabContentComponent';
 import { ApiHelper } from '../../helpers/apiHelper';
+import { XmlHelper } from '../../helpers/xmlHelper';
 
 import './tabs.css';
 
@@ -31,6 +32,21 @@ class TabsComponent extends Component {
         );
     }
 
+    search(parameters) {
+        const xmlHelper = new XmlHelper;
+        const apiHelper = new ApiHelper(null);
+        const serializedXml = xmlHelper.composeXml(parameters);
+        console.log(serializedXml);
+        const searchResult = new Promise(function(resolve, reject) {
+            apiHelper.post('reportingrest/cohort', { serializedXml }).then(response => {
+                response.json().then(data => {
+                    resolve(data);
+                });
+            });
+        });
+        return searchResult;
+    }
+
     fetchData(url) {
         const apiHelper = new ApiHelper(null);
         const getData = new Promise(function(resolve, reject) {
@@ -43,11 +59,11 @@ class TabsComponent extends Component {
         return getData;
     }
 
-    drawComponent(tabs, fetchData) {
+    drawComponent(tabs, fetchData, search) {
         return tabs.map((tab,index) => {
             return(
                 <div id={tab.divId} key={index} className={'tab-pane ' + (tab.active ? 'active' : '')}>
-                    <tab.component fetchData={fetchData}/>
+                    <tab.component fetchData={fetchData} search={search}/>
                 </div>
             );
         });
@@ -57,7 +73,7 @@ class TabsComponent extends Component {
         return (
             <div className="col-sm-12 section">
                 <TabBarComponent tabs={this.state.tabs} drawTabHeader={this.drawTabHeader} />
-                <TabContentComponent tabs={this.state.tabs} drawComponent={this.drawComponent} fetchData={this.fetchData} />
+                <TabContentComponent tabs={this.state.tabs} search={this.search} drawComponent={this.drawComponent} fetchData={this.fetchData} />
             </div>
         )
     }

@@ -18,11 +18,17 @@ export class ApiHelper {
       throw new Error('Invalid Request Type');
     }
     this.requestUrl = requestUrl;
-    let options = {
-      method: requestType,
-      body: JSON.stringify(requestData)
-    };
-    this.requestOptions = Object.assign({}, this.requestOptions, requestOptions);
+    let options = {}
+    if (requestType != 'GET') {
+      options = {
+        method: requestType,
+        headers: {  
+          "Content-Type": "application/json"  
+        },
+        body: JSON.stringify(requestData)
+      };
+    }
+    this.requestOptions = Object.assign({}, this.requestOptions, options);
     return this;
   }
 

@@ -101,3 +101,11 @@ ul.nav-tabs>li {
 .encounter-component .submit-btn {
     text-align: left;
 }
+
+.result {
+    padding: 30px 0px;
+}
+
+.page-display-counter {
+    float: right;
+}

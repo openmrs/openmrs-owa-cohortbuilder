@@ -1,11 +1,21 @@
 import React, {Component} from 'react';
-import {ApiHelper} from '../../../helpers/apiHelper';
 
 class PatientComponent extends Component {
     constructor(props) {
         super(props);
-        this.state = { patientAttributes: []};
+        this.state = {
+            patientAttributes: [],
+            searchResults: [],
+            currentPage: 1,
+            toDisplay: [],
+            totalPage: 0,
+            pagePatients: [],
+            perPage: 10
+        };
+        this.searchDemographics = this.searchDemographics.bind(this);
+        this.navigatePage = this.navigatePage.bind(this);
     }
+
     componentDidMount(props) {
         this.props.fetchData('/personattributetype').then(data => {
             this.setState({
@@ -13,6 +23,53 @@ class PatientComponent extends Component {
             });
         });
     }
+
+    searchDemographics(event) {
+        event.preventDefault();
+        const fields = ['gender', 'minage', 'maxage'];
+        const searchParameters = {};
+        fields.forEach((fieldName) => {
+            searchParameters[fieldName] = document.getElementById(fieldName).value;
+        })
+        this.props.search(searchParameters).then(results => {
+            const allPatients = results.members;
+            const pagePatientInfo = this.getPatientDetailsPromises(allPatients, this.state.currentPage);
+            let pagePatientDetails = [];
+            Promise.all(pagePatientInfo).then(patientDetails => {
+                this.setState({toDisplay: patientDetails, searchResults: allPatients, totalPage: Math.ceil(allPatients.length/this.state.perPage)});
+            });
+        });
+    }
+
+    navigatePage(event) {
+        event.preventDefault();
+        let pageToNavigate = 0;
+        switch(event.target.value) {
+            case 'first': pageToNavigate = 1; break;
+            case 'last': pageToNavigate = this.state.totalPage; break;
+            default: pageToNavigate = (event.target.value === 'next') ? this.state.currentPage+1 : this.state.currentPage-1;
+        }
+        const pagePatientInfo = this.getPatientDetailsPromises(this.state.searchResults, pageToNavigate);
+        Promise.all(pagePatientInfo).then(patientDetails => {
+            this.setState({ toDisplay: patientDetails, currentPage: pageToNavigate });
+        });
+    }
+
+    getPatientDetailsPromises(allPatients, currentPage) {
+        const pagePatientInfo = [];
+        for(let index = (currentPage-1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
+            pagePatientInfo.push(
+                new Promise((resolve, reject) => {
+                this.props.fetchData(`patient/${allPatients[index].uuid}`)
+                    .then(patientInfo => {
+                        resolve(patientInfo);
+                    });
+                })
+            );
+        }
+        return pagePatientInfo;
+    }
+
     render() {
         let attributes = this.state.patientAttributes.map((attribute) => {
             return (
@@ -30,8 +87,8 @@ class PatientComponent extends Component {
                     <div className="col-sm-6">
                         <select className="form-control" id="gender" name="gender">
                             <option value="all">All</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="males">Male</option>
+                            <option value="females">Female</option>
                         </select>
                     </div>
                 </div>
@@ -43,11 +100,11 @@ class PatientComponent extends Component {
                          <span className="inline-label">Between:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input className="form-control" />
+                        <input name="minage" id="minage" className="form-control" />
                     </div>
                     <span className="inline-label">And:</span>
                     <div className="col-sm-3">
-                        <input className="form-control" />
+                        <input name="maxage" id="maxage" className="form-control" />
                     </div>
                 </div>
 
@@ -58,11 +115,11 @@ class PatientComponent extends Component {
                          <span className="inline-label">Between:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input className="form-control" type="date" name="from-date" />
+                        <input className="form-control" type="date" name="from-date" id="from-date" />
                     </div>
                     <span className="inline-label">And:</span>
                     <div className="col-sm-3">
-                        <input className="form-control" name="to-date" type="date" />
+                        <input className="form-control" name="to-date" type="date" id="to-date" />
                     </div>
                 </div>
 
@@ -81,7 +138,7 @@ class PatientComponent extends Component {
                 
                 <div className="form-group">
                     <div className="col-sm-offset-2 col-sm-6">
-                        <button type="submit" className="btn btn-success">Search</button>
+                        <button type="submit" onClick={this.searchDemographics} className="btn btn-success">Search</button>
                     </div>
                 </div>
             </form>
@@ -108,6 +165,52 @@ class PatientComponent extends Component {
                     </div>
                 </div>
             </form>
+            <hr/>
+            {(this.state.searchResults.length) ? 
+                <div className="result row col-sm-8 col-sm-offset-2">
+                    <table className="table table-striped" >
+                        <thead>
+                            <tr>
+                                <td>NAME</td>
+                                <td>AGE</td>
+                                <td>GENDER</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            this.state.toDisplay.map(patient => {
+                                return (
+                                    <tr key={patient.uuid}>
+                                        <td>{patient.person.display}</td>
+                                        <td>{patient.person.age}</td>
+                                        <td>{patient.person.gender}</td>
+                                    </tr>);
+                            })
+                        }
+                        </tbody>
+                    </table>
+                    
+                    <div className="tableNavigation">
+                        <button className="btn btn-primary" onClick={this.navigatePage} value="first">FIRST</button>
+                        {
+                            (this.state.currentPage > 1) ?
+                                <button className="btn btn-primary" onClick={this.navigatePage} value="previous">PREVIOUS</button> :
+                                null
+                        }
+
+                        {
+                            (this.state.currentPage < this.state.totalPage) ?
+                                <span>
+                                    <button className="btn btn-primary" onClick={this.navigatePage} value="next">NEXT</button>
+                                    <button className="btn btn-primary" onClick={this.navigatePage} value="last">LAST</button>
+                                </span> :
+                                null
+                        }
+                        <span className="page-display-counter">{this.state.currentPage + " of " + this.state.totalPage}</span>
+                    </div>
+                </div> :
+                null
+            }
         </div>
     );
     }

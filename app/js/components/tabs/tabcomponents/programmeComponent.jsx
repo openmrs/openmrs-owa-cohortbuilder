@@ -1,6 +1,75 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-const ProgrammeComponent = () => {
+class ProgrammeComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            programs: [],
+            workflows: [],
+            states: [],
+            locations: [],
+            methods: []
+        };
+    }
+    // Make a call to the program endpoint to get backend field data when component mounts
+    componentDidMount(props) {
+        this.props.fetchData('/program').then(data => {
+            this.setState({
+                programs: data.results
+            });
+        });
+        this.props.fetchData('/location').then(location => {
+            this.setState({
+                locations: location.results
+            });
+        })
+    }
+    // Get program workflows for the program selected
+    getWorkflow() {
+        const program = document.getElementById("select-program").value;
+        this.props.fetchData(`/program/${program}`).then(data => {
+            this.setState({
+                workflows: data.allWorkflows
+            });
+            this.getStates(data.allWorkflows);
+        });
+    }
+    // Get the states from the workflow.
+    getStates(workflows) {
+        /** Update state based on the data retreived from the workflows
+         * @TODO: State data does not exist on the local, but exists on refapp,
+         * try to populate states on the local
+        */
+        
+    }
+    render() {
+        let programs = this.state.programs.map((program) => {
+            return (
+                <option key={program.uuid} value={program.uuid}>
+                    {program.name}
+                </option>
+            );
+        });
+        let workflows = this.state.workflows.map((workflow) => {
+            return (
+                <option key={workflow.uuid} value={workflow.uuid}>
+                    {workflow.concept.display}
+                </option>
+            );  
+        })
+        // States will be loaded from this.state.states when populated from backend
+        let states = "<option> </option>";
+
+        let locations = this.state.locations.map((location) => {
+            return (
+                <option key={location.uuid} value={location.uuid}>
+                    {location.display}
+                </option>        
+            )
+        })
+
+        // Methods will be loadd from this.state.methods populated from the backend.
+        let methods = "<option> </option>";
     return (
         <div className="programme-component">
             <h3>Search By Program Enrollement and Status</h3>
@@ -8,10 +77,9 @@ const ProgrammeComponent = () => {
                 <div className="form-group">
                     <label htmlFor="gender" className="col-sm-2 control-label">Program:</label>
                     <div className="col-sm-6">
-                        <select className="form-control" id="" name="">
+                        <select onChange={() => {this.getWorkflow()}} className="form-control" id="select-program" name="">
                             <option value="all">All</option>
-                            <option value="male">Program 1</option>
-                            <option value="female">Program 2</option>
+                            { programs }
                         </select>
                     </div>
                 </div>
@@ -21,8 +89,7 @@ const ProgrammeComponent = () => {
                     <div className="col-sm-6">
                         <select className="form-control" id="gender" name="gender">
                             <option value="all">All</option>
-                            <option value="male">Workflow 1</option>
-                            <option value="female">Workflow  2</option>
+                            { workflows }
                         </select>
                     </div>
                 </div>
@@ -32,8 +99,7 @@ const ProgrammeComponent = () => {
                     <div className="col-sm-6">
                         <select className="form-control" id="gender" name="gender">
                             <option value="all">All</option>
-                            <option value="male">State 1</option>
-                            <option value="female">State 2</option>
+                            { states }
                         </select>
                     </div>
                 </div>
@@ -112,8 +178,7 @@ const ProgrammeComponent = () => {
                     <div className="col-sm-6">
                         <select className="form-control" id="" name="">
                             <option value="all">All</option>
-                            <option value="male">Category 1</option>
-                            <option value="female">Category 2</option>
+                            { locations }
                         </select>
                     </div>
                 </div>
@@ -123,8 +188,7 @@ const ProgrammeComponent = () => {
                     <div className="col-sm-6">
                         <select className="form-control" id="" name="">
                             <option value="all">All</option>
-                            <option value="male">Method 1</option>
-                            <option value="female">Method 2</option>
+                            { methods }
                         </select>
                     </div>
                 </div>
@@ -137,6 +201,7 @@ const ProgrammeComponent = () => {
             </form>
         </div>
     );
+    }
 }
 
 export default ProgrammeComponent;

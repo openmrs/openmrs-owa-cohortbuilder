@@ -4,7 +4,7 @@ import Components from './tabcomponents';
 import TabBarComponent from './tabBarComponent';
 import TabContentComponent from './tabContentComponent';
 import { ApiHelper } from '../../helpers/apiHelper';
-import { XmlHelper } from '../../helpers/xmlHelper';
+import { JSONHelper } from '../../helpers/jsonHelper';
 
 import './tabs.css';
 
@@ -33,13 +33,13 @@ class TabsComponent extends Component {
     }
 
     search(parameters) {
-        const xmlHelper = new XmlHelper;
+        const jsonHelper = new JSONHelper;
+        const query = jsonHelper.composeJson(parameters);
         const apiHelper = new ApiHelper(null);
-        const serializedXml = xmlHelper.composeXml(parameters);
-        console.log(serializedXml);
         const searchResult = new Promise(function(resolve, reject) {
-            apiHelper.post('reportingrest/cohort', { serializedXml }).then(response => {
+            apiHelper.post('reportingrest/adhocquery?v=full', query).then(response => {
                 response.json().then(data => {
+                    console.log(data);
                     resolve(data);
                 });
             });

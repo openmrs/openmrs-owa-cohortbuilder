@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import shortId from 'shortid';
 
 class PatientComponent extends Component {
     constructor(props) {
@@ -9,7 +10,6 @@ class PatientComponent extends Component {
             currentPage: 1,
             toDisplay: [],
             totalPage: 0,
-            pagePatients: [],
             perPage: 10
         };
         this.searchDemographics = this.searchDemographics.bind(this);
@@ -26,18 +26,51 @@ class PatientComponent extends Component {
 
     searchDemographics(event) {
         event.preventDefault();
-        const fields = ['gender', 'minage', 'maxage'];
+        const fields = {
+            gender: '',
+            atLeastAgeOnDate: [
+                {name: 'minAge', dataType: 'int'}
+            ],
+            upToAgeOnDate: [
+                {name: 'maxAge', dataType: 'int'}
+            ],
+            ageRangeOnDate: [
+                {name: 'minAge', dataType: 'int'},
+                {name: 'maxAge', dataType: 'int'}
+            ],
+            bornDuringPeriod: [
+                {name: 'startDate', dataType: 'date'},
+                {name: 'endDate', dataType: 'date'}
+            ]
+        };
         const searchParameters = {};
-        fields.forEach((fieldName) => {
-            searchParameters[fieldName] = document.getElementById(fieldName).value;
-        })
+        for(const eachField in fields) {
+            if(Array.isArray(fields[eachField])) {
+                fields[eachField].forEach((fieldInput, index) => {
+                    fields[eachField][index].value = document.getElementById(fieldInput.name).value
+                    if(fields[eachField][index].value) {
+                        fields[eachField][index].value += (fieldInput.name === 'startDate' || fieldInput.name === 'endDate') ? ' 00:00:00 UTC' : '';
+                    }
+                });
+                searchParameters[eachField] = fields[eachField];
+                continue;
+            }
+            searchParameters[eachField] = document.getElementById(eachField).value;
+        }
+
+        // remove upToAgeOnDate & atLeastAgeOnDate if both minAge & maxAge was filled
+        if(searchParameters.ageRangeOnDate[0].value && searchParameters.ageRangeOnDate[1].value) {
+            delete searchParameters.atLeastAgeOnDate;
+            delete searchParameters.upToAgeOnDate;
+        } else {
+            // then the ageRangeOnDate should be deleted
+            delete searchParameters.ageRangeOnDate;
+        }
+
         this.props.search(searchParameters).then(results => {
-            const allPatients = results.members;
+            const allPatients = results.rows;
             const pagePatientInfo = this.getPatientDetailsPromises(allPatients, this.state.currentPage);
-            let pagePatientDetails = [];
-            Promise.all(pagePatientInfo).then(patientDetails => {
-                this.setState({toDisplay: patientDetails, searchResults: allPatients, totalPage: Math.ceil(allPatients.length/this.state.perPage)});
-            });
+            this.setState({toDisplay: pagePatientInfo, searchResults: allPatients, totalPage: Math.ceil(allPatients.length/this.state.perPage)});
         });
     }
 
@@ -50,21 +83,14 @@ class PatientComponent extends Component {
             default: pageToNavigate = (event.target.value === 'next') ? this.state.currentPage+1 : this.state.currentPage-1;
         }
         const pagePatientInfo = this.getPatientDetailsPromises(this.state.searchResults, pageToNavigate);
-        Promise.all(pagePatientInfo).then(patientDetails => {
-            this.setState({ toDisplay: patientDetails, currentPage: pageToNavigate });
-        });
+        this.setState({ toDisplay: pagePatientInfo, currentPage: pageToNavigate });
     }
 
     getPatientDetailsPromises(allPatients, currentPage) {
         const pagePatientInfo = [];
         for(let index = (currentPage-1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
             pagePatientInfo.push(
-                new Promise((resolve, reject) => {
-                this.props.fetchData(`patient/${allPatients[index].uuid}`)
-                    .then(patientInfo => {
-                        resolve(patientInfo);
-                    });
-                })
+                allPatients[index]
             );
         }
         return pagePatientInfo;
@@ -100,11 +126,11 @@ class PatientComponent extends Component {
                          <span className="inline-label">Between:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input name="minage" id="minage" className="form-control" />
+                        <input name="minage" id="minAge" className="form-control" />
                     </div>
                     <span className="inline-label">And:</span>
                     <div className="col-sm-3">
-                        <input name="maxage" id="maxage" className="form-control" />
+                        <input name="maxage" id="maxAge" className="form-control" />
                     </div>
                 </div>
 
@@ -115,11 +141,11 @@ class PatientComponent extends Component {
                          <span className="inline-label">Between:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input className="form-control" type="date" name="from-date" id="from-date" />
+                        <input className="form-control" type="date" name="from-date" id="startDate" />
                     </div>
                     <span className="inline-label">And:</span>
                     <div className="col-sm-3">
-                        <input className="form-control" name="to-date" type="date" id="to-date" />
+                        <input className="form-control" name="to-date" type="date" id="endDate" />
                     </div>
                 </div>
 
@@ -180,10 +206,10 @@ class PatientComponent extends Component {
                         {
                             this.state.toDisplay.map(patient => {
                                 return (
-                                    <tr key={patient.uuid}>
-                                        <td>{patient.person.display}</td>
-                                        <td>{patient.person.age}</td>
-                                        <td>{patient.person.gender}</td>
+                                    <tr key={shortId.generate()}>
+                                        <td>{`${patient.firstname} ${patient.lastname}`}</td>
+                                        <td>{patient.age}</td>
+                                        <td>{patient.gender}</td>
                                     </tr>);
                             })
                         }

@@ -65,19 +65,19 @@ export class JSONHelper {
     // they want displayed on the result table
     const columns = [
       {
-        name: "Firstname",
+        name: "firstname",
         key: "preferredName.givenName"
       },
       {
-        name: "Lastname",
+        name: "lastname",
         key: "preferredName.familyName"
       },
       {
-        name: "Gender",
+        name: "gender",
         key: "gender"
       },
       {
-        name: "Age",
+        name: "age",
         key: "ageOnDate.fullYears"
       }
     ];

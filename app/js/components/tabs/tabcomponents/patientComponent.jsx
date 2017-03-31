@@ -14,6 +14,7 @@ class PatientComponent extends Component {
         };
         this.searchDemographics = this.searchDemographics.bind(this);
         this.navigatePage = this.navigatePage.bind(this);
+        this.searchByAttributes = this.searchByAttributes.bind(this);
     }
 
     componentDidMount(props) {
@@ -43,7 +44,24 @@ class PatientComponent extends Component {
                 {name: 'endDate', dataType: 'date'}
             ]
         };
+        const searchParameters = this.getValuesFromFields(fields);
+
+        // remove upToAgeOnDate & atLeastAgeOnDate if both minAge & maxAge was filled
+        if(searchParameters.ageRangeOnDate[0].value && searchParameters.ageRangeOnDate[1].value) {
+            delete searchParameters.atLeastAgeOnDate;
+            delete searchParameters.upToAgeOnDate;
+        } else {
+            // then the ageRangeOnDate should be deleted
+            delete searchParameters.ageRangeOnDate;
+        }
+
+        this.performSearch(searchParameters);
+    }
+
+    getValuesFromFields(fields) {
         const searchParameters = {};
+        // loops through the fields, the key of each value in the object fields is the definition library key
+        // each value in the array is the parameter and the name represents the parameter name as well the field id in html
         for(const eachField in fields) {
             if(Array.isArray(fields[eachField])) {
                 fields[eachField].forEach((fieldInput, index) => {
@@ -57,21 +75,31 @@ class PatientComponent extends Component {
             }
             searchParameters[eachField] = document.getElementById(eachField).value;
         }
+        return searchParameters;
+    }
 
-        // remove upToAgeOnDate & atLeastAgeOnDate if both minAge & maxAge was filled
-        if(searchParameters.ageRangeOnDate[0].value && searchParameters.ageRangeOnDate[1].value) {
-            delete searchParameters.atLeastAgeOnDate;
-            delete searchParameters.upToAgeOnDate;
-        } else {
-            // then the ageRangeOnDate should be deleted
-            delete searchParameters.ageRangeOnDate;
-        }
-
+    performSearch(searchParameters) {
         this.props.search(searchParameters).then(results => {
             const allPatients = results.rows;
             const pagePatientInfo = this.getPatientDetailsPromises(allPatients, this.state.currentPage);
             this.setState({toDisplay: pagePatientInfo, searchResults: allPatients, totalPage: Math.ceil(allPatients.length/this.state.perPage)});
         });
+    }
+    
+    searchByAttributes(event) {
+        event.preventDefault();
+        const fields = {
+            personWithAttribute: [
+                {name: "attributeType"},
+                {name: "values"}
+            ]
+        }
+        const searchParameters = this.getValuesFromFields(fields);
+        // the plus is used as a delimiter to allow users to be able to search using several values
+        // for example, the value for the attribute citizenship can look like Nigeria+England.
+        // this is still open to change, it was just implemented as a placeholder
+        searchParameters.personWithAttribute[1].value = searchParameters.personWithAttribute[1].value.split('+');
+        this.performSearch(searchParameters);
     }
 
     navigatePage(event) {
@@ -174,20 +202,20 @@ class PatientComponent extends Component {
                 <div className="form-group">
                     <label htmlFor="gender" className="col-sm-2 control-label">Which Attribute</label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="gender">
+                        <select className="form-control" id="attributeType">
                             <option value="">Any</option>
                             {attributes}
                         </select>
                     </div>
                     <label className="col-sm-1 control-label">Value</label>
                     <div className="col-sm-3">
-                         <input className="form-control" type="text" name="value" />
+                         <input className="form-control" type="text" name="values" id="values" />
                     </div>
                 </div>
 
                 <div className="form-group">
                     <div className="col-sm-offset-2 col-sm-6">
-                        <button type="submit" className="btn btn-success">Search</button>
+                        <button type="submit" onClick={this.searchByAttributes} className="btn btn-success">Search</button>
                     </div>
                 </div>
             </form>

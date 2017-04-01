@@ -11,8 +11,16 @@ class EncounterComponent extends Component {
         this.state = {
             locations: [],
             encouterTypes: [],
-            forms: []
+            forms: [],
+            searchResults: [],
+            currentPage: 1,
+            toDisplay: [],
+            totalPage: 0,
+            perPage: 10
         };
+        this.searchByEncounter = this.searchByEncounter.bind(this);
+        this.getFormValues = this.getFormValues.bind(this);
+        this.navigatePage = this.navigatePage.bind(this);
     }
 
     componentWillMount(){
@@ -46,8 +54,62 @@ class EncounterComponent extends Component {
 
     displaySelectOption(data){
         return (
-            <option value={data.id} key={shortId.generate()}>{data.value}</option>
+            <option value={data.value} key={shortId.generate()}>{data.value}</option>
         );
+    }
+
+    getFormValues(fields) {
+      const searchParams = {};
+      for(const eachField in fields) {
+        if(Array.isArray(fields[eachField])) {
+            fields[eachField].forEach((fieldInput, index) => {
+                fields[eachField][index].value = [document.getElementById(fieldInput.name).value];
+            });
+            searchParams[eachField] = fields[eachField];
+            continue;
+        }
+      }
+      return searchParams;
+    }
+
+    searchByEncounter(event) {
+      event.preventDefault();
+      const fields = {
+          anyEncounterOfTypesDuringPeriod : [
+              { name: 'encounterTypes' }
+          ]
+      };
+
+      const searchParams = this.getFormValues(fields);
+
+
+      this.props.search(searchParams).then(results => {
+          const allEncounterTypes = results.rows;
+          const pageEncounterTypes = this.getPatientDetailsPromises(allEncounterTypes, this.state.currentPage);
+          this.setState({toDisplay: pageEncounterTypes, searchResults: allEncounterTypes, totalPage: Math.ceil(allEncounterTypes.length/this.state.perPage)});
+      });
+    }
+
+    navigatePage(event) {
+        event.preventDefault();
+        let pageToNavigate = 0;
+        switch(event.target.value) {
+            case 'first': pageToNavigate = 1; break;
+            case 'last': pageToNavigate = this.state.totalPage; break;
+            default: pageToNavigate = (event.target.value === 'next') ? this.state.currentPage+1 : this.state.currentPage-1;
+        }
+        const pageEncounterTypes = this.getPatientDetailsPromises(this.state.searchResults, pageToNavigate);
+        this.setState({ toDisplay: pageEncounterTypes, currentPage: pageToNavigate });
+    }
+
+    getPatientDetailsPromises(allEncounterTypes, currentPage) {
+        const pageEncounterTypes = [];
+        for(let index = (currentPage-1) * this.state.perPage; index < currentPage * this.state.perPage && index < allEncounterTypes.length; index++) {
+            pageEncounterTypes.push(
+                allEncounterTypes[index]
+            );
+        }
+        return pageEncounterTypes;
     }
 
     render(){
@@ -62,7 +124,7 @@ class EncounterComponent extends Component {
                       Of Type
                     </label>
                     <div className="col-sm-6">
-                      <select multiple="multiple" name="type" id="type" className="form-control">
+                      <select multiple="multiple" name="encounterTypes" id="encounterTypes" className="form-control">
                         {this.state.encouterTypes.map(encounterType => this.displaySelectOption(encounterType))}
                       </select>
                       { }
@@ -128,10 +190,57 @@ class EncounterComponent extends Component {
 
                   <div className="form-group submit-btn">
                     <div className="col-sm-offset-2 col-sm-6">
-                      <button type="submit" className="btn btn-success">Search</button>
+                      <button type="submit" className="btn btn-success" onClick={this.searchByEncounter}>Search</button>
                     </div>
                   </div>
                 </form>
+                <hr/>
+                {(this.state.searchResults.length) ?
+                    <div className="result row col-sm-8 col-sm-offset-2">
+                        <h3>Search Result for Patients Encounter Types</h3>
+                        <table className="table table-striped" >
+                            <thead>
+                                <tr>
+                                    <td>NAME</td>
+                                    <td>AGE</td>
+                                    <td>GENDER</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                this.state.toDisplay.map(patient => {
+                                    return (
+                                        <tr key={shortId.generate()}>
+                                            <td>{`${patient.firstname} ${patient.lastname}`}</td>
+                                            <td>{patient.age}</td>
+                                            <td>{patient.gender}</td>
+                                        </tr>);
+                                })
+                            }
+                            </tbody>
+                        </table>
+
+                        <div className="tableNavigation">
+                            <button className="btn btn-primary" onClick={this.navigatePage} value="first">FIRST</button>
+                            {
+                                (this.state.currentPage > 1) ?
+                                    <button className="btn btn-primary" onClick={this.navigatePage} value="previous">PREVIOUS</button> :
+                                    null
+                            }
+
+                            {
+                                (this.state.currentPage < this.state.totalPage) ?
+                                    <span>
+                                        <button className="btn btn-primary" onClick={this.navigatePage} value="next">NEXT</button>
+                                        <button className="btn btn-primary" onClick={this.navigatePage} value="last">LAST</button>
+                                    </span> :
+                                    null
+                            }
+                            <span className="page-display-counter">{this.state.currentPage + " of " + this.state.totalPage}</span>
+                        </div>
+                    </div> :
+                    null
+                }
               </div>
             </div>
         );

@@ -66,9 +66,6 @@ class PatientComponent extends Component {
             if(Array.isArray(fields[eachField])) {
                 fields[eachField].forEach((fieldInput, index) => {
                     fields[eachField][index].value = document.getElementById(fieldInput.name).value
-                    if(fields[eachField][index].value) {
-                        fields[eachField][index].value += (fieldInput.name === 'startDate' || fieldInput.name === 'endDate') ? ' 00:00:00 UTC' : '';
-                    }
                 });
                 searchParameters[eachField] = fields[eachField];
                 continue;

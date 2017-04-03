@@ -197,3 +197,11 @@ a:hover {
     background-color: #fff;
     margin-bottom: 15px;
 }
+
+#concept-name {
+    cursor: 'pointer';
+}
+
+#concept-verbose {
+    text-indent: '20px';
+}

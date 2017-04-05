@@ -6,12 +6,18 @@ class ConceptComponent extends Component {
         this.state = {
             conceptsResults: [],
             searchResults: [],
-            verbose: false
+            verbose: false,
+            pages: [],
+            currentPage: 0,
+            currentDisplay: []
         };
+        this.resultsPerPage = 10
         this.allConcepts = [];
         this.searchConcept = this.searchConcept.bind(this);
         this.checkVerbose = this.checkVerbose.bind(this);
         this.loadConcepts = this.loadConcepts.bind(this);
+        this.displayNewPage = this.displayNewPage.bind(this);
+        this.nextPreviousPage = this.nextPreviousPage.bind(this);
     }
     /**
      * Check if verbose is clicked and set verbose state to true
@@ -29,6 +35,11 @@ class ConceptComponent extends Component {
      * @param {*} event 
      */
     loadConcepts(event) {
+        const limit = this.resultsPerPage;
+        this.setState({
+            currentDisplay: []
+        })
+        const currentIndex = this.state.currentPage;
             const conceptName = event.target.value,
                 regex = new RegExp(conceptName, 'gi')
             if(conceptName.length > 2){
@@ -39,7 +50,10 @@ class ConceptComponent extends Component {
                             const name = concept.display.toUpperCase();
                             const searchInput = conceptName.toUpperCase();
                             if(!!name.match(searchInput)) {
-                                const conceptData = {name: concept.display, description: concept.descriptions[0].description}
+                                const conceptData = {
+                                    name: concept.display,
+                                    description: concept.descriptions[0].description
+                                }
                                 let found = false;
                                 this.allConcepts.map(item => {
                                     if(item.name === conceptData.name) {
@@ -54,15 +68,78 @@ class ConceptComponent extends Component {
                         resolve(this.allConcepts);
                     });
                 }).then((res) => {
+                    const currentDisplay = [];
+                    const pages = [];
                     this.setState({
                         conceptsResults: res
                     });
+                    // Display first page
+                    this.displayNewPage(1)
+
+                    const pageLen = Math.ceil(res.length / this.resultsPerPage);
+                    for (let i = 0; i < pageLen; i++) {
+                        pages.push(i + 1);
+                    }
+                    this.setState({
+                        pages: pages
+                    })
                 })
             } else{
                 this.setState({
                     conceptsResults: []
                 });
             }
+    }
+    /**
+     * Display a new page based on page argument specified
+     * @param {*} page 
+     */
+    displayNewPage(page){
+        this.setState({
+            currentPage: page
+        })
+        let currentDisplay = [];
+        const offset = (page === 1) ? 0 : this.resultsPerPage * (page - 1);
+        const allConceptNames = this.state.conceptsResults;
+        for (let i = offset; i < offset + this.resultsPerPage; i++) {
+            if(allConceptNames[i]) {
+                currentDisplay.push(allConceptNames[i]);
+            }
+        }
+        this.setState({
+            currentDisplay: currentDisplay
+        })
+    }
+    /**
+     * Setup method for navigation using the pagination tab
+     * @param {*} type 
+     */
+    nextPreviousPage(type) {
+        let page = this.state.currentPage
+        switch(type){
+            case 'next':
+                page = (page === Math.ceil(this.state.conceptsResults.length / this.resultsPerPage))
+                    ? Math.ceil(this.state.conceptsResults.length / this.resultsPerPage)
+                    : page += 1;
+                this.displayNewPage(page);
+                break;
+            case 'previous':
+                page = (page === 1)
+                    ? 1
+                    : page -= 1;
+                this.displayNewPage(page);
+                break;
+            case 'first':
+                page = 1;
+                this.displayNewPage(page);
+                break;
+            case 'last':
+                page = Math.ceil(this.state.conceptsResults.length / this.resultsPerPage);
+                this.displayNewPage(page);
+                break;
+            default:
+                break;
+        }
     }
     /**
      * Search concepts based on the selected concept
@@ -72,13 +149,15 @@ class ConceptComponent extends Component {
      */
     searchConcept(event) {
         event.preventDefault();
-        searchQuery = event.target.textContent;
+        const searchQuery = event.target.textContent;
     }
     render(){
-        let concept = (this.state.conceptsResults.length > 0)
-            ? this.state.conceptsResults.map((concept) => {
+        let concept = (this.state.currentDisplay.length > 0)
+            ? this.state.currentDisplay.map((concept) => {
             return (
-                <tbody key={this.state.conceptsResults.indexOf(concept) + Math.random()} value={concept.name}>
+                <tbody
+                    key={this.state.currentDisplay.indexOf(concept) + Math.random()}
+                    value={concept.name}>
                 <tr>
                     <td id="concept-name" onClick={this.searchConcept}>
                         {concept.name}
@@ -96,10 +175,26 @@ class ConceptComponent extends Component {
             );
         })
         : null;
+        const resultPages = (this.state.pages.length > 0)
+            ? this.state.pages.map(page => {
+                return(
+                    <li className = {
+                        (this.state.currentPage === page)
+                            ? 'active'
+                            : '' 
+                        } key={page} onClick={() => {this.displayNewPage(page)}}>
+                            <a>{page}</a>
+                    </li>
+                )
+            }) : null;
         let conceptResults = (this.state.conceptsResults.length > 0)
             ? this.state.conceptsResults.map(concept => {
                 return(
-                    <option key={this.state.conceptsResults.indexOf(concept)} onClick={this.searchConcept} value={concept}></option>
+                    <option
+                        key={this.state.conceptsResults.indexOf(concept)}
+                        onClick={this.searchConcept}
+                        value={concept}>
+                    </option>
                 )
             })
             : null;
@@ -108,16 +203,28 @@ class ConceptComponent extends Component {
                 <h3>Search By Demographic</h3>
                 <form className="form-horizontal">
                     <div className="form-group">
-                        <label htmlFor="gender" className="col-sm-4 control-label">Search by Concepts and Observations</label>
+                        <label htmlFor="gender" className="col-sm-4 control-label">
+                            Search by Concepts and Observations
+                        </label>
                         <div className="col-sm-4">
-                            <input type="text" name="concepts" id="conceptValue" onChange={this.loadConcepts} className="form-control" placeholder="Input Value"/>
+                            <input
+                                type="text"
+                                name="concepts"
+                                id="conceptValue"
+                                onChange={this.loadConcepts}
+                                className="form-control"
+                                placeholder="Input Value"/>
                         </div>
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-4 col-sm-6">
                             <div className="checkbox verbose">
                                 <label>
-                                    <input id="verbose" type="checkbox" onChange={this.checkVerbose} value="verbose"/> Include Verbose
+                                    <input
+                                        id="verbose"
+                                        type="checkbox"
+                                        onChange={this.checkVerbose}
+                                        value="verbose"/> Include Verbose
                                 </label>
                             </div>
                         </div>
@@ -126,14 +233,26 @@ class ConceptComponent extends Component {
                 {((this.state.conceptsResults.length > 0) ?
                     <div>
                         <div className="result row col-sm-8 col-sm-offset-2">
-                        <table className="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>CONCEPT AND OBSERVATIONS</th>
-                                </tr>
-                            </thead>
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>CONCEPT AND OBSERVATIONS</th>
+                                    </tr>
+                                </thead>
                                 { concept }
                             </table>
+                            <div>
+                             { (resultPages && resultPages.length > 1)
+                                ?   <ul className="pagination">
+                                        <li><a onClick={() => {this.nextPreviousPage('first') }}>first</a></li>
+                                        <li ><a onClick={() => {this.nextPreviousPage('previous') }}>&laquo;</a></li>
+                                        { resultPages }
+                                        <li><a onClick={() => {this.nextPreviousPage('next') }}>&raquo;</a></li>
+                                        <li><a onClick={() => {this.nextPreviousPage('last') }}>last</a></li>
+                                    </ul>
+                                : null
+                             }
+                            </div>
                         </div>
                     </div>
                     :

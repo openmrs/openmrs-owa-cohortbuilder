@@ -32,14 +32,15 @@ class TabsComponent extends Component {
         );
     }
 
+
     search(parameters) {
         const jsonHelper = new JSONHelper;
-        const query = jsonHelper.composeJson(parameters);
+        const queryDetails = jsonHelper.composeJson(parameters);
         const apiHelper = new ApiHelper(null);
         const searchResult = new Promise(function(resolve, reject) {
-            apiHelper.post('reportingrest/adhocquery?v=full', query).then(response => {
+            apiHelper.post('reportingrest/adhocquery?v=full', queryDetails.query).then(response => {
                 response.json().then(data => {
-                    console.log(data);
+                    data.searchDescription = queryDetails.label;
                     resolve(data);
                 });
             });
@@ -75,7 +76,7 @@ class TabsComponent extends Component {
                 <TabBarComponent tabs={this.state.tabs} drawTabHeader={this.drawTabHeader} />
                 <TabContentComponent tabs={this.state.tabs} search={this.search} drawComponent={this.drawComponent} fetchData={this.fetchData} />
             </div>
-        )
+        );
     }
 
 }

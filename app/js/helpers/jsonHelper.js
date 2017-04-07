@@ -7,6 +7,7 @@ export class JSONHelper {
     query.rowFilters = [];
     for(let field in searchParameters) {
       if(this.isNullValues(searchParameters[field])) {
+        delete searchParameters[field];
         continue;
       }
       if(searchParameters[field] != 'all' && searchParameters != '') {
@@ -20,7 +21,8 @@ export class JSONHelper {
       counter += 1;
     }
     query.customRowFilterCombination = this.composeFilterCombination(query.rowFilters);
-    return query;
+    const label = this.composeDescription(searchParameters);
+    return {query, label};
   }
 
   isNullValues(fieldValues) {
@@ -88,5 +90,55 @@ export class JSONHelper {
       return aColumn;
     });
     return colValues;
+  }
+  
+  composeDescription(searchParameters) {
+    let definitionKeys = Object.keys(searchParameters);
+    if(definitionKeys.length === 0) {
+      return 'All Patients';
+    } else {
+      let label = '';
+      if (definitionKeys.indexOf('gender') >= 0) {
+        label = `${this.getGenderName(searchParameters['gender'])} patients`;
+        delete searchParameters.gender;
+        definitionKeys = Object.keys(searchParameters);
+      } else {
+        label = 'Patients';
+      }
+      let counter = 0;
+      for(let eachKey in searchParameters) {
+        if(counter === 0) {
+          label += ' with';
+        } else if ((counter > 0) && (counter < definitionKeys.length - 1)) {
+          label += ',';
+        } else {
+          label += ' and';
+        }
+        label += this.createLabel(eachKey, searchParameters);
+        counter++;
+      }
+      return label;
+    }
+  }
+
+  createLabel(key, searchParameters) {
+    switch(key) {
+      case 'upToAgeOnDate': 
+        return ` maximum age of ${searchParameters[key][0].value} years`;
+      case 'atLeastAgeOnDate': 
+        return ` minimum age of ${searchParameters[key][0].value} years`;
+      case 'ageRangeOnDate': 
+        return ` age between ${searchParameters[key][0].value} & ${searchParameters[key][1].value} years`; 
+      case 'bornDuringPeriod': 
+        return ` date of birth between ${searchParameters[key][0].value} & ${searchParameters[key][1].value}`;
+      case 'personWithAttribute': 
+        return ` ${searchParameters[key][0].value} as ${searchParameters[key][1].value}`;
+      default : 
+        return '';
+    }
+  }
+
+  getGenderName(gender) {
+    return gender.charAt(0).toUpperCase()+gender.slice(1, gender.length-1); 
   }
 }

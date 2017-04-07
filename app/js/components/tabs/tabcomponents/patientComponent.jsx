@@ -10,7 +10,8 @@ class PatientComponent extends Component {
             currentPage: 1,
             toDisplay: [],
             totalPage: 0,
-            perPage: 10
+            perPage: 10,
+            description: ''
         };
         this.searchDemographics = this.searchDemographics.bind(this);
         this.navigatePage = this.navigatePage.bind(this);
@@ -79,7 +80,11 @@ class PatientComponent extends Component {
         this.props.search(searchParameters).then(results => {
             const allPatients = results.rows;
             const pagePatientInfo = this.getPatientDetailsPromises(allPatients, this.state.currentPage);
-            this.setState({toDisplay: pagePatientInfo, searchResults: allPatients, totalPage: Math.ceil(allPatients.length/this.state.perPage)});
+            this.setState({
+                toDisplay: pagePatientInfo,
+                searchResults: allPatients,
+                description: results.searchDescription,
+                totalPage: Math.ceil(allPatients.length/this.state.perPage)});
         });
     }
     
@@ -219,6 +224,7 @@ class PatientComponent extends Component {
             <hr/>
             {(this.state.searchResults.length) ? 
                 <div className="result row col-sm-8 col-sm-offset-2">
+                    <h2 className="center-align">{this.state.description}</h2>
                     <table className="table table-striped" >
                         <thead>
                             <tr>

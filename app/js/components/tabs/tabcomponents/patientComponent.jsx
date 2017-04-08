@@ -77,6 +77,7 @@ class PatientComponent extends Component {
     }
 
     performSearch(searchParameters) {
+        const theParameter = Object.assign({}, searchParameters);
         this.props.search(searchParameters).then(results => {
             const allPatients = results.rows;
             const pagePatientInfo = this.getPatientDetailsPromises(allPatients, this.state.currentPage);
@@ -84,7 +85,10 @@ class PatientComponent extends Component {
                 toDisplay: pagePatientInfo,
                 searchResults: allPatients,
                 description: results.searchDescription,
-                totalPage: Math.ceil(allPatients.length/this.state.perPage)});
+                totalPage: Math.ceil(allPatients.length/this.state.perPage)
+            });
+            // adds the current search to search history
+            this.props.addToHistory(results.searchDescription, allPatients.length, theParameter);
         });
     }
     

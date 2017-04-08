@@ -24,11 +24,21 @@
 
 .result-window {
     padding: 10px;
-    color: #ff6300;
     border-color: #000;
     border-width: 1px;
     border-style: solid;
     margin-top: 20px;
     margin-bottom: 20px;
-    text-decoration: underline;
+}
+
+.view-result, .save {
+    cursor: pointer;
+}
+.save {
+    color: #000;
+    font-size: 20px;
+}
+
+.view-result {
+    color: #363463;
 }

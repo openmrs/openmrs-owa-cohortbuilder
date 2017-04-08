@@ -1,30 +1,46 @@
 import React, {Component} from 'react';
+import shortId from 'shortid'
 
 import './searchHistory.css';
 
-export default class SearchHistoryComponent extends Component{
-    componentDidMount(){}
+class SearchHistoryComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchHistory : []
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({searchHistory: nextProps.history});
+    }
+
     render(){
         return (
             <div className="col-sm-12 section">
                 <h3>Search History</h3>
-                <div className="history-window">
-                    <span>No Search History</span>
-                </div>
-                <form className="form-horizontal">
-                    <div className="form-group">
-                        <label className="col-sm-3 control-label">Display which cohort</label>
-                        <div className="col-sm-5">
-                            <select className="form-control" name="cohort">
-                                <option value="all">Results of last search</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
                 <div className="result-window">
-                    <span>No Results</span>
+                    {
+                        (this.state.searchHistory.length > 0) ?
+                            <table className="table table-hover">
+                                <tbody>
+                                    {
+                                        this.state.searchHistory.map((eachResult) =>
+                                            <tr key={shortId.generate()}>
+                                                <td>{eachResult.description}</td>
+                                                <td>{eachResult.total +' result(s)'}</td>
+                                                <td><span className="glyphicon glyphicon-glyphicon glyphicon-floppy-disk save" aria-hidden="true"></span></td>
+                                                <td className="view-result">View</td>
+                                            </tr>
+                                        )
+                                    }
+                                </tbody>
+                            </table>
+                            : <p className="text-center">No search History</p>
+                    }
                 </div>
             </div>
         );
     }
 }
+export default SearchHistoryComponent;

@@ -200,7 +200,6 @@ class ConceptComponent extends Component {
             : null;
         return (
             <div>
-                <h3>Search By Demographic</h3>
                 <form className="form-horizontal">
                     <div className="form-group">
                         <label htmlFor="gender" className="col-sm-4 control-label">
@@ -215,9 +214,7 @@ class ConceptComponent extends Component {
                                 className="form-control"
                                 placeholder="Input Value"/>
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="col-sm-offset-4 col-sm-6">
+                        <div className="col-sm-4">
                             <div className="checkbox verbose">
                                 <label>
                                     <input

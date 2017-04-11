@@ -57,6 +57,7 @@ class PatientComponent extends Component {
         }
 
         this.performSearch(searchParameters);
+        document.querySelectorAll('form').forEach(form => form.reset());
     }
 
     getValuesFromFields(fields) {

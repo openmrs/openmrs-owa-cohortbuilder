@@ -63,7 +63,8 @@ class SearchHistoryComponent extends Component {
                 toDisplay: pagePatientInfo,
                 searchResults: allPatients,
                 description: results.searchDescription,
-                totalPage: Math.ceil(allPatients.length/this.state.perPage)
+                totalPage: Math.ceil(allPatients.length/this.state.perPage),
+                currentPage: 1,
             });
         });
     }

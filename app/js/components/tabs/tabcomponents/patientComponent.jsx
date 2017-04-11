@@ -226,52 +226,6 @@ class PatientComponent extends Component {
                 </div>
             </form>
             <hr/>
-            {(this.state.searchResults.length) ? 
-                <div className="result row col-sm-8 col-sm-offset-2">
-                    <h2 className="center-align">{this.state.description}</h2>
-                    <table className="table table-striped" >
-                        <thead>
-                            <tr>
-                                <td>NAME</td>
-                                <td>AGE</td>
-                                <td>GENDER</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            this.state.toDisplay.map(patient => {
-                                return (
-                                    <tr key={shortId.generate()}>
-                                        <td>{`${patient.firstname} ${patient.lastname}`}</td>
-                                        <td>{patient.age}</td>
-                                        <td>{patient.gender}</td>
-                                    </tr>);
-                            })
-                        }
-                        </tbody>
-                    </table>
-                    
-                    <div className="tableNavigation">
-                        <button className="btn btn-primary" onClick={this.navigatePage} value="first">FIRST</button>
-                        {
-                            (this.state.currentPage > 1) ?
-                                <button className="btn btn-primary" onClick={this.navigatePage} value="previous">PREVIOUS</button> :
-                                null
-                        }
-
-                        {
-                            (this.state.currentPage < this.state.totalPage) ?
-                                <span>
-                                    <button className="btn btn-primary" onClick={this.navigatePage} value="next">NEXT</button>
-                                    <button className="btn btn-primary" onClick={this.navigatePage} value="last">LAST</button>
-                                </span> :
-                                null
-                        }
-                        <span className="page-display-counter">{this.state.currentPage + " of " + this.state.totalPage}</span>
-                    </div>
-                </div> :
-                null
-            }
         </div>
     );
     }

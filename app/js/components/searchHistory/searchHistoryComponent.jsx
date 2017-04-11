@@ -17,10 +17,14 @@ class SearchHistoryComponent extends Component {
             perPage: 10,
             description: ''
         };
+        this.navigatePage = this.navigatePage.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({searchHistory: nextProps.history});
+        if(nextProps.history.length > 0) {
+             this.viewResult(nextProps.history[nextProps.history.length -1].parameters);
+        }
     }
 
     search(parameters) {
@@ -51,7 +55,8 @@ class SearchHistoryComponent extends Component {
     }
 
     viewResult(index) {
-        this.search(this.state.searchHistory[index].parameters).then((results) => {
+        const parameters = (typeof index === 'number')? this.state.searchHistory[index].parameters : index
+        this.search(parameters).then((results) => {
             const allPatients = results.rows;
             const pagePatientInfo = this.getPagePatient(allPatients, this.state.currentPage);
             this.setState({

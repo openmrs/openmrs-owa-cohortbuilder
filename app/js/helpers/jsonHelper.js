@@ -17,6 +17,10 @@ export class JSONHelper {
       if(Array.isArray(searchParameters[field])) {
         query.rowFilters[counter].parameterValues = this.getParameterValues(searchParameters[field]);
       }
+      // add living status property so we can append a NOT to the filter combination
+      if (searchParameters[field][0].livingStatus === 'alive') {
+        query.rowFilters[counter].livingStatus = 'alive';
+      }
       query.rowFilters[counter].type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
       counter += 1;
     }
@@ -56,7 +60,13 @@ export class JSONHelper {
     let compositionTitle = '';
     const totalNumber = filterColumns.length;
     for (let index = 1; index <= totalNumber; index++) {
-      compositionTitle += `${index}`;
+      if (filterColumns[index - 1].livingStatus === 'alive') {
+        compositionTitle += `NOT ${index}`;
+        // delete helper living status property
+        delete filterColumns[index - 1].livingStatus;
+      } else {
+        compositionTitle += `${index}`;
+      }
       compositionTitle += (index < totalNumber) ? ' AND ' : '';
     }
     return compositionTitle;
@@ -108,7 +118,10 @@ export class JSONHelper {
       let counter = 0;
       for(let eachKey in searchParameters) {
         if(counter === 0) {
-          label += ' with';
+          if (eachKey !== 'diedDuringPeriod')
+            label += ' with';
+          else
+            label += ' that are';
         } else if ((counter > 0) && (counter < definitionKeys.length - 1)) {
           label += ',';
         } else {
@@ -133,6 +146,8 @@ export class JSONHelper {
         return ` date of birth between ${searchParameters[key][0].value} & ${searchParameters[key][1].value}`;
       case 'personWithAttribute': 
         return ` ${searchParameters[key][0].value} as ${searchParameters[key][1].value}`;
+      case 'diedDuringPeriod':
+        return searchParameters[key][0].livingStatus === 'alive' ? ' Alive' : ' Dead'
       default : 
         return '';
     }

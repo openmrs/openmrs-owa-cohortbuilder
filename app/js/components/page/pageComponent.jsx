@@ -5,13 +5,32 @@ import ActionsComponent from '../actionsComponent';
 import './pageComponent.css';
 
 class PageComponent extends Component{
-    componentDidMount(){}
+    constructor(props) {
+        super(props);
+        this.state = {
+            history: []
+        }
+        this.addToHistory = this.addToHistory.bind(this);
+    }
+
+    componentDidMount() {
+        const currentHistory = JSON.parse(window.sessionStorage.getItem('openmrsHistory'));
+        if(currentHistory) {
+            this.setState({history: currentHistory});
+        }
+    }
+
+    addToHistory(description, total, parameters) {
+        const newHistory = [...this.state.history, {description, total, parameters}];
+        window.sessionStorage.setItem('openmrsHistory', JSON.stringify(newHistory));
+        this.setState({history: newHistory});
+    }
 
     render(){
         return(
             <div id="body-wrapper" className="page-wrapper">
-                <TabsComponent />
-                <SearchHistoryComponent />
+                <TabsComponent addToHistory={this.addToHistory} />
+                <SearchHistoryComponent history={this.state.history} />
                 <ActionsComponent />
             </div>
         );

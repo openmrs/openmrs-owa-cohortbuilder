@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ObservationComponent from './observationComponent'
 
 class ConceptComponent extends Component {
     constructor(props) {
@@ -9,7 +10,8 @@ class ConceptComponent extends Component {
             verbose: false,
             pages: [],
             currentPage: 0,
-            currentDisplay: []
+            currentDisplay: [],
+            selectedConcept: null
         };
         this.resultsPerPage = 10
         this.allConcepts = [];
@@ -37,7 +39,8 @@ class ConceptComponent extends Component {
     loadConcepts(event) {
         const limit = this.resultsPerPage;
         this.setState({
-            currentDisplay: []
+            currentDisplay: [],
+            selectedConcept: null
         })
         const currentIndex = this.state.currentPage;
             const conceptName = event.target.value,
@@ -150,6 +153,9 @@ class ConceptComponent extends Component {
     searchConcept(event) {
         event.preventDefault();
         const searchQuery = event.target.textContent;
+        this.setState({
+            selectedConcept: searchQuery
+        })
     }
     render(){
         let concept = (this.state.currentDisplay.length > 0)
@@ -199,65 +205,72 @@ class ConceptComponent extends Component {
             })
             : null;
         return (
+            // display search results based on the value of selectedConcept
             <div>
-                <h3>Search By Demographic</h3>
-                <form className="form-horizontal">
-                    <div className="form-group">
-                        <label htmlFor="gender" className="col-sm-4 control-label">
-                            Search by Concepts and Observations
-                        </label>
-                        <div className="col-sm-4">
-                            <input
-                                type="text"
-                                name="concepts"
-                                id="conceptValue"
-                                onChange={this.loadConcepts}
-                                className="form-control"
-                                placeholder="Input Value"/>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="col-sm-offset-4 col-sm-6">
-                            <div className="checkbox verbose">
-                                <label>
-                                    <input
-                                        id="verbose"
-                                        type="checkbox"
-                                        onChange={this.checkVerbose}
-                                        value="verbose"/> Include Verbose
-                                </label>
+                <div>
+                    <h3>Search By Demographic</h3>
+                    <form className="form-horizontal">
+                        <div className="form-group">
+                            <label htmlFor="gender" className="col-sm-4 control-label">
+                                Search by Concepts and Observations
+                            </label>
+                            <div className="col-sm-4">
+                                <input
+                                    type="text"
+                                    name="concepts"
+                                    id="conceptValue"
+                                    onChange={this.loadConcepts}
+                                    className="form-control"
+                                    placeholder="Input Value"/>
                             </div>
                         </div>
-                    </div>
-                </form>
-                {((this.state.conceptsResults.length > 0) ?
-                    <div>
-                        <div className="result row col-sm-8 col-sm-offset-2">
-                            <table className="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>CONCEPT AND OBSERVATIONS</th>
-                                    </tr>
-                                </thead>
-                                { concept }
-                            </table>
-                            <div>
-                             { (resultPages && resultPages.length > 1)
-                                ?   <ul className="pagination">
-                                        <li><a onClick={() => {this.nextPreviousPage('first') }}>first</a></li>
-                                        <li ><a onClick={() => {this.nextPreviousPage('previous') }}>&laquo;</a></li>
-                                        { resultPages }
-                                        <li><a onClick={() => {this.nextPreviousPage('next') }}>&raquo;</a></li>
-                                        <li><a onClick={() => {this.nextPreviousPage('last') }}>last</a></li>
-                                    </ul>
-                                : null
-                             }
+                        <div className="form-group">
+                            <div className="col-sm-offset-4 col-sm-6">
+                                <div className="checkbox verbose">
+                                    <label>
+                                        <input
+                                            id="verbose"
+                                            type="checkbox"
+                                            onChange={this.checkVerbose}
+                                            value="verbose"/> Include Verbose
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    :
-                    null
-                )}
+                    </form>
+                    {((this.state.conceptsResults.length > 0 && this.state.selectedConcept === null) ?
+                        <div>
+                            <div className="result row col-sm-8 col-sm-offset-2">
+                                <table className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>CONCEPT AND OBSERVATIONS</th>
+                                        </tr>
+                                    </thead>
+                                    { concept }
+                                </table>
+                                <div>
+                                { (resultPages && resultPages.length > 1)
+                                    ?   <ul className="pagination">
+                                            <li><a onClick={() => {this.nextPreviousPage('first') }}>first</a></li>
+                                            <li ><a onClick={() => {this.nextPreviousPage('previous') }}>&laquo;</a></li>
+                                            { resultPages }
+                                            <li><a onClick={() => {this.nextPreviousPage('next') }}>&raquo;</a></li>
+                                            <li><a onClick={() => {this.nextPreviousPage('last') }}>last</a></li>
+                                        </ul>
+                                    : null
+                                }
+                                </div>
+                            </div>
+                        </div>
+                        :
+                        null
+                    )}
+                </div>
+                {(this.state.selectedConcept)
+                    ? <ObservationComponent conceptName={this.state.selectedConcept} />
+                    : null
+                }
             </div>
         );
     }

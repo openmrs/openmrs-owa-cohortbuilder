@@ -11,11 +11,13 @@ class PatientComponent extends Component {
             toDisplay: [],
             totalPage: 0,
             perPage: 10,
+            livingStatus: '',
             description: ''
         };
         this.searchDemographics = this.searchDemographics.bind(this);
         this.navigatePage = this.navigatePage.bind(this);
         this.searchByAttributes = this.searchByAttributes.bind(this);
+        this.toggleLivingStatus = this.toggleLivingStatus.bind(this);
     }
 
     componentDidMount(props) {
@@ -55,8 +57,20 @@ class PatientComponent extends Component {
             // then the ageRangeOnDate should be deleted
             delete searchParameters.ageRangeOnDate;
         }
-
+        // for dead people, diedDuring period -> endDate === now
+        // for living people, diedDuring period -> endDate !== now
+        const today = new Date();
+        const dayFormat = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+        const livingStatus = this.state.livingStatus;
+        if (livingStatus === 'alive' || livingStatus === 'dead') {
+            searchParameters.diedDuringPeriod = [
+                { name: 'endDate', dataType: 'date', value: dayFormat, livingStatus}
+            ];
+            // reset the living status in the state
+            this.setState({ livingStatus: '' });
+        }
         this.performSearch(searchParameters);
+        document.querySelectorAll('form').forEach(form => form.reset());
     }
 
     getValuesFromFields(fields) {
@@ -77,14 +91,18 @@ class PatientComponent extends Component {
     }
 
     performSearch(searchParameters) {
+        const theParameter = Object.assign({}, searchParameters);
         this.props.search(searchParameters).then(results => {
-            const allPatients = results.rows;
+            const allPatients = results.rows || [];
             const pagePatientInfo = this.getPatientDetailsPromises(allPatients, this.state.currentPage);
             this.setState({
                 toDisplay: pagePatientInfo,
                 searchResults: allPatients,
                 description: results.searchDescription,
-                totalPage: Math.ceil(allPatients.length/this.state.perPage)});
+                totalPage: Math.ceil(allPatients.length/this.state.perPage)
+            });
+            // adds the current search to search history
+            this.props.addToHistory(results.searchDescription, allPatients.length, theParameter);
         });
     }
     
@@ -124,6 +142,10 @@ class PatientComponent extends Component {
             );
         }
         return pagePatientInfo;
+    }
+
+    toggleLivingStatus(event) {
+        this.setState({ livingStatus: event.target.value });
     }
 
     render() {
@@ -183,10 +205,10 @@ class PatientComponent extends Component {
                     <div className="col-sm-offset-2 col-sm-6">
                         <div className="checkbox patient-status">
                             <label>
-                                <input type="checkbox" value="alive"/> Alive
+                                <input type="radio" value="alive" name="livingStatus" onChange={this.toggleLivingStatus}/> Alive Only
                             </label>
                             <label>
-                                <input type="checkbox" value="dead"/> Dead
+                                <input type="radio" value="dead" name="livingStatus" onChange={this.toggleLivingStatus}/> Dead Only
                             </label>
                         </div>
                     </div>
@@ -222,52 +244,6 @@ class PatientComponent extends Component {
                 </div>
             </form>
             <hr/>
-            {(this.state.searchResults.length) ? 
-                <div className="result row col-sm-8 col-sm-offset-2">
-                    <h2 className="center-align">{this.state.description}</h2>
-                    <table className="table table-striped" >
-                        <thead>
-                            <tr>
-                                <td>NAME</td>
-                                <td>AGE</td>
-                                <td>GENDER</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            this.state.toDisplay.map(patient => {
-                                return (
-                                    <tr key={shortId.generate()}>
-                                        <td>{`${patient.firstname} ${patient.lastname}`}</td>
-                                        <td>{patient.age}</td>
-                                        <td>{patient.gender}</td>
-                                    </tr>);
-                            })
-                        }
-                        </tbody>
-                    </table>
-                    
-                    <div className="tableNavigation">
-                        <button className="btn btn-primary" onClick={this.navigatePage} value="first">FIRST</button>
-                        {
-                            (this.state.currentPage > 1) ?
-                                <button className="btn btn-primary" onClick={this.navigatePage} value="previous">PREVIOUS</button> :
-                                null
-                        }
-
-                        {
-                            (this.state.currentPage < this.state.totalPage) ?
-                                <span>
-                                    <button className="btn btn-primary" onClick={this.navigatePage} value="next">NEXT</button>
-                                    <button className="btn btn-primary" onClick={this.navigatePage} value="last">LAST</button>
-                                </span> :
-                                null
-                        }
-                        <span className="page-display-counter">{this.state.currentPage + " of " + this.state.totalPage}</span>
-                    </div>
-                </div> :
-                null
-            }
         </div>
     );
     }

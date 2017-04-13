@@ -87,6 +87,7 @@ class EncounterComponent extends Component {
           const allEncounterTypes = results.rows;
           const pageEncounterTypes = this.getPatientDetailsPromises(allEncounterTypes, this.state.currentPage);
           this.setState({toDisplay: pageEncounterTypes, searchResults: allEncounterTypes, totalPage: Math.ceil(allEncounterTypes.length/this.state.perPage)});
+          this.props.addToHistory(results.searchDescription, allEncounterTypes.length, searchParams);
       });
     }
 
@@ -195,52 +196,6 @@ class EncounterComponent extends Component {
                   </div>
                 </form>
                 <hr/>
-                {(this.state.searchResults.length) ?
-                    <div className="result row col-sm-8 col-sm-offset-2">
-                        <h3>Search Result for Patients Encounter Types</h3>
-                        <table className="table table-striped" >
-                            <thead>
-                                <tr>
-                                    <td>NAME</td>
-                                    <td>AGE</td>
-                                    <td>GENDER</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                this.state.toDisplay.map(patient => {
-                                    return (
-                                        <tr key={shortId.generate()}>
-                                            <td>{`${patient.firstname} ${patient.lastname}`}</td>
-                                            <td>{patient.age}</td>
-                                            <td>{patient.gender}</td>
-                                        </tr>);
-                                })
-                            }
-                            </tbody>
-                        </table>
-
-                        <div className="tableNavigation">
-                            <button className="btn btn-primary" onClick={this.navigatePage} value="first">FIRST</button>
-                            {
-                                (this.state.currentPage > 1) ?
-                                    <button className="btn btn-primary" onClick={this.navigatePage} value="previous">PREVIOUS</button> :
-                                    null
-                            }
-
-                            {
-                                (this.state.currentPage < this.state.totalPage) ?
-                                    <span>
-                                        <button className="btn btn-primary" onClick={this.navigatePage} value="next">NEXT</button>
-                                        <button className="btn btn-primary" onClick={this.navigatePage} value="last">LAST</button>
-                                    </span> :
-                                    null
-                            }
-                            <span className="page-display-counter">{this.state.currentPage + " of " + this.state.totalPage}</span>
-                        </div>
-                    </div> :
-                    null
-                }
               </div>
             </div>
         );

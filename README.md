@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/andela-odaniel/openmrs-owa-cohortbuilder.svg?branch=master)](https://travis-ci.org/andela-odaniel/openmrs-owa-cohortbuilder) [![Coverage Status](https://coveralls.io/repos/github/andela-odaniel/openmrs-owa-cohortbuilder/badge.svg?branch=master)](https://coveralls.io/github/andela-odaniel/openmrs-owa-cohortbuilder?branch=master)
 <img src="https://cloud.githubusercontent.com/assets/668093/12567089/0ac42774-c372-11e5-97eb-00baf0fccc37.jpg" alt="OpenMRS"/>
 
 # CohortBuilder

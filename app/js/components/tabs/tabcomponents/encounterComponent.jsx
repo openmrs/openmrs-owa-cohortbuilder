@@ -20,7 +20,6 @@ class EncounterComponent extends Component {
         };
         this.searchByEncounter = this.searchByEncounter.bind(this);
         this.getFormValues = this.getFormValues.bind(this);
-        this.navigatePage = this.navigatePage.bind(this);
     }
 
     componentWillMount(){
@@ -63,54 +62,50 @@ class EncounterComponent extends Component {
       for(const eachField in fields) {
         if(Array.isArray(fields[eachField])) {
             fields[eachField].forEach((fieldInput, index) => {
-                fields[eachField][index].value = [document.getElementById(fieldInput.name).value];
+                fields[eachField][index].value = (fields[eachField][index].isArrayValue && document.getElementById(fieldInput.name).value != '')
+                    ? [ document.getElementById(fieldInput.name).value ]
+                    : document.getElementById(fieldInput.name).value;
             });
             searchParams[eachField] = fields[eachField];
             continue;
         }
       }
-      return searchParams;
+      return this.removeEmptyValues(searchParams);
+    }
+
+    removeEmptyValues(allParameters) {
+        const newParamArray = [];
+        allParameters.encounterSearchAdvanced.forEach(eachParam => {
+            if(!(eachParam.value === '' || (Array.isArray(eachParam.value) && eachParam.value[0] === ''))) {
+                newParamArray.push(eachParam);
+            }
+        });
+
+        const newObject = {};
+        newObject.encounterSearchAdvanced = newParamArray;
+        return newObject;
     }
 
     searchByEncounter(event) {
       event.preventDefault();
       const fields = {
-          anyEncounterOfTypesDuringPeriod : [
-              { name: 'encounterTypes' }
+          encounterSearchAdvanced : [
+              { name: 'encounterTypes', isArrayValue: true },
+              { name: 'locations', isArrayValue: true },
+              { name: 'forms', isArrayValue: true },
+              { name: 'atLeast' },
+              { name: 'atMost' },
+              { name: 'startDate' },
+              { name: 'endDate' }
           ]
       };
 
       const searchParams = this.getFormValues(fields);
 
-
       this.props.search(searchParams).then(results => {
           const allEncounterTypes = results.rows;
-          const pageEncounterTypes = this.getPatientDetailsPromises(allEncounterTypes, this.state.currentPage);
-          this.setState({toDisplay: pageEncounterTypes, searchResults: allEncounterTypes, totalPage: Math.ceil(allEncounterTypes.length/this.state.perPage)});
           this.props.addToHistory(results.searchDescription, allEncounterTypes.length, searchParams);
       });
-    }
-
-    navigatePage(event) {
-        event.preventDefault();
-        let pageToNavigate = 0;
-        switch(event.target.value) {
-            case 'first': pageToNavigate = 1; break;
-            case 'last': pageToNavigate = this.state.totalPage; break;
-            default: pageToNavigate = (event.target.value === 'next') ? this.state.currentPage+1 : this.state.currentPage-1;
-        }
-        const pageEncounterTypes = this.getPatientDetailsPromises(this.state.searchResults, pageToNavigate);
-        this.setState({ toDisplay: pageEncounterTypes, currentPage: pageToNavigate });
-    }
-
-    getPatientDetailsPromises(allEncounterTypes, currentPage) {
-        const pageEncounterTypes = [];
-        for(let index = (currentPage-1) * this.state.perPage; index < currentPage * this.state.perPage && index < allEncounterTypes.length; index++) {
-            pageEncounterTypes.push(
-                allEncounterTypes[index]
-            );
-        }
-        return pageEncounterTypes;
     }
 
     render(){
@@ -119,7 +114,7 @@ class EncounterComponent extends Component {
               <h3>Search by encounter</h3>
               <div>
                 <h4 className="text-center">Patients having encounters</h4>
-                <form className="form-horizontal text-center">
+                <form className="form-horizontal text-center" id="encounter-search">
                   <div className="form-group">
                     <label htmlFor="type" className="col-sm-2 control-label">
                       Of Type
@@ -134,9 +129,10 @@ class EncounterComponent extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="location" className="col-sm-2 control-label">At Location</label>
+                    <label htmlFor="locations" className="col-sm-2 control-label">At Location</label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="location">
+                        <select className="form-control" id="locations">
+                            <option value="">--Select Location--</option>
                             {this.state.locations.map(location => this.displaySelectOption(location))}
                         </select>
                     </div>
@@ -144,9 +140,10 @@ class EncounterComponent extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="form" className="col-sm-2 control-label">From Form</label>
+                    <label htmlFor="forms" className="col-sm-2 control-label">From Form</label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="form">
+                        <select className="form-control" id="forms">
+                            <option value="">--Select Form--</option>
                             {this.state.forms.map(form => this.displaySelectOption(form))}
                         </select>
                     </div>
@@ -166,25 +163,13 @@ class EncounterComponent extends Component {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="atLeast" className="col-sm-2 control-label">Within the last: </label>
+                    <label htmlFor="startDate" className="col-sm-2 control-label">From: </label>
                     <div className="col-sm-3">
-                        <input type="number" className="form-control" id="atLeast"/>
+                       <input type="date" className="form-control" id="startDate"/>
                     </div>
-                    <label htmlFor="atMost" className="col-sm-2 control-label">month(s) and : </label>
+                    <label htmlFor="endDate" className="col-sm-2 control-label">To: </label>
                     <div className="col-sm-3">
-                        <input type="number" className="form-control" id="atMost"/>
-                    </div>
-                    <span className="inline-label">days    (Optional)</span>
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="since" className="col-sm-2 control-label">Since: </label>
-                    <div className="col-sm-3">
-                       <input type="number" className="form-control" id="atLeast"/>
-                    </div>
-                    <label htmlFor="until" className="col-sm-2 control-label">Until: </label>
-                    <div className="col-sm-3">
-                        <input type="number" className="form-control" id="atMost"/>
+                        <input type="date" className="form-control" id="endDate"/>
                     </div>
                     <span className="inline-label">day(s)    (Optional)</span>
                   </div>

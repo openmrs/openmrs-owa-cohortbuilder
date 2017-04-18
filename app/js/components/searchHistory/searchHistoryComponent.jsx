@@ -57,8 +57,8 @@ class SearchHistoryComponent extends Component {
     viewResult(index) {
         const parameters = (typeof index === 'number')? this.state.searchHistory[index].parameters : index
         this.search(parameters).then((results) => {
-            const allPatients = results.rows;
-            const pagePatientInfo = this.getPagePatient(allPatients, this.state.currentPage);
+            const allPatients = results.rows || [];
+            const pagePatientInfo = this.getPagePatient(allPatients, 1);
             this.setState({
                 toDisplay: pagePatientInfo,
                 searchResults: allPatients,

@@ -13,12 +13,12 @@ export class ApiHelper {
     };
   }
 
-  build(requestUrl, requestType, requestData = {}, requestOptions = {}) {
+  build(requestUrl, requestType, requestData = {}) {
     if (requestType && !this.ALLOWED_TYPES.includes(requestType)) {
       throw new Error('Invalid Request Type');
     }
     this.requestUrl = requestUrl;
-    let options = {}
+    let options = {};
     if (requestType != 'GET') {
       options = {
         method: requestType,

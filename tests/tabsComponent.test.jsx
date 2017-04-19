@@ -49,7 +49,7 @@ describe('<TabsComponent />', () => {
     });
 
     it('drawComponent function should return a tabComponent', ()=>{
-        const mountComponent = TabsComponent.prototype.drawComponent(tabs[0],0);
+        const mountComponent = TabsComponent.prototype.drawComponent(tabs,0)[0];
         const wrapper = mount(mountComponent);
         expect(wrapper.find('.tab-pane')).to.have.length(1);
     });

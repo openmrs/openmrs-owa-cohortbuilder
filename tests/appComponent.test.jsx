@@ -2,26 +2,26 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import AppComponent from '../app/js/components/App';
+import App from '../app/js/components/App';
+import { Header } from '../app/js/components/common/Header';
 import PageComponent from '../app/js/components/page/pageComponent';
 import BreadCrumbComponent from '../app/js/components/breadCrumb/breadCrumbComponent';
 
-describe('<AppComponent />', () => {
-
-    it('should mount the AppComponent in the dom', () => {
-        sinon.spy(AppComponent.prototype, 'componentDidMount');
-        const wrapper = mount(<AppComponent/>);
-        expect(AppComponent.prototype.componentDidMount.calledOnce).to.equal(true);
-    });
+describe('<App />', () => {
 
     it('should mount the BreadCrumbComponent in itself', () => {
-        const wrapper = shallow( <AppComponent/> )
+        const wrapper = shallow( <App/> )
         expect(wrapper.contains( <BreadCrumbComponent/> )).to.equal(true);
     });
 
     it('should mount the PageComponent in itself', () => {
-        const wrapper = shallow( <AppComponent/> )
+        const wrapper = shallow( <App/> )
         expect(wrapper.contains( <PageComponent/> )).to.equal(true);
+    });
+
+    it('should mount the Header in itself', () => {
+        const wrapper = shallow( <App/> )
+        expect(wrapper.contains( <Header/> )).to.equal(true);
     });
 
 });

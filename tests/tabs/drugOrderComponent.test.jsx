@@ -1,12 +1,14 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
+import { spy } from 'sinon';
 import {expect} from 'chai';
+import { fakeRequestLibrary } from '../apiHelper/fakeRequestLibrary';
 import DrugComponent from '../../app/js/components/tabs/tabcomponents/drugOrderComponent';
 
 describe('<DrugComponent />', () => {
   let drugComponent = null;
   beforeEach(() => {
-    drugComponent = shallow(<DrugComponent />);
+    drugComponent = shallow(<DrugComponent fetchData={fakeRequestLibrary}/>);
   });
 
   it('should have two forms', () => {

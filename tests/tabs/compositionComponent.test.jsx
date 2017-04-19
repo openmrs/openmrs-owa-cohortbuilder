@@ -14,10 +14,9 @@ describe('<CompositionComponent />', ()=>{
     it('should contain the correct HTML elements', ()=>{
         const wrapper = shallow(<CompositionComponent />);
         expect(wrapper.find("div")).to.have.length(6);
-        expect(wrapper.find("h4")).to.have.length(1);
         expect(wrapper.find("p")).to.have.length(1);
         expect(wrapper.find("form")).to.have.length(1);
         expect(wrapper.find("input")).to.have.length(1);
-        expect(wrapper.find("button")).to.have.length(2);
+        expect(wrapper.find("button")).to.have.length(1);
     });
 });

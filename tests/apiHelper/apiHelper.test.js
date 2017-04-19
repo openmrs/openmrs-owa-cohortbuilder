@@ -14,19 +14,12 @@ describe('Api Helper Class', () => {
     expect(apiHelper.build.bind(apiHelper, 'http://xkcd.com', 'STOP HAMMERTIME')).to.throw('Invalid Request Type');
   });
 
-  it('should add passed formData to the request object', () => {
+  it('should add passed formData to the request object if request method is POST', () => {
     const formData = {
       userName: 'johnDoe',
       email: 'john@doe.com'
     };
-    expect(apiHelper.build('http://google.com', 'GET', formData).requestOptions.body).to.equal(JSON.stringify(formData.data));
-  });
-
-  it('should add passed options to the request object', () => {
-    const options = {
-      data: 'this is it'
-    };
-    expect(apiHelper.build('http://google.com', 'GET', null, options).requestOptions.data).to.equal(options.data);
+    expect(apiHelper.build('http://google.com', 'POST', formData).requestOptions.body).to.equal(JSON.stringify(formData));
   });
 
   it('should make a request', () => {

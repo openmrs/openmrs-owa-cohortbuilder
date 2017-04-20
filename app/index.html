@@ -6,13 +6,25 @@
     <!-- openmrs favicon -->
     <link rel="shortcut icon" type="image/ico" href="../../images/openmrs-favicon.ico" />
     <link rel="icon" type="image/png" href="../../images/openmrs-favicon.png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.css">
+    <script src="libs/jquery/dist/jquery.min.js" ></script>
+    <script src="libs/bootstrap/dist/js/bootstrap.min.js" ></script>
+    <link rel="stylesheet" href="libs/jquery.tagsinput/src/jquery.tagsinput.css" />
+    <script src="libs/jquery.tagsinput/src/jquery.tagsinput.js"></script>
 </head>
 
 <body>
     <div id="app">If you see this text, look for an error in your JavaScript Console.</div>
 </body>
+<script>
 
+    $(document).ready(() => {
+        $('#values').tagsInput({
+            'height':'60px',
+            'width':'300px',
+            'interactive':true,
+            'defaultText':'add a name'
+        })
+    })
+</script>
 </html>

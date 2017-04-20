@@ -138,6 +138,10 @@ plugins.push(new CopyWebpackPlugin([{
 	}, {
 		from: './app/img/loader.gif',
     to: 'img/loader.gif'
+	},
+	{
+		from: 'libs',
+    to: 'libs'
 	}
 ]));
 

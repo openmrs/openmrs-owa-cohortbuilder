@@ -1,0 +1,27 @@
+{
+  "name": "cohortbuilder",
+  "description": "modern refresh of the OpenMRS Cohort Builder tool",
+  "main": "",
+  "authors": [
+    "andela-odaniel"
+  ],
+  "license": "MPL-2.0",
+  "keywords": [
+    "OpenMRS",
+    "Open",
+    "Web",
+    "App"
+  ],
+  "homepage": "https://github.com/andela-odaniel/openmrs-owa-cohortbuilder",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "3.3.7",
+    "jquery.tagsinput": "jquery-tags-input#^1.3.6"
+  }
+}

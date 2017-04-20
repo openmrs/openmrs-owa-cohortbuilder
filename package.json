@@ -7,6 +7,7 @@
     "url": "https://github.com/openmrs/openmrs-owa-cohortbuilder"
   },
   "dependencies": {
+    "bower": "^1.8.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.9.0",
     "mocha": "^3.2.0",
@@ -56,6 +57,7 @@
     "yargs": "^4.3.1"
   },
   "scripts": {
+    "postinstall": "./node_modules/.bin/bower install",
     "clean": "rimraf dist && rimraf coverage*",
     "build": "npm run clean && webpack --progress --colors --mode=production --target=web",
     "build:dev": "npm run clean && webpack --progress --colors --mode=dev --target=web",

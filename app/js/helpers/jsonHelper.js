@@ -18,7 +18,7 @@ export class JSONHelper {
         query.rowFilters[counter].parameterValues = this.getParameterValues(searchParameters[field]);
       }
       // add living status property so we can append a NOT to the filter combination
-      if (searchParameters[field][0].livingStatus === 'alive') {
+      if (searchParameters[field].length >= 1 && searchParameters[field][0].livingStatus === 'alive') {
         query.rowFilters[counter].livingStatus = 'alive';
       }
       query.rowFilters[counter].type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
@@ -30,7 +30,7 @@ export class JSONHelper {
   }
 
   isNullValues(fieldValues) {
-    if(Array.isArray(fieldValues)) {
+    if(Array.isArray(fieldValues) && fieldValues.length >= 1) {
       return (!fieldValues[0].value) ? true : false;
     }
     return (fieldValues === 'all' || !fieldValues) ? true : false;
@@ -147,13 +147,43 @@ export class JSONHelper {
       case 'personWithAttribute': 
         return ` ${searchParameters[key][0].value} as ${searchParameters[key][1].value}`;
       case 'diedDuringPeriod':
-        return searchParameters[key][0].livingStatus === 'alive' ? ' Alive' : ' Dead'
-      default : 
+        return searchParameters[key][0].livingStatus === 'alive' ? ' Alive' : ' Dead';
+      case 'encounterSearchAdvanced': {
+        let subLabel = ` encounter(s)`;
+        subLabel += this.getEncounterLabel(searchParameters[key]);
+        return subLabel;
+      }
+      default :
         return '';
     }
   }
 
   getGenderName(gender) {
     return gender.charAt(0).toUpperCase()+gender.slice(1, gender.length-1); 
+  }
+
+  getEncounterLabel(parameters) {
+    let label = '';
+    parameters.forEach(aParameter => {
+      if(aParameter.value != '') {
+        switch(aParameter.name) {
+          case 'encounterTypes':
+            label += ` of type(s) ${aParameter.value}`; break;
+          case 'locations':
+            label += ` at ${aParameter.value[0]}`; break;
+          case 'forms':
+            label += ` from ${aParameter.value[0]} form`; break;
+          case 'atLeast':
+            label += ` at least ${aParameter.value} ${aParameter.value > 1 ? 'times' : 'time'}`; break;
+          case 'atMost':
+            label += ` at most ${aParameter.value} ${aParameter.value > 1 ? 'times' : 'time'}`; break;
+          case 'startDate':
+            label += ` from ${aParameter.value}`; break;
+          case 'endDate':
+            label += ` to ${aParameter.value}`; break;
+        }
+      }
+    });
+    return label;
   }
 }

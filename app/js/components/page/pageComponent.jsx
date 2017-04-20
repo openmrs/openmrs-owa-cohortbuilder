@@ -14,7 +14,7 @@ class PageComponent extends Component{
     }
 
     componentDidMount() {
-        const currentHistory = JSON.parse(window.sessionStorage.getItem('openmrsHistory'));
+        const currentHistory = JSON.parse(window.sessionStorage.getItem('openmrsHistory')).reverse();
         if(currentHistory) {
             this.setState({history: currentHistory});
         }
@@ -23,7 +23,7 @@ class PageComponent extends Component{
     addToHistory(description, total, parameters) {
         const newHistory = [...this.state.history, {description, total, parameters}];
         window.sessionStorage.setItem('openmrsHistory', JSON.stringify(newHistory));
-        this.setState({history: newHistory});
+        this.setState({history: newHistory.reverse()});
     }
 
     render(){

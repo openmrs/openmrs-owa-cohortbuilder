@@ -15,28 +15,22 @@
     background-color: #ccc;
     color: #000;
     padding: 10px;
-    border-color: #000;
-    border-width: 1px;
-    border-style: solid;
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
 .result-window {
     padding: 10px;
-    border-color: #000;
-    border-width: 1px;
-    border-style: solid;
     margin-top: 20px;
     margin-bottom: 20px;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
-.view-result, .save {
-    cursor: pointer;
-}
-.save {
+.save, .view {
     color: #000;
-    font-size: 20px;
+    cursor: pointer;
+    font-size: 15px;
 }
 
 .view-result {

@@ -23,7 +23,7 @@ class SearchHistoryComponent extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({searchHistory: nextProps.history});
         if(nextProps.history.length > 0) {
-             this.viewResult(nextProps.history[nextProps.history.length -1].parameters);
+             this.viewResult(nextProps.history[0].parameters);
         }
     }
 
@@ -91,10 +91,11 @@ class SearchHistoryComponent extends Component {
                                     {
                                         this.state.searchHistory.map((eachResult, index) =>
                                             <tr key={shortId.generate()}>
+                                                <td>{index + 1}</td>
                                                 <td>{eachResult.description}</td>
                                                 <td>{eachResult.total +' result(s)'}</td>
-                                                <td><span className="glyphicon glyphicon-glyphicon glyphicon-floppy-disk save" aria-hidden="true"></span></td>
-                                                <td onClick={() => this.viewResult(index)} className="view-result">View</td>
+                                                <td><span className="glyphicon glyphicon-floppy-disk save" aria-hidden="true" title="Save" /></td>
+                                                <td><span className="glyphicon glyphicon-eye-open view" title="View" aria-hidden="true" onClick={() => this.viewResult(index)} /></td>
                                             </tr>
                                         )
                                     }

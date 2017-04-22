@@ -9,21 +9,30 @@ class PageComponent extends Component{
         super(props);
         this.state = {
             history: []
-        }
+        };
         this.addToHistory = this.addToHistory.bind(this);
     }
 
     componentDidMount() {
-        const currentHistory = JSON.parse(window.sessionStorage.getItem('openmrsHistory')).reverse();
+        const currentHistory = JSON.parse(window.sessionStorage.getItem('openmrsHistory'));
         if(currentHistory) {
-            this.setState({history: currentHistory});
+            this.updateStateHistory(currentHistory);
         }
     }
 
-    addToHistory(description, total, parameters) {
-        const newHistory = [...this.state.history, {description, total, parameters}];
+    addToHistory(description, patients) {
+        const newHistory = [{ description, patients }, ...this.state.history];
         window.sessionStorage.setItem('openmrsHistory', JSON.stringify(newHistory));
-        this.setState({history: newHistory.reverse()});
+        this.updateStateHistory(newHistory);
+    }
+
+    /**
+     * Function to update history property in the component state
+     * @param {Array} history - new array containing history to be set in the component state
+     * @return {undefined} - returns undefined
+     */
+    updateStateHistory(history) {
+        this.setState({ history });
     }
 
     render(){

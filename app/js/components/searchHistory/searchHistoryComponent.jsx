@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import shortId from 'shortid'
+import shortId from 'shortid';
 import { ApiHelper } from '../../helpers/apiHelper';
 import { JSONHelper } from '../../helpers/jsonHelper';
 
@@ -20,28 +20,6 @@ class SearchHistoryComponent extends Component {
         this.navigatePage = this.navigatePage.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({searchHistory: nextProps.history});
-        if(nextProps.history.length > 0) {
-             this.viewResult(nextProps.history[0].parameters);
-        }
-    }
-
-    search(parameters) {
-        const jsonHelper = new JSONHelper;
-        const queryDetails = jsonHelper.composeJson(parameters);
-        const apiHelper = new ApiHelper(null);
-        const searchResult = new Promise(function(resolve, reject) {
-            apiHelper.post('reportingrest/adhocquery?v=full', queryDetails.query).then(response => {
-                response.json().then(data => {
-                    data.searchDescription = queryDetails.label;
-                    resolve(data);
-                });
-            });
-        });
-        return searchResult;
-    }
-
     navigatePage(event) {
         event.preventDefault();
         let pageToNavigate = 0;
@@ -55,18 +33,19 @@ class SearchHistoryComponent extends Component {
     }
 
     viewResult(index) {
-        const parameters = (typeof index === 'number')? this.state.searchHistory[index].parameters : index
-        this.search(parameters).then((results) => {
-            const allPatients = results.rows || [];
+        return (event) => {
+            event.preventDefault();
+            const allPatients = this.props.history[index].patients;
             const pagePatientInfo = this.getPagePatient(allPatients, 1);
+            const description = this.props.history[index].description;
             this.setState({
                 toDisplay: pagePatientInfo,
                 searchResults: allPatients,
-                description: results.searchDescription,
+                description,
                 totalPage: Math.ceil(allPatients.length/this.state.perPage),
                 currentPage: 1,
             });
-        });
+        };
     }
 
     getPagePatient(allPatients, currentPage) {
@@ -85,17 +64,17 @@ class SearchHistoryComponent extends Component {
                 <h3>Search History</h3>
                 <div className="result-window">
                     {
-                        (this.state.searchHistory.length > 0) ?
+                        (this.props.history.length > 0) ?
                             <table className="table table-hover">
                                 <tbody>
                                     {
-                                        this.state.searchHistory.map((eachResult, index) =>
+                                        this.props.history.map((eachResult, index) =>
                                             <tr key={shortId.generate()}>
                                                 <td>{index + 1}</td>
                                                 <td>{eachResult.description}</td>
-                                                <td>{eachResult.total +' result(s)'}</td>
-                                                <td><span className="glyphicon glyphicon-floppy-disk save" aria-hidden="true" title="Save" /></td>
-                                                <td><span className="glyphicon glyphicon-eye-open view" title="View" aria-hidden="true" onClick={() => this.viewResult(index)} /></td>
+                                                <td>{eachResult.patients.length +' result(s)'}</td>
+                                                <td><span className="glyphicon glyphicon-glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"/></td>
+                                                <td><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(index)} title="View" aria-hidden="true"/></td>
                                             </tr>
                                         )
                                     }
@@ -155,4 +134,9 @@ class SearchHistoryComponent extends Component {
         );
     }
 }
+
+SearchHistoryComponent.propTypes = {
+    history: React.PropTypes.array.isRequired
+};
+
 export default SearchHistoryComponent;

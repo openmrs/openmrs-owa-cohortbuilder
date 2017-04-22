@@ -102,7 +102,7 @@ class PatientComponent extends Component {
                 totalPage: Math.ceil(allPatients.length/this.state.perPage)
             });
             // adds the current search to search history
-            this.props.addToHistory(results.searchDescription, allPatients.length, theParameter);
+            this.props.addToHistory(results.searchDescription, allPatients);
         });
     }
     
@@ -248,5 +248,11 @@ class PatientComponent extends Component {
     );
     }
 }
+
+PatientComponent.propTypes = {
+    addToHistory: React.PropTypes.func.isRequired,
+    search: React.PropTypes.func.isRequired,
+    fetchData: React.PropTypes.func.isRequired
+};
 
 export default PatientComponent;

@@ -103,8 +103,8 @@ class EncounterComponent extends Component {
 
       const searchParams = this.getFormValues(fields);
       this.props.search(searchParams).then(results => {
-          const allEncounterTypes = results.rows;
-          this.props.addToHistory(results.searchDescription, allEncounterTypes.length, searchParams);
+          const allEncounterTypes = results.rows || [];
+          this.props.addToHistory(results.searchDescription, allEncounterTypes);
       });
     }
 
@@ -188,7 +188,9 @@ class EncounterComponent extends Component {
 }
 
 EncounterComponent.propTypes = {
-    fetchData: PropTypes.func.isRequired
+    fetchData: PropTypes.func.isRequired,
+    search: PropTypes.func.isRequired,
+    addToHistory: PropTypes.func.isRequired
 };
 
 export default EncounterComponent;

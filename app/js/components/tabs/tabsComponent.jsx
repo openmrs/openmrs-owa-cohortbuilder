@@ -41,6 +41,7 @@ class TabsComponent extends Component {
             apiHelper.post('reportingrest/adhocquery?v=full', queryDetails.query).then(response => {
                 response.json().then(data => {
                     data.searchDescription = queryDetails.label;
+                    data.query = queryDetails.query;
                     resolve(data);
                 });
             });

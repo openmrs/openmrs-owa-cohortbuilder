@@ -94,15 +94,8 @@ class PatientComponent extends Component {
         const theParameter = Object.assign({}, searchParameters);
         this.props.search(searchParameters).then(results => {
             const allPatients = results.rows || [];
-            const pagePatientInfo = this.getPatientDetailsPromises(allPatients, this.state.currentPage);
-            this.setState({
-                toDisplay: pagePatientInfo,
-                searchResults: allPatients,
-                description: results.searchDescription,
-                totalPage: Math.ceil(allPatients.length/this.state.perPage)
-            });
             // adds the current search to search history
-            this.props.addToHistory(results.searchDescription, allPatients);
+            this.props.addToHistory(results.searchDescription, allPatients, results.query);
         });
     }
     

@@ -20,8 +20,8 @@ class PageComponent extends Component{
         }
     }
 
-    addToHistory(description, patients) {
-        const newHistory = [{ description, patients }, ...this.state.history];
+    addToHistory(description, patients, parameters) {
+        const newHistory = [{ description, patients, parameters }, ...this.state.history];
         window.sessionStorage.setItem('openmrsHistory', JSON.stringify(newHistory));
         this.updateStateHistory(newHistory);
     }

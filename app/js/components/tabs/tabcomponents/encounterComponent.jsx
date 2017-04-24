@@ -104,7 +104,7 @@ class EncounterComponent extends Component {
       const searchParams = this.getFormValues(fields);
       this.props.search(searchParams).then(results => {
           const allEncounterTypes = results.rows || [];
-          this.props.addToHistory(results.searchDescription, allEncounterTypes);
+          this.props.addToHistory(results.searchDescription, allEncounterTypes, results.query);
       });
     }
 

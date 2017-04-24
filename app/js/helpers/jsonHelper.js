@@ -103,20 +103,21 @@ export class JSONHelper {
   }
   
   composeDescription(searchParameters) {
-    let definitionKeys = Object.keys(searchParameters);
+    const newParameters = Object.assign({}, searchParameters);
+    let definitionKeys = Object.keys(newParameters);
     if(definitionKeys.length === 0) {
       return 'All Patients';
     } else {
       let label = '';
       if (definitionKeys.indexOf('gender') >= 0) {
-        label = `${this.getGenderName(searchParameters['gender'])} patients`;
-        delete searchParameters.gender;
-        definitionKeys = Object.keys(searchParameters);
+        label = `${this.getGenderName(newParameters['gender'])} patients`;
+        delete newParameters.gender;
+        definitionKeys = Object.keys(newParameters);
       } else {
         label = 'Patients';
       }
       let counter = 0;
-      for(let eachKey in searchParameters) {
+      for(let eachKey in newParameters) {
         if(counter === 0) {
           if (eachKey !== 'diedDuringPeriod')
             label += ' with';
@@ -127,7 +128,7 @@ export class JSONHelper {
         } else {
           label += ' and';
         }
-        label += this.createLabel(eachKey, searchParameters);
+        label += this.createLabel(eachKey, newParameters);
         counter++;
       }
       return label;

@@ -70,7 +70,7 @@ class SearchHistoryComponent extends Component {
                                     {
                                         this.props.history.map((eachResult, index) =>
                                             <tr key={shortId.generate()}>
-                                                <td>{index + 1}</td>
+                                                <td>{this.props.history.length - index}</td>
                                                 <td>{eachResult.description}</td>
                                                 <td>{eachResult.patients.length +' result(s)'}</td>
                                                 <td><span className="glyphicon glyphicon-glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"/></td>

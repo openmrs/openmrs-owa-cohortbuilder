@@ -111,8 +111,11 @@ class PatientComponent extends Component {
         // the plus is used as a delimiter to allow users to be able to search using several values
         // for example, the value for the attribute citizenship can look like Nigeria+England.
         // this is still open to change, it was just implemented as a placeholder
-        searchParameters.personWithAttribute[1].value = searchParameters.personWithAttribute[1].value.split('+');
+        const values = searchParameters.personWithAttribute[1].value.split(',');
+        searchParameters.personWithAttribute[1].value = values;
         this.performSearch(searchParameters);
+        values.forEach((tag) => $('#values').removeTag(tag));
+
     }
 
     navigatePage(event) {

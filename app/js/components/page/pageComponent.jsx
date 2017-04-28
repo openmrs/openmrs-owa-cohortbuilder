@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import TabsComponent from '../tabs/tabsComponent';
 import SearchHistoryComponent from '../searchHistory/searchHistoryComponent';
-import ActionsComponent from '../actionsComponent';
+import ActionsComponent from '../cohorts/actionsComponent';
 import './pageComponent.css';
 
 class PageComponent extends Component{
@@ -40,7 +40,7 @@ class PageComponent extends Component{
             <div id="body-wrapper" className="page-wrapper">
                 <TabsComponent addToHistory={this.addToHistory} />
                 <SearchHistoryComponent history={this.state.history} />
-                <ActionsComponent />
+                <ActionsComponent history={this.state.history} />
             </div>
         );
     }

@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import PageComponent from '../app/js/components/page/pageComponent';
 import TabsComponent from '../app/js/components/tabs/tabsComponent';
-import ActionsComponent from '../app/js/components/actionsComponent';
+import ActionsComponent from '../app/js/components/cohorts/actionsComponent';
 import SearchHistoryComponent from '../app/js/components/searchHistory/searchHistoryComponent';
 
 describe('<PageComponent />', () => {

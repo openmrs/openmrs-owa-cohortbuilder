@@ -1,11 +1,11 @@
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
-import ActionsComponent from '../app/js/components/actionsComponent';
+import ActionsComponent from '../app/js/components/cohorts/actionsComponent';
 
 describe('<ActionsComponent>', () => {
   it('Should render its children', () => {
-    const renderedComponent = shallow(<ActionsComponent />);
+    const renderedComponent = shallow(<ActionsComponent  history={[]}/>);
     expect(renderedComponent.find("form")).to.have.length(1);
     expect(renderedComponent.find("form")).to.exist;
     expect(renderedComponent.find("Actions")).to.exist;

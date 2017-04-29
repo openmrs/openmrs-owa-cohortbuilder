@@ -91,7 +91,11 @@ export class JSONHelper {
       {
         name: "age",
         key: "ageOnDate.fullYears"
-      }
+      },
+       {
+         name: "patientId",
+         key: "patientId"
+      }		        
     ];
 
     const colValues = columns.map((aColumn) => {

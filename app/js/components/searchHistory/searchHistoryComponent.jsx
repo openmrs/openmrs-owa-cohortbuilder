@@ -58,6 +58,13 @@ class SearchHistoryComponent extends Component {
         return pagePatientInfo;
     }
 
+    delete(index) {
+        return (event) => {
+            event.preventDefault();
+            this.props.deleteHistory(index);
+        };
+    }
+
     render(){
         return (
             <div className="col-sm-12 section">
@@ -73,7 +80,8 @@ class SearchHistoryComponent extends Component {
                                                 <td>{this.props.history.length - index}</td>
                                                 <td>{eachResult.description}</td>
                                                 <td>{eachResult.patients.length +' result(s)'}</td>
-                                                <td><span className="glyphicon glyphicon-glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"/></td>
+                                                <td><span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"/></td>
+                                                <td><span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(index)} aria-hidden="true"/></td>
                                                 <td><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(index)} title="View" aria-hidden="true"/></td>
                                             </tr>
                                         )
@@ -136,7 +144,8 @@ class SearchHistoryComponent extends Component {
 }
 
 SearchHistoryComponent.propTypes = {
-    history: React.PropTypes.array.isRequired
+    history: React.PropTypes.array.isRequired,
+    deleteHistory: React.PropTypes.func.isRequired
 };
 
 export default SearchHistoryComponent;

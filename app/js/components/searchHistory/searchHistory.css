@@ -27,7 +27,7 @@
     overflow-y: auto;
 }
 
-.save, .view {
+.save, .view, .remove {
     color: #000;
     cursor: pointer;
     font-size: 15px;

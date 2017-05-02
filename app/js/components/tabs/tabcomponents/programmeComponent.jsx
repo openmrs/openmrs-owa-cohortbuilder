@@ -99,7 +99,7 @@ class ProgrammeComponent extends Component {
             label += this.composerHelper('enrolledStartDate', 'enrolledEndDate', 'enrolled in');
         }
 
-        if (this.state.enrolledEndDate || this.state.enrolledStartDate) {
+        if (this.state.completedEndDate || this.state.completedStartDate) {
             label += this.composerHelper('completedStartDate', 'completedEndDate', 'completed');
         }
 

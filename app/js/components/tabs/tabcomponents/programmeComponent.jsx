@@ -5,7 +5,6 @@ class ProgrammeComponent extends Component {
         super(props);
         this.state = {
             programs: [],
-<<<<<<< HEAD
             workflows: [],
             states: [],
             locations: [],
@@ -13,18 +12,12 @@ class ProgrammeComponent extends Component {
         };
     }
     // Make a call to the program endpoint to get backend field data when component mounts
-=======
-            workflows: []
-        };
-    }
->>>>>>> fetch program field data from webservices module
     componentDidMount(props) {
         this.props.fetchData('/program').then(data => {
             this.setState({
                 programs: data.results
             });
         });
-<<<<<<< HEAD
         this.props.fetchData('/location').then(location => {
             this.setState({
                 locations: location.results
@@ -48,22 +41,15 @@ class ProgrammeComponent extends Component {
          * try to populate states on the local
         */
         
-=======
->>>>>>> fetch program field data from webservices module
     }
     render() {
         let programs = this.state.programs.map((program) => {
             return (
-<<<<<<< HEAD
                 <option key={program.uuid} value={program.uuid}>
-=======
-                <option key={program.uuid} value={program.name}>
->>>>>>> fetch program field data from webservices module
                     {program.name}
                 </option>
             );
         });
-<<<<<<< HEAD
         let workflows = this.state.workflows.map((workflow) => {
             return (
                 <option key={workflow.uuid} value={workflow.uuid}>
@@ -84,8 +70,6 @@ class ProgrammeComponent extends Component {
 
         // Methods will be loadd from this.state.methods populated from the backend.
         let methods = "<option> </option>";
-=======
->>>>>>> fetch program field data from webservices module
     return (
         <div className="programme-component">
             <h3>Search By Program Enrollement and Status</h3>

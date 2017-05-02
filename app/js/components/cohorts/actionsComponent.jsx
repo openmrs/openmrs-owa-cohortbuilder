@@ -27,7 +27,7 @@ class ActionsComponent extends Component {
         apiHelper.get('/cohort?v=full')
             .then(res => {
                 this.setState(Object.assign({}, this.state, {
-                    allCohort: res.results.reverse()
+                    allCohort: res.results
                 }));
             });
     }
@@ -136,7 +136,7 @@ class ActionsComponent extends Component {
                         <div className="form-group">
                             <label className="control-label col-sm-2">Select Cohort to save</label>
                             <div className="col-sm-8">
-                                <select className="form-control" name="cohort" onChange={this.handleChnage}>
+                                <select className="form-control" name="cohort" value={this.state.cohort} onChange={this.handleChnage}>
                                     <option>select a cohort search</option>
                                     {this.props.history.map(this.displayHistory)}
                                 </select>

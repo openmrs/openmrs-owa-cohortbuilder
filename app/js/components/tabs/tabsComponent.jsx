@@ -18,7 +18,6 @@ class TabsComponent extends Component {
                 {active: false, name: 'Encounter', divId: 'encounter', component: Components.EncounterComponent},
                 {active: false, name: 'Programmme Enrollment', divId: 'programme', component: Components.ProgrammeComponent},
                 {active: false, name: 'Drug Order', divId: 'drug', component: Components.DrugOrderComponent },
-                {active: false, name: 'SQL', divId: 'sql', component: Components.SqlComponent },
                 {active: false, name: 'Composition', divId: 'composition', component:  Components.CompositionComponent }
             ]
         };

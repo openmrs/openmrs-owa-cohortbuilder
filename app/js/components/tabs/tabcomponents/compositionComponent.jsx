@@ -18,6 +18,7 @@ class CompositionComponent extends Component {
     performComposition(event) {
         event.preventDefault();
         const search = document.getElementById('composition-search-query').value;
+        const description = document.getElementById('composition-description').value;
         const jsonHelper = new JSONHelper;
         let compositionQuery = {};
         compositionQuery.type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
@@ -39,7 +40,7 @@ class CompositionComponent extends Component {
                 compositionQuery.customRowFilterCombination += ` ${eachToken} `;
             }
         });
-        this.performSearch({label: search, query: compositionQuery});
+        this.performSearch({label: description, query: compositionQuery});
     }
 
     performSearch(compositionQuery) {
@@ -77,6 +78,11 @@ class CompositionComponent extends Component {
                     <div className="form-group">
                         <div className="col-sm-12">
                             <input id="composition-search-query" type="text" className="form-control" placeholder="Enter search query. . ." />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="col-sm-12">
+                            <input id="composition-description" type="text" className="form-control" placeholder="Enter a description" />
                         </div>
                     </div>
                     <div className="form-group">

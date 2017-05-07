@@ -20,9 +20,14 @@ class ActionsComponent extends Component {
         this.getPatientsData = this.getPatientsData.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChnage = this.handleChnage.bind(this);
+        this.deleteCohort = this.deleteCohort.bind(this);
     }
 
     componentWillMount() {
+        this.getAllCohorts();
+    }
+
+    getAllCohorts() {
         const apiHelper = new ApiHelper();
         apiHelper.get('/cohort?v=full')
             .then(res => {
@@ -125,11 +130,21 @@ class ActionsComponent extends Component {
 		};
 	}
 
+    deleteCohort(cohortId) {
+        return (e) => {
+            const apiHelper = new ApiHelper();
+            apiHelper.delete(`/cohort/${cohortId}`)
+                .then(() => {
+                    this.getAllCohorts();
+                });
+        };
+    }
+
     render() {
         return(
             <div className="section">
-                <div className="col-md-7">
-                    <h3>Save Cohort</h3>
+                <div className="col-md-10 col-md-offset-1">
+                    <h3 className="text-center">Save Cohort</h3>
                     <form className="form-horizontal" id="cohort" onSubmit={this.handleSubmit}>
                         { this.state.error ?
                         <div className="alert alert-danger text-center">{this.state.error}</div> : ""}
@@ -163,17 +178,18 @@ class ActionsComponent extends Component {
                         </div>
                     </form>
                 </div>
-                <div className="col-md-5 ">
-                    <h3>All Saved Cohort</h3>
+                <div className="col-md-10 col-md-offset-1 ">
+                    <h3 className="text-center">All Saved Cohorts</h3>
                     <div className="cohort-view">
                         { (this.state.allCohort.length > 0) ?
                         <table className="table table-hover">
                             <thead>
                                 <tr>
-                                    <td>S/N</td>
-                                    <td>Display</td>
-                                    <td>Description</td>
-                                    <td>View</td>
+                                    <th>S/N</th>
+                                    <th>Display</th>
+                                    <th>Description</th>
+                                    <th>Delete</th>
+                                    <th>View</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -182,6 +198,8 @@ class ActionsComponent extends Component {
                                     <td>{index + 1}</td>
                                     <td>{ cohort.display }</td>
                                     <td>{cohort.description}</td>
+                                    <td><span className="glyphicon glyphicon-remove remove" onClick={this.deleteCohort(cohort.uuid)} title="Delete" aria-hidden="true" />
+                                    </td>
                                     <td><span className="glyphicon glyphicon-eye-open view" onClick={this.getPatientsData(cohort.uuid, cohort.description)} title="View" aria-hidden="true" />
                                     </td>
                                 </tr>

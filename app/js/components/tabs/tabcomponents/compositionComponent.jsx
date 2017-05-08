@@ -71,7 +71,7 @@ class CompositionComponent extends Component {
                     <h3>Boolean Search</h3>
                 </div>
                 <p>Enter a search query and click search button below to execute:</p>
-                <i>e.g: "(1 and 2) or not"<br />
+                <i>e.g: "(1 and 2) or not 3"<br />
                     Query parameters supported are: AND, OR, NOT, UNION, INTERSECTION, !, +
                 </i> <br />
                 <form className="form-horizontal col-md" onSubmit={this.performComposition}>

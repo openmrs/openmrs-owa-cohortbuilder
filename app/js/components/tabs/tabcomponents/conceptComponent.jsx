@@ -207,7 +207,6 @@ class ConceptComponent extends Component {
             // display search results based on the value of selectedConcept
             <div>
                 <div>
-                    <h3>Search By Demographic</h3>
                     <form className="form-horizontal">
                         <div className="form-group">
                             <label htmlFor="gender" className="col-sm-4 control-label">

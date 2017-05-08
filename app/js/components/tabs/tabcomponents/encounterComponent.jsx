@@ -111,7 +111,7 @@ class EncounterComponent extends Component {
     render(){
         return (
             <div className="encounter-component">
-              <h3>Search by encounter</h3>
+              <h3>Search By Encounter</h3>
               <div>
                 <h4 className="text-center">Patients having encounters</h4>
                 <form className="form-horizontal text-center" id="encounter-search">

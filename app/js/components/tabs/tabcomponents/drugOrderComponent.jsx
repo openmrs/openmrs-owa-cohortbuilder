@@ -73,7 +73,8 @@ class DrugOrderComponent extends Component {
         } else {
             return (
                 <div>
-                    <h4>Patients taking specific drugs</h4>
+                    <h3>Search By Drug Order</h3>
+                    <h4 className="text-center">Patients taking specific drugs</h4>
                     <form className="form-horizontal">
                         <div className="form-group">
                             <label htmlFor="drug" className="col-sm-2 control-label">Drug(s)</label>
@@ -91,7 +92,7 @@ class DrugOrderComponent extends Component {
                                     <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"/> Current Drug Regimen
                                 </label>
                                 <label className="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"/> specific Drug Regimen(s)
+                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"/> Specific Drug Regimen(s)
                                 </label>
                             </div>
                         </div>
@@ -133,7 +134,7 @@ class DrugOrderComponent extends Component {
                         </div>
                     </form>
                     <br/>
-                    <h4>Patients who stopped or changed a drug</h4>
+                    <h4 className="text-center">Patients who stopped or changed a drug</h4>
                     <form className="form-horizontal">
                         <div className="form-group">
                             <label className="col-sm-2 control-label">When?</label>
@@ -188,7 +189,7 @@ class DrugOrderComponent extends Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <div className="col-sm-offset-5 col-sm-2">
+                                <div className="col-sm-offset-2 col-sm-6">
                                 <button type="submit" className="btn btn-success">Search</button>
                             </div>
                         </div>

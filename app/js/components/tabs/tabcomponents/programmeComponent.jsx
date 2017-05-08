@@ -361,7 +361,7 @@ class ProgrammeComponent extends Component {
             <h3>Search By Location</h3>
             <form className="form-horizontal">
                 <div className="form-group">
-                    <label htmlFor="gender" className="col-sm-2 control-label">Patients belonging to?:</label>
+                    <label htmlFor="gender" className="col-sm-2 control-label">Patients belonging to:</label>
                     <div className="col-sm-6">
                         <select className="form-control" id="location">
                             <option value="">Select Location </option>

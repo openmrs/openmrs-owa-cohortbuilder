@@ -3,7 +3,6 @@ import PatientComponent from './patientComponent';
 import EncounterComponent from './encounterComponent';
 import ProgrammeComponent from './programmeComponent';
 import DrugOrderComponent from './drugOrderComponent';
-import SqlComponent from './sqlComponent';
 import CompositionComponent from './compositionComponent';
 
 export default {
@@ -12,6 +11,5 @@ export default {
     EncounterComponent,
     ProgrammeComponent,
     DrugOrderComponent,
-    SqlComponent,
     CompositionComponent
 };

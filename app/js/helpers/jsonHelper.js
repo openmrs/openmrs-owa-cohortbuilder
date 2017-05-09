@@ -153,11 +153,6 @@ export class JSONHelper {
         return ` ${searchParameters[key][0].value} as ${searchParameters[key][1].value}`;
       case 'diedDuringPeriod':
         return searchParameters[key][0].livingStatus === 'alive' ? ' Alive' : ' Dead';
-      case 'encounterSearchAdvanced': {
-        let subLabel = ` encounter(s)`;
-        subLabel += this.getEncounterLabel(searchParameters[key]);
-        return subLabel;
-      }
       default :
         return '';
     }
@@ -165,30 +160,5 @@ export class JSONHelper {
 
   getGenderName(gender) {
     return gender.charAt(0).toUpperCase()+gender.slice(1, gender.length-1); 
-  }
-
-  getEncounterLabel(parameters) {
-    let label = '';
-    parameters.forEach(aParameter => {
-      if(aParameter.value != '') {
-        switch(aParameter.name) {
-          case 'encounterTypes':
-            label += ` of type(s) ${aParameter.value}`; break;
-          case 'locations':
-            label += ` at ${aParameter.value[0]}`; break;
-          case 'forms':
-            label += ` from ${aParameter.value[0]} form`; break;
-          case 'atLeast':
-            label += ` at least ${aParameter.value} ${aParameter.value > 1 ? 'times' : 'time'}`; break;
-          case 'atMost':
-            label += ` at most ${aParameter.value} ${aParameter.value > 1 ? 'times' : 'time'}`; break;
-          case 'startDate':
-            label += ` from ${aParameter.value}`; break;
-          case 'endDate':
-            label += ` to ${aParameter.value}`; break;
-        }
-      }
-    });
-    return label;
   }
 }

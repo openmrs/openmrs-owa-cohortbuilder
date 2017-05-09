@@ -53,7 +53,7 @@ class EncounterComponent extends Component {
 
     displaySelectOption(data){
         return (
-            <option value={data.value} key={shortId.generate()}>{data.value}</option>
+            <option value={data.id} key={shortId.generate()}>{data.value}</option>
         );
     }
 
@@ -77,7 +77,7 @@ class EncounterComponent extends Component {
     removeEmptyValues(allParameters) {
         const newParamArray = [];
         allParameters.encounterSearchAdvanced.forEach(eachParam => {
-            if(!(eachParam.value === '' || (Array.isArray(eachParam.value) && eachParam.value[0] === ''))) {
+            if(!(!eachParam.value || (Array.isArray(eachParam.value) && eachParam.value[0] === ''))) {
                 newParamArray.push(eachParam);
             }
         });
@@ -91,21 +91,59 @@ class EncounterComponent extends Component {
       event.preventDefault();
       const fields = {
           encounterSearchAdvanced : [
-              { name: 'encounterTypes'},
-              { name: 'locations', isArrayValue: true },
-              { name: 'forms', isArrayValue: true },
-              { name: 'atLeast' },
-              { name: 'atMost' },
-              { name: 'startDate' },
-              { name: 'endDate' }
+              { name: 'encounterTypeList'},
+              { name: 'locationList', isArrayValue: true },
+              { name: 'formList', isArrayValue: true },
+              { name: 'atLeastCount' },
+              { name: 'atMostCount' },
+              { name: 'onOrAfter' },
+              { name: 'onOrBefore' }
           ]
       };
 
       const searchParams = this.getFormValues(fields);
+      const label = this.composeLabel(searchParams.encounterSearchAdvanced);
       this.props.search(searchParams).then(results => {
           const allEncounterTypes = results.rows || [];
-          this.props.addToHistory(results.searchDescription, allEncounterTypes, results.query);
+          this.props.addToHistory(label, allEncounterTypes, results.query);
       });
+    }
+
+    /**
+     * composeLabel will compose the right description for every search that is performed
+     * @param {object} searchParameter 
+     * @return {string} the label
+     */
+    composeLabel(searchParameters) {
+        const parameters = [...searchParameters];
+        let label = 'Patients with encounter(s)';
+        parameters.forEach(aParameter => {
+            let theFieldValue = $('#encounter-search').find('#'+aParameter.name).val();
+            if($('#encounter-search').find('#'+aParameter.name).prop("tagName") === 'SELECT') {
+                aParameter.displayValue = $('#encounter-search').find('option[value='+theFieldValue+']').text();
+            } else {
+                aParameter.displayValue = theFieldValue;
+            }
+            if(aParameter.displayValue != '') {
+                switch(aParameter.name) {
+                case 'encounterTypeList':
+                    label += ` of type(s) ${aParameter.displayValue}`; break;
+                case 'locationList':
+                    label += ` at ${aParameter.displayValue}`; break;
+                case 'formList':
+                    label += ` from ${aParameter.displayValue}`; break;
+                case 'atLeastCount':
+                    label += ` at least ${aParameter.displayValue} ${aParameter.displayValue > 1 ? 'times' : 'time'}`; break;
+                case 'atMostCount':
+                    label += ` at most ${aParameter.displayValue} ${aParameter.displayValue > 1 ? 'times' : 'time'}`; break;
+                case 'onOrAfter':
+                    label += ` from ${aParameter.displayValue}`; break;
+                case 'onOrBefore':
+                    label += ` to ${aParameter.displayValue}`; break;
+                }
+            }
+        });
+        return label;
     }
 
     render(){
@@ -120,7 +158,8 @@ class EncounterComponent extends Component {
                       Of Type
                     </label>
                     <div className="col-sm-6">
-                      <select multiple="multiple" name="encounterTypes" id="encounterTypes" className="form-control">
+                      <select multiple="multiple" name="encounterTypes" id="encounterTypeList" className="form-control">
+                        <option value="">--Any Encounter--</option>
                         {this.state.encouterTypes.map(encounterType => this.displaySelectOption(encounterType))}
                       </select>
                       { }
@@ -131,7 +170,7 @@ class EncounterComponent extends Component {
                   <div className="form-group">
                     <label htmlFor="locations" className="col-sm-2 control-label">At Location</label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="locations">
+                        <select className="form-control" id="locationList">
                             <option value="">--Select Location--</option>
                             {this.state.locations.map(location => this.displaySelectOption(location))}
                         </select>
@@ -142,7 +181,7 @@ class EncounterComponent extends Component {
                   <div className="form-group">
                     <label htmlFor="forms" className="col-sm-2 control-label">From Form</label>
                     <div className="col-sm-3">
-                        <select className="form-control" id="forms">
+                        <select className="form-control" id="formList">
                             <option value="">--Select Form--</option>
                             {this.state.forms.map(form => this.displaySelectOption(form))}
                         </select>
@@ -153,11 +192,11 @@ class EncounterComponent extends Component {
                   <div className="form-group">
                     <label htmlFor="atLeast" className="col-sm-2 control-label">Atleast this many: </label>
                     <div className="col-sm-3">
-                        <input type="number" className="form-control" id="atLeast"/>
+                        <input type="number" className="form-control" id="atLeastCount"/>
                     </div>
                     <label htmlFor="atMost" className="col-sm-2 control-label">Upto this many: </label>
                     <div className="col-sm-3">
-                        <input type="number" className="form-control" id="atMost"/>
+                        <input type="number" className="form-control" id="atMostCount"/>
                     </div>
                     <span className="inline-label">(Optional)</span>
                   </div>
@@ -165,11 +204,11 @@ class EncounterComponent extends Component {
                   <div className="form-group">
                     <label htmlFor="startDate" className="col-sm-2 control-label">From: </label>
                     <div className="col-sm-3">
-                       <input type="date" className="form-control" id="startDate"/>
+                       <input type="date" className="form-control" id="onOrAfter"/>
                     </div>
                     <label htmlFor="endDate" className="col-sm-2 control-label">To: </label>
                     <div className="col-sm-3">
-                        <input type="date" className="form-control" id="endDate"/>
+                        <input type="date" className="form-control" id="onOrBefore"/>
                     </div>
                     <span className="inline-label">day(s)    (Optional)</span>
                   </div>

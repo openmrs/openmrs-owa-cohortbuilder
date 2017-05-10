@@ -95,7 +95,14 @@ class PatientComponent extends Component {
         this.props.search(searchParameters).then(results => {
             const allPatients = results.rows || [];
             // adds the current search to search history
-            this.props.addToHistory(results.searchDescription, allPatients, results.query);
+            let searchHistory = results.searchDescription;
+            if(results.query.rowFilters[0].key === "reporting.library.cohortDefinition.builtIn.personWithAttribute"){
+                searchHistory =  searchHistory.replace(/([^\W])\,([^\W])/gi,'$1, $2');
+                let lastItem = searchHistory.match(/\,\s(\w*)$/gi);
+                let newItem = (lastItem) ? lastItem[0].replace(/,/, ' or') : null;
+                searchHistory = searchHistory.replace(lastItem, newItem);
+            }
+            this.props.addToHistory(searchHistory, allPatients, results.query);
         });
     }
     

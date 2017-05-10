@@ -8,8 +8,6 @@ class ProgrammeComponent extends Component {
             programs: [],
             workflows: [],
             states: [],
-            locations: [],
-            methods: [],
             minAge: '',
             maxAge: '',
             enrolledStartDate: '',
@@ -32,11 +30,6 @@ class ProgrammeComponent extends Component {
         this.props.fetchData('/program').then(data => {
             this.setState({
                 programs: data.results
-            });
-        });
-        this.props.fetchData('/location').then(location => {
-            this.setState({
-                locations: location.results
             });
         });
     }
@@ -247,16 +240,6 @@ class ProgrammeComponent extends Component {
         // States will be loaded from this.state.states when populated from backend
         let states = "<option> </option>";
 
-        let locations = this.state.locations.map((location) => {
-            return (
-                <option key={location.uuid} value={location.uuid}>
-                    {location.display}
-                </option>        
-            );
-        });
-
-        // Methods will be loadd from this.state.methods populated from the backend.
-        let methods = "<option> </option>";
     return (
         <div className="programme-component">
             <h3>Search By Program Enrollement and Status</h3>
@@ -351,35 +334,6 @@ class ProgrammeComponent extends Component {
                     </div>
                 </div>
                 
-                <div className="form-group">
-                    <div className="col-sm-offset-2 col-sm-6">
-                        <button type="submit" className="btn btn-success">Search</button>
-                    </div>
-                </div>
-            </form>
-            
-            <h3>Search By Location</h3>
-            <form className="form-horizontal">
-                <div className="form-group">
-                    <label htmlFor="gender" className="col-sm-2 control-label">Patients belonging to:</label>
-                    <div className="col-sm-6">
-                        <select className="form-control" id="location">
-                            <option value="">Select Location </option>
-                            { locations }
-                        </select>
-                    </div>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="gender" className="col-sm-2 control-label">According to Method:</label>
-                    <div className="col-sm-6">
-                        <select className="form-control" id="method">
-                            <option value="">Select Method </option>
-                            { methods }
-                        </select>
-                    </div>
-                </div>
-
                 <div className="form-group">
                     <div className="col-sm-offset-2 col-sm-6">
                         <button type="submit" className="btn btn-success">Search</button>

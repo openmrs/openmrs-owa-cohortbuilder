@@ -36,7 +36,11 @@ export class ApiHelper {
     const request = this.requestLibrary;
     const response = request(`${BASE_URL}${this.requestUrl}`, this.requestOptions)
       .then((data) => {
-        return this.mocked ? data : data.json();
+          if ([401, 500].includes(data.status)) {
+              const loginUrl = `${window.location.origin}/${contextPath}/login.htm`;
+              return  window.location.href = loginUrl;
+          }
+          return this.mocked ? data : data.json();
       })
       .catch((error) => {
         return error;

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import shortId from 'shortid';
+import { JSONHelper } from '../../../helpers/jsonHelper';
 
 class PatientComponent extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class PatientComponent extends Component {
             livingStatus: '',
             description: ''
         };
+        this.jsonHelper = new JSONHelper();
         this.searchDemographics = this.searchDemographics.bind(this);
         this.navigatePage = this.navigatePage.bind(this);
         this.searchByAttributes = this.searchByAttributes.bind(this);
@@ -92,7 +94,24 @@ class PatientComponent extends Component {
 
     performSearch(searchParameters) {
         const theParameter = Object.assign({}, searchParameters);
-        this.props.search(searchParameters).then(results => {
+        const queryDetails = this.jsonHelper.composeJson(theParameter);
+        // we want to append necessary rowFilters here if user selected all patients
+        if (searchParameters.gender === 'all') {
+            const tempRowFilter = ['males', 'females', 'unknownGender'].map(item => {
+               return  {
+                    type: "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition",
+                    key: `reporting.library.cohortDefinition.builtIn.${item}`
+                };
+            });
+            queryDetails.query.rowFilters = queryDetails.query.rowFilters.length > 0 ?
+                [ ...queryDetails.query.rowFilters, ...tempRowFilter ] : tempRowFilter;
+            const filters = queryDetails.query.rowFilters;
+            const filterCombination = queryDetails.query.customRowFilterCombination;
+            queryDetails.query.customRowFilterCombination = filterCombination ? 
+                `(${filters.length - 2} OR ${filters.length - 1} OR ${filters.length}) AND ${filterCombination}`
+                : '(1 OR 2 OR 3)';
+        }
+        this.props.search(queryDetails).then(results => {
             const allPatients = results.rows || [];
             // adds the current search to search history
             let searchHistory = results.searchDescription;

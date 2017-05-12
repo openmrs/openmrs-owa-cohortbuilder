@@ -5,7 +5,12 @@ import { JSONHelper } from '../../../helpers/jsonHelper';
 class CompositionComponent extends Component {
     constructor(props) {
         super();
+        this.state = {
+            hasCompositionError: false,
+            hasDescriptionError: false
+        };
         this.performComposition = this.performComposition.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     componentDidMount() {/* important for test*/ }
@@ -17,30 +22,42 @@ class CompositionComponent extends Component {
      */
     performComposition(event) {
         event.preventDefault();
-        const search = document.getElementById('composition-search-query').value;
+        const search = document.getElementById('composition-search-query')
+            .value
+            .replace(/(\(|\))+/g, char => char === '(' ? '( ': ' )');
         const description = document.getElementById('composition-description').value;
-        const jsonHelper = new JSONHelper;
-        let compositionQuery = {};
-        compositionQuery.type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
-        compositionQuery.columns = jsonHelper.addColumnsToDisplay();
-        compositionQuery.customRowFilterCombination = '';
-        compositionQuery.rowFilters = [];
-        const searchTokens = search.split(/\s+/);
-        const allHistory = JSON.parse(window.sessionStorage.getItem('openmrsHistory'));
-        searchTokens.forEach(eachToken => {
-            if(eachToken.match(/\d/)) {
-                // if it is an operand, then fetch the parameters of the operand from sessionStorage
-                const operandQuery = allHistory[allHistory.length - eachToken];
-                const jsonRequestObject = operandQuery.parameters;
-                jsonRequestObject.customRowFilterCombination = this.formatFilterCombination(jsonRequestObject.customRowFilterCombination,
-                    compositionQuery.rowFilters.length);
-                compositionQuery.customRowFilterCombination += `(${jsonRequestObject.customRowFilterCombination})`;
-                compositionQuery.rowFilters = compositionQuery.rowFilters.concat(jsonRequestObject.rowFilters);
-            } else {
-                compositionQuery.customRowFilterCombination += ` ${eachToken} `;
-            }
-        });
-        this.performSearch({label: description, query: compositionQuery});
+        if (!description.trim()) {
+            return this.setState({ hasDescriptionError: true });
+        }
+        if (!this.searchIsValid(search)) {
+            return this.setState({ hasCompositionError: true });
+        }
+        try {
+            const jsonHelper = new JSONHelper;
+            let compositionQuery = {};
+            compositionQuery.type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
+            compositionQuery.columns = jsonHelper.addColumnsToDisplay();
+            compositionQuery.customRowFilterCombination = '';
+            compositionQuery.rowFilters = [];
+            const searchTokens = search.split(/\s+/);
+            const allHistory = JSON.parse(window.sessionStorage.getItem('openmrsHistory'));
+            searchTokens.forEach(eachToken => {
+                if(eachToken.match(/\d/)) {
+                    // if it is an operand, then fetch the parameters of the operand from sessionStorage
+                    const operandQuery = allHistory[allHistory.length - eachToken];
+                    const jsonRequestObject = operandQuery.parameters;
+                    jsonRequestObject.customRowFilterCombination = this.formatFilterCombination(jsonRequestObject.customRowFilterCombination,
+                        compositionQuery.rowFilters.length);
+                    compositionQuery.customRowFilterCombination += `(${jsonRequestObject.customRowFilterCombination})`;
+                    compositionQuery.rowFilters = compositionQuery.rowFilters.concat(jsonRequestObject.rowFilters);
+                } else {
+                    compositionQuery.customRowFilterCombination += ` ${eachToken} `;
+                }
+            });
+            this.performSearch({label: description, query: compositionQuery});
+        } catch (error) {
+            this.setState({ hasCompositionError: error ? true : false });
+        }
     }
 
     performSearch(compositionQuery) {
@@ -50,6 +67,17 @@ class CompositionComponent extends Component {
                 this.props.addToHistory(compositionQuery.label, data.rows, compositionQuery.query);
             });
         });
+    }
+
+    /**
+     * Method to check for validity of the search input field.
+     * @param {search} - The search String to be validated
+     * @return {Boolean} - True if the search string is valid, otherwise False
+     */
+    searchIsValid(search) {
+        return search
+            .match(/and|or|not|\d+|\)|\(|union|intersection|\!|\+/gi).length ===
+            search.split(/\s+/g).length;
     }
 
     /**
@@ -64,6 +92,24 @@ class CompositionComponent extends Component {
         return filterText.replace(/\d/, theDigit => parseInt(theDigit) + numberOfSearches);
     }
 
+    /**
+     * Method to handle change events from the input fields
+     * @param{event} - Event object triggered when input fields change
+     * @return{undefined} - Returns undefined
+     */
+    handleInputChange(event) {
+        event.preventDefault();
+        // reset approriate error when a field value is changed
+        switch(event.target.id) {
+            case 'composition-search-query': {
+                return this.setState({ hasCompositionError: false });
+            }
+            case 'composition-description': {
+                return this.setState({ hasDescriptionError: false });
+            }
+        }
+    }
+
     render() {
         return (
             <div id="compositions-wrapper">
@@ -75,14 +121,14 @@ class CompositionComponent extends Component {
                     Query parameters supported are: AND, OR, NOT, UNION, INTERSECTION, !, +
                 </i> <br />
                 <form className="form-horizontal col-md" onSubmit={this.performComposition}>
-                    <div className="form-group">
+                    <div className={`form-group ${(this.state.hasCompositionError ? 'has-error' : '')}`}>
                         <div className="col-sm-12">
-                            <input id="composition-search-query" type="text" className="form-control" placeholder="Enter search query. . ." />
+                            <input id="composition-search-query" type="text" className="form-control" placeholder="Enter search query. . ." onChange={this.handleInputChange}/>
                         </div>
                     </div>
-                    <div className="form-group">
+                    <div className={`form-group ${(this.state.hasDescriptionError ? 'has-error' : '')}`}>
                         <div className="col-sm-12">
-                            <input id="composition-description" type="text" className="form-control" placeholder="Enter a description" />
+                            <input id="composition-description" type="text" className="form-control" placeholder="Enter a description" onChange={this.handleInputChange}/>
                         </div>
                     </div>
                     <div className="form-group">

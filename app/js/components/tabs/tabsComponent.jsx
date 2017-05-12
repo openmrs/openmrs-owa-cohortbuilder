@@ -32,9 +32,7 @@ class TabsComponent extends Component {
     }
 
 
-    search(parameters) {
-        const jsonHelper = new JSONHelper;
-        const queryDetails = jsonHelper.composeJson(parameters);
+    search(queryDetails) {
         const apiHelper = new ApiHelper(null);
         const searchResult = new Promise(function(resolve, reject) {
             apiHelper.post('reportingrest/adhocquery?v=full', queryDetails.query).then(response => {

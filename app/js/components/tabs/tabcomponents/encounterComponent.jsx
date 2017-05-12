@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import shortId from 'shortid';
+import { JSONHelper } from '../../../helpers/jsonHelper';
 
 const FORMS_API_ENDPOINT = '/form';
 const LOCATIONS_API_ENDPOINT = '/location';
@@ -21,6 +22,7 @@ class EncounterComponent extends Component {
             location: '',
             method: 'ANY'
         };
+        this.jsonHelper = new JSONHelper();
         this.searchByEncounter = this.searchByEncounter.bind(this);
         this.getFormValues = this.getFormValues.bind(this);
         this.handleSelectOption = this.handleSelectOption.bind(this);
@@ -108,7 +110,8 @@ class EncounterComponent extends Component {
 
       const searchParams = this.getFormValues(fields);
       const label = this.composeLabel(searchParams.encounterSearchAdvanced);
-      this.props.search(searchParams).then(results => {
+      const queryDetails = this.jsonHelper.composeJson(searchParams);
+      this.props.search(queryDetails).then(results => {
           const allEncounterTypes = results.rows || [];
           this.props.addToHistory(label, allEncounterTypes, results.query);
       });
@@ -187,13 +190,14 @@ class EncounterComponent extends Component {
         if (!selectedLocation) {
             return this.setState({ locationError: true });
         }
-        const searchParameters = {
+        const searchParameter = {
             encounterSearchAdvanced : [
               { name: 'locationList', value: [selectedLocation] },
               { name: 'timeQualifier', value: this.state.method },
             ]
         };
-        this.props.search(searchParameters).then(results => {
+        const queryDetails = this.jsonHelper.composeJson(searchParameter);
+        this.props.search(queryDetails).then(results => {
             const allEncounterTypes = results.rows || [];
             this.props.addToHistory(this.getLocationSearchDescription(), allEncounterTypes, results.query);
             // reset fields to default

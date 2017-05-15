@@ -8,12 +8,10 @@ class ProgrammeComponent extends Component {
             programs: [],
             workflows: [],
             states: [],
-            minAge: '',
-            maxAge: '',
-            enrolledStartDate: '',
-            enrolledEndDate: '',
-            completedStartDate: '',
-            completedEndDate: '',
+            enrolledOnOrAfter: '',
+            enrolledOnOrBefore: '',
+            completedOnOrAfter: '',
+            completedOnOrBefore: '',
             inStartDate: '',
             inEndDate: '',
             state: '',
@@ -23,6 +21,7 @@ class ProgrammeComponent extends Component {
         this.searchByProgram = this.searchByProgram.bind(this);
         this.handleSelectProgram = this.handleSelectProgram.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleWorkflowChange = this.handleWorkflowChange.bind(this);
     }
 
     // Make a call to the program endpoint to get backend field data when component mounts
@@ -44,14 +43,16 @@ class ProgrammeComponent extends Component {
         const jsonHelper = new JSONHelper();
         const jsonQuery = jsonHelper.composeJson(this.createSearchByProgramParmeters());
         // generate custom search query and search label
-        if(this.state.inStartDate || this.state.inEndDate) {
+
+        //if the user selects the "in the program field" but the user didn't choose a state
+        if((this.state.inStartDate || this.state.inEndDate) && !this.state.state) {
             const initialNumberOfFilters = jsonQuery.query.rowFilters.length;
             jsonQuery.query.rowFilters.push(
                 {
                     "type": "org.openmrs.module.reporting.cohort.definition.PatientDataDefinition",
-                    "key": "reporting.library.cohortDefinition.builtIn.programEnrollment",
+                    "key": "reporting.library.cohortDefinition.builtIn.patientsWithEnrollment",
                     "parameterValues": {
-                        "enrolledEndDate":this.state.inStartDate || this.state.inEndDate
+                        "enrolledOnOrBefore":this.state.inStartDate || this.state.inEndDate
                     }
                 }
             );
@@ -59,16 +60,44 @@ class ProgrammeComponent extends Component {
             jsonQuery.query.rowFilters.push(
                 {
                     "type": "org.openmrs.module.reporting.cohort.definition.PatientDataDefinition",
-                    "key": "reporting.library.cohortDefinition.builtIn.programEnrollment",
+                    "key": "reporting.library.cohortDefinition.builtIn.patientsWithEnrollment",
                     "parameterValues": {
-                        "completedEndDate":this.state.inEndDate || this.state.inStartDate
+                        "completedOnOrBefore":this.state.inEndDate || this.state.inStartDate
                     }
                 }
             );
             jsonQuery.query.customRowFilterCombination = (initialNumberOfFilters === 1) ? '(1 and 2) and not 3' : '(1 and 2 and 3) and not 4';          
+        } else if((this.state.inStartDate || this.state.inEndDate) && this.state.state) {
+            // if the user selects a state and also specified the "in the programme field"
+            // then the patientsInState library key will have to be used
+            const initialNumberOfFilters = jsonQuery.query.rowFilters.length;
+            let parameterValues;
+            if(this.state.inStartDate && this.state.inEndDate) {
+                parameterValues = {
+                    onOrAfter: this.state.inStartDate,
+                    onOrBefore: this.state.inEndDate
+                };
+            } else if (this.state.inStartDate && !this.state.inEndDate) {
+                parameterValues = {
+                    onOrAfter: this.state.inStartDate
+                };
+            } else {
+                parameterValues = {
+                    onOrBefore: this.state.inEndDate
+                };
+            }
+            jsonQuery.query.rowFilters.push(
+                {
+                    "type": "org.openmrs.module.reporting.cohort.definition.PatientDataDefinition",
+                    "key": "reporting.library.cohortDefinition.builtIn.patientsInState",
+                    parameterValues
+                }
+            );
+
+            jsonQuery.query.customRowFilterCombination = (initialNumberOfFilters === 1) ? '1 and 2' : '1 and 2 and 3';
         }
         new ApiHelper().post('reportingrest/adhocquery?v=full', jsonQuery.query).then(response => {
-            this.props.addToHistory(this.composeLabel(), response.rows);
+            this.props.addToHistory(this.composeLabel(), response.rows, jsonQuery.query);
         });
     }
 
@@ -81,19 +110,21 @@ class ProgrammeComponent extends Component {
         const element = document.getElementById(this.state.program);
         const program =  element ? element.innerText : 'all programs';
         let label = `Patients in ${program}`;
-        if (this.state.minAge || this.state.maxAge) {
-            label += `, born between ${this.state.minAge} & ${this.state.maxAge}`;
+
+        if(this.state.state) {
+            const stateOptionElement = document.getElementById(this.state.state);
+            label = `Patients in ${stateOptionElement.innerText}`;
         }
         if (this.state.inEndDate || this.state.inStartDate) {
             label += this.composerHelper('inStartDate', 'inEndDate', 'were in');
         }
 
-        if (this.state.enrolledEndDate || this.state.enrolledStartDate) {
-            label += this.composerHelper('enrolledStartDate', 'enrolledEndDate', 'enrolled in');
+        if (this.state.enrolledOnOrBefore || this.state.enrolledOnOrAfter) {
+            label += this.composerHelper('enrolledOnOrAfter', 'enrolledOnOrBefore', 'enrolled in');
         }
 
-        if (this.state.completedEndDate || this.state.completedStartDate) {
-            label += this.composerHelper('completedStartDate', 'completedEndDate', 'completed');
+        if (this.state.completedOnOrBefore || this.state.completedOnOrAfter) {
+            label += this.composerHelper('completedOnOrAfter', 'completedOnOrBefore', 'completed');
         }
 
         return label;
@@ -106,7 +137,7 @@ class ProgrammeComponent extends Component {
      * @return {String} - part of the label
      */
     composerHelper(startProperty, endProperty, inLabel) {
-        let label = ` and ${inLabel} the programme`;
+        let label = ` and ${inLabel} it`;
         if (this.state[startProperty] && this.state[endProperty]) {
             label += ` between ${this.state[startProperty]} & ${this.state[endProperty]}`;
         } else if (this.state[endProperty])  {
@@ -126,12 +157,25 @@ class ProgrammeComponent extends Component {
     handleSelectProgram(event) {
         event.preventDefault();
         const program = event.target.value;
-        this.setState({ program });
+        this.setState({ program, states: [] });
         this.getWorkflow(program);
     }
 
     /**
-     * Method to hanlde events fired by input elements in this components forms
+     * Method handles what happened when the workflow field is changed.
+     * It passes the selected workflow to the states associated with it
+     * @param {Object} event - Event Object containing data about this event
+     * @return {undefined} - return undefined
+     */
+    handleWorkflowChange(event) {
+        event.preventDefault();
+        const workflow = event.target.value;
+        this.setState({ workflow });
+        this.getStates(workflow);
+    }
+
+    /**
+     * Method to handle events fired by input elements in this components forms
      * It sets the input elements value to the corresponding state value
      * @param {Object} event - Event object containing data about this event
      * @return {undefined} - returns undefined
@@ -147,57 +191,38 @@ class ProgrammeComponent extends Component {
      * @return {Object} - Object holding necessary parameters for the search
      */
     createSearchByProgramParmeters() {
-        const parameters = {
-            programEnrollment: []
-        };
-        if (this.state.maxAge || this.state.minAge) {
-            parameters.bornDuringPeriod = [];
-            if (this.state.minAge) {
-                parameters.bornDuringPeriod.push({
-                    name: 'startDate', dataType: 'date', value: this.state.minAge
-                });
-            }
-            if (this.state.maxAge) {
-                parameters.bornDuringPeriod.push({
-                    name: 'endDate', dataType: 'date', value: this.state.maxAge
-                });
-            }
-        }
-        if (this.state.program) {
-            parameters.programEnrollment.push({
+        // if a program is selected, then the patientsWithEnrollment library key should be used
+        const libraryKey = (this.state.state) ? 'patientsWithState' : 'patientsWithEnrollment';
+        const parameters = {};
+        parameters[libraryKey] = [];
+
+        if (this.state.program && !this.state.state) {
+            parameters[libraryKey].push({
                 name: 'programs',
                 type: 'program',
                 value: [this.state.program]
             });
         }
-         if (this.state.enrolledStartDate) {
-            parameters.programEnrollment.push({
-                name: 'enrolledStartDate',
-                type: 'date',
-                value: this.state.enrolledStartDate
-            });
-        }
-        if (this.state.enrolledEndDate) {
-            parameters.programEnrollment.push({
-                name: 'enrolledEndDate',
-                type: 'date',
-                value: this.state.enrolledEndDate
-            });
-        }
-        if (this.state.completedStartDate) {
-            parameters.programEnrollment.push({
-                name: 'completedStartDate',
-                type: 'date',
-                value: this.state.completedStartDate
-            });
-        }
-        if (this.state.completedEndDate) {
-            parameters.programEnrollment.push({
-                name: 'completedEndDate',
-                type: 'date',
-                value: this.state.completedEndDate
-            });
-        }
+        const fieldsValues = ['state', 'enrolledOnOrAfter', 'enrolledOnOrBefore', 'completedOnOrAfter', 'completedOnOrBefore'];
+        fieldsValues.forEach(aField => {
+            if (this.state[aField]) {
+                let fieldName = (aField === 'state') ? 'states' : aField;
+                let theFieldValue = (aField === 'state') ? [this.state[aField]] : this.state[aField];
+                if (libraryKey === 'patientsWithState') {
+                    // patientsWithState uses different parameter names
+                    switch(fieldName) {
+                        case 'enrolledOnOrAfter': fieldName = 'startedOnOrAfter'; break;
+                        case 'enrolledOnOrBefore': fieldName = 'startedOnOrBefore'; break;
+                        case 'completedOnOrAfter': fieldName = 'endedOnOrAfter'; break;
+                        case 'completedOnOrBefore': fieldName = 'endedOnOrBefore'; break;
+                    }
+                }
+                parameters[libraryKey].push({
+                    name: fieldName,
+                    value: theFieldValue
+                });
+            }
+        });
         return parameters;
     }
 
@@ -208,19 +233,26 @@ class ProgrammeComponent extends Component {
                 this.setState({
                     workflows: data.allWorkflows
                 });
-                this.getStates(data.allWorkflows);
             });
         } else {
             this.setState({ workflows: [], workflow: '' });
         }
     }
     // Get the states from the workflow.
-    getStates(workflows) {
-        /** Update state based on the data retreived from the workflows
+    getStates(workflow) {
+        /** Update state based on the data retrieved from the workflows
          * @TODO: State data does not exist on the local, but exists on refapp,
          * try to populate states on the local
         */
-        
+        if (workflow) {
+            this.props.fetchData(`/workflow/${workflow}`).then(data => {
+                this.setState({
+                    states: data.states
+                });
+            });
+        } else {
+            this.setState({ states: [], state: '' });
+        }
     }
     render() {
         let programs = this.state.programs.map((program) => {
@@ -238,7 +270,13 @@ class ProgrammeComponent extends Component {
             );  
         });
         // States will be loaded from this.state.states when populated from backend
-        let states = "<option> </option>";
+        let states = this.state.states.map((theState) => {
+            return (
+                <option key={theState.uuid} value={theState.uuid} id={theState.uuid}>
+                    {theState.concept.display}
+                </option>
+            );  
+        });
 
     return (
         <div className="programme-component">
@@ -257,7 +295,7 @@ class ProgrammeComponent extends Component {
                 <div className="form-group">
                     <label htmlFor="gender" className="col-sm-2 control-label">Workflow:</label>
                     <div className="col-sm-6">
-                        <select className="form-control" id="workflow" onChange={this.handleInputChange}>
+                        <select className="form-control" id="workflow" onChange={this.handleWorkflowChange}>
                             <option value="">All</option>
                             { workflows }
                         </select>
@@ -271,21 +309,6 @@ class ProgrammeComponent extends Component {
                             <option value="all">All</option>
                             { states }
                         </select>
-                    </div>
-                </div>
-
-                <div className="form-group">
-                    <label className="col-sm-2 control-label">Birth Date</label>
-                   
-                    <div className="col-sm-1">
-                         <span className="inline-label">Between:</span>
-                    </div>
-                    <div className="col-sm-3">
-                        <input id="minAge" type="date" className="form-control" onChange={this.handleInputChange}/>
-                    </div>
-                    <span className="inline-label">And:</span>
-                    <div className="col-sm-3">
-                        <input id="maxAge" type="date" className="form-control" onChange={this.handleInputChange} />
                     </div>
                 </div>
 
@@ -311,11 +334,11 @@ class ProgrammeComponent extends Component {
                          <span className="inline-label">On or after:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input id="enrolledStartDate" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />
+                        <input id="enrolledOnOrAfter" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />
                     </div>
                     <span className="inline-label">On or before:</span>
                     <div className="col-sm-3">
-                        <input id="enrolledEndDate" className="form-control" name="to-date" type="date" onChange={this.handleInputChange} />
+                        <input id="enrolledOnOrBefore" className="form-control" name="to-date" type="date" onChange={this.handleInputChange} />
                     </div>
                 </div>
 
@@ -326,11 +349,11 @@ class ProgrammeComponent extends Component {
                          <span className="inline-label">On or after:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input id="completedStartDate" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />
+                        <input id="completedOnOrAfter" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />
                     </div>
                     <span className="inline-label">On or before:</span>
                     <div className="col-sm-3">
-                        <input id="completedEndDate" className="form-control" name="to-date" type="date" onChange={this.handleInputChange}/>
+                        <input id="completedOnOrBefore" className="form-control" name="to-date" type="date" onChange={this.handleInputChange}/>
                     </div>
                 </div>
                 

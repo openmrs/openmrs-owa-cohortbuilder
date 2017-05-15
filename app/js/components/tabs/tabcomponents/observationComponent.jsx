@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { JSONHelper } from '../../../helpers/jsonHelper';
 
 class ObservationComponent extends Component {
     constructor(props) {
@@ -9,6 +10,7 @@ class ObservationComponent extends Component {
         }
         this.searchObservation = this.searchObservation.bind(this);
         this.getFormData = this.getFormData.bind(this);
+        this.jsonHelper = new JSONHelper();
     }
     componentDidMount(){}
     getFormData(fields) {
@@ -54,8 +56,8 @@ class ObservationComponent extends Component {
         this.setState({
             searchResults: searchParams
         });
-        const searchData = this.props.search(searchParams);
-        this.props.search(searchParams).then(results => {
+        const searchData = this.jsonHelper.composeJson(searchParams);
+        this.props.search(searchData).then(results => {
             const obsType = results.rows || [];
             this.props.addToHistory(historyTitle, obsType, results.query);
         });

@@ -1,6 +1,6 @@
 import React,{ Component, PropTypes } from 'react';
 import shortId from 'shortid';
-
+import DownloadHelper from '../../helpers/downloadHelper';
 import SearchHistory from './searchHistoryComponent.jsx';
 import SavedHistoryTable from './savedHistoryTable.jsx';
 import { Navigate } from '../cohorts/navigate.jsx';
@@ -17,13 +17,16 @@ class  SavedHistory extends Component {
             perPage: 10,
             description: "",
             currentPage: 2,
-            totalPage: 0
-            
+            totalPage: 0,
+            downloadJobIds: []
         };
+        this.apiHelper = new ApiHelper();
         this.delete = this.delete.bind(this);
         this.getPagePatient = this.getPagePatient.bind(this);
         this.navigatePage = this.navigatePage.bind(this);
         this.getPagePatient = this.getPagePatient.bind(this);
+        this.downloadCSV = this.downloadCSV.bind(this);
+        this.preFromatForCSV = this.preFromatForCSV.bind(this);
     }
 
     removeCharacters(value) {
@@ -41,8 +44,7 @@ class  SavedHistory extends Component {
     }
     viewResult(uuid) {
         return () => {
-            const apiHelper = new ApiHelper();
-            apiHelper.get(`reportingrest/dataSet/${uuid}`)
+            this.apiHelper.get(`reportingrest/dataSet/${uuid}`)
                 .then((res) => {
                     const toDisplay = this.getPagePatient(res.rows, 1);
 					this.setState(Object.assign({}, this.state, {
@@ -85,6 +87,54 @@ class  SavedHistory extends Component {
 			currentPage: pageToNavigate
 		}));
 	}
+
+    /**
+     * Method to help filter and return only required patient attributes from a
+     * saved history item
+     * @param {Array} results - Array of patient objects
+     * @return {Array} - Array containing objects containing only necessary
+     * data of patients in a saved history
+     */
+    preFromatForCSV(results) {
+        const data = [...results];
+         return data.map(patient => {
+             return { 
+                 name: `${patient.firstname} ${patient.lastname}`,
+                 age: patient.age,
+                 gender: patient.gender
+            };
+        });
+    }
+
+    /**
+     * Method to fetch data using the saved patients uuid, format the data and
+     *  download it on the browser
+     * @param {Number} uuid - unique saved patients history id
+     * @param {String} description - Description of the patient history item
+     * (to be used as the file name)
+     * @return {undefined}
+     */
+    downloadCSV(uuid, description) {
+        return event => {
+            event.preventDefault();
+            if (this.state.downloadJobIds.includes(uuid)) {
+                return;
+            }
+            const downloadJobIds = [...this.state.downloadJobIds, uuid];
+            this.setState({ downloadJobIds });
+            this.apiHelper.get(`reportingrest/dataSet/${uuid}`)
+				.then(response => {
+                    const toSplice = this.state.downloadJobIds;
+                    const spliceIndex = toSplice.indexOf(uuid);
+                    toSplice.splice(spliceIndex, 1);
+                    this.preFromatForCSV(response.rows);
+                    const formattedData = this.preFromatForCSV(response.rows);
+                     DownloadHelper.downloadCSV(formattedData, description);
+                    this.setState({ downloadJobIds: toSplice });
+				}); 
+        };
+    }
+
     render() {
         return (
             <div className="section">
@@ -97,19 +147,28 @@ class  SavedHistory extends Component {
                                         <th>S/N</th>
                                         <th>Display</th>
                                         <th>Description</th>
-                                        <th>Delete</th>
-                                        <th>View</th>
+                                        <th className="row-icon">Download</th>
+                                        <th className="row-icon">Delete</th>
+                                        <th className="row-icon">View</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
                                         this.props.history.map((eachResult, index) =>
                                             <tr key={shortId.generate()}>
-                                                <td>{index}</td>
+                                                <td>{index + 1}</td>
                                                 <td>{this.removeCharacters(eachResult.name)}</td>
                                                 <td>{eachResult.description +' result(s)'}</td>
-                                                <td><span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(eachResult.uuid)} aria-hidden="true"/></td>
-                                                <td><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(eachResult.uuid)} title="View" aria-hidden="true"/></td>
+                                                <td className="row-icon">
+                                                    <span
+                                                        className={`glyphicon ${this.state.downloadJobIds.includes(eachResult.uuid) ? 'glyphicon-refresh glyphicon-spin' : 'glyphicon-download download'}`}
+                                                        title="Download"
+                                                        aria-hidden="true"
+                                                        onClick={this.downloadCSV(eachResult.uuid, eachResult.description)}
+                                                    />
+                                                </td>
+                                                <td className="row-icon"><span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(eachResult.uuid)} aria-hidden="true"/></td>
+                                                <td className="row-icon"><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(eachResult.uuid)} title="View" aria-hidden="true"/></td>
                                             </tr>
                                         )
                                     }

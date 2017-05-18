@@ -4,6 +4,7 @@ import shortId from 'shortid';
 import { ApiHelper } from '../../helpers/apiHelper';
 import { Navigate } from './navigate';
 import CohortTable from './cohortTable';
+import DownloadHelper from '../../helpers/downloadHelper';
 import './cohorts.css';
 
 class ActionsComponent extends Component {
@@ -14,13 +15,16 @@ class ActionsComponent extends Component {
             cohortResult: [],
             toDisplay: [],
             perPage: 10,
+            downloadJobIds: []
         };
 
+        this.apiHelper = new ApiHelper();
         this.navigatePage = this.navigatePage.bind(this);
         this.getPatientsData = this.getPatientsData.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChnage = this.handleChnage.bind(this);
         this.deleteCohort = this.deleteCohort.bind(this);
+        this.downloadCSV = this.downloadCSV.bind(this);
     }
 
     componentWillMount() {
@@ -115,8 +119,7 @@ class ActionsComponent extends Component {
 
 	getPatientsData(cohortId, description) {
 		return (e) => {
-			const apiHelper = new ApiHelper();
-			apiHelper.get(`/cohort/${cohortId}/member?v=full`)
+			this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
 				.then(res => {
 					const toDisplay = this.getPagePatient(res.results, 1);
 					this.setState(Object.assign({}, this.state, {
@@ -130,6 +133,34 @@ class ActionsComponent extends Component {
 		};
 	}
 
+    /**
+     * Method to fetch data using the cohort uuid, format the data and download
+     * it on the browser
+     * @param {Number} cohortId - unique cohort id
+     * @param {String} description - Description of the cohort (to be used as
+     * the saved csv file name)
+     * @return {undefined}
+     */
+    downloadCSV(cohortId, description) {
+        return event => {
+            event.preventDefault();
+            if (this.state.downloadJobIds.includes(cohortId)) {
+                return;
+            }
+            const downloadJobIds = [...this.state.downloadJobIds, cohortId];
+            this.setState({ downloadJobIds });
+            this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
+				.then(response => {
+                    const toSplice = this.state.downloadJobIds;
+                    const spliceIndex = toSplice.indexOf(cohortId);
+                    toSplice.splice(spliceIndex, 1);
+                    const formattedData = this.preFromatForCSV(response.results);
+                    DownloadHelper.downloadCSV(formattedData, description);
+                    this.setState({ downloadJobIds: toSplice });
+				}); 
+        };
+    }
+
     deleteCohort(cohortId) {
         return (e) => {
             const apiHelper = new ApiHelper();
@@ -138,6 +169,20 @@ class ActionsComponent extends Component {
                     this.getAllCohorts();
                 });
         };
+    }
+
+    /**
+     * Method to help filter and return only required patient attributes from a
+     * cohort item
+     * @return { Array } - Array containing all patients in a cohort
+     * item of the specified index
+     */
+    preFromatForCSV(results) {
+        const data = [...results];
+        return data.map(item => {
+            const person = item.patient.person;
+            return { name: person.display, age: person.age, gender: person.gender };
+        });
     }
 
     render() {
@@ -188,8 +233,9 @@ class ActionsComponent extends Component {
                                     <th>S/N</th>
                                     <th>Display</th>
                                     <th>Description</th>
-                                    <th>Delete</th>
-                                    <th>View</th>
+                                    <th className="row-icon">Download</th>
+                                    <th className="row-icon">Delete</th>
+                                    <th className="row-icon">View</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -198,9 +244,29 @@ class ActionsComponent extends Component {
                                     <td>{index + 1}</td>
                                     <td>{ cohort.display }</td>
                                     <td>{cohort.description}</td>
-                                    <td><span className="glyphicon glyphicon-remove remove" onClick={this.deleteCohort(cohort.uuid)} title="Delete" aria-hidden="true" />
+                                    <td className="row-icon">
+                                        <span
+                                            className={`glyphicon ${this.state.downloadJobIds.includes(cohort.uuid) ? 'glyphicon-refresh glyphicon-spin' : 'glyphicon-download download'}`}
+                                            onClick={this.downloadCSV(cohort.uuid, cohort.description)}
+                                            title="Download"
+                                            aria-hidden="true"
+                                        />
                                     </td>
-                                    <td><span className="glyphicon glyphicon-eye-open view" onClick={this.getPatientsData(cohort.uuid, cohort.description)} title="View" aria-hidden="true" />
+                                    <td className="row-icon">
+                                        <span
+                                            className="glyphicon glyphicon-remove remove"
+                                            onClick={this.deleteCohort(cohort.uuid)}
+                                            title="Delete"
+                                            aria-hidden="true"
+                                        />
+                                    </td>
+                                    <td className="row-icon">
+                                        <span
+                                            className="glyphicon glyphicon-eye-open view"
+                                            onClick={this.getPatientsData(cohort.uuid, cohort.description)}
+                                            title="View"
+                                            aria-hidden="true"
+                                        />
                                     </td>
                                 </tr>
                                 ) }

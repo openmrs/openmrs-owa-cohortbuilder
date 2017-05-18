@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import shortId from 'shortid';
 import { ApiHelper } from '../../helpers/apiHelper';
+import DownloadHelper from '../../helpers/downloadHelper';
 import { JSONHelper } from '../../helpers/jsonHelper';
 
 import Modal from './saveModal.jsx';
@@ -20,6 +21,8 @@ class SearchHistoryComponent extends Component {
             index: 0
         };
         this.navigatePage = this.navigatePage.bind(this);
+        this.historyItemData = this.historyItemData.bind(this);
+        this.downloadCSV = this.downloadCSV.bind(this);
     }
 
     navigatePage(event) {
@@ -66,7 +69,7 @@ class SearchHistoryComponent extends Component {
             this.props.deleteHistory(index);
         };
     }
-
+    
     setSaveSearch(index) {
         const searchResult =  this.props.history[index];
         return () => {
@@ -74,7 +77,39 @@ class SearchHistoryComponent extends Component {
         };
     }
 
-    render() {
+    /**
+     * Method to help filter and return only required patient attributes from a
+     * search history item
+     * @param { Number } index - Index of the history array to pick patients
+     * @return { Array } - Array containing all patients in a search history
+     * item of the specified index
+     */
+    historyItemData(index) {
+        return this.props.history[index].patients.map(patient => {
+            return {
+                Name: `${patient.firstname} ${patient.lastname}`,
+                Age: patient.age,
+                Gender: patient.gender
+            };
+        });
+    }
+
+    /**
+    * Method to download list of patients in CSV format
+    * @param { Number } index - Index of the history array to pick patients
+    * @param { String} description - Description of the search (to be used as
+    * the csv file name)
+    * @return { function } - Method to be triggered when a click event is fired
+    */
+    downloadCSV(index, description) {
+        return (event) => {
+            event.preventDefault();
+            const patientsData = this.historyItemData(index);
+            DownloadHelper.downloadCSV(patientsData, description);
+        };
+    }
+
+    render(){
         return (
           <div>
             <Modal
@@ -91,6 +126,17 @@ class SearchHistoryComponent extends Component {
                     {
                         (this.props.history.length > 0) ?
                             <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>Description</th>
+                                        <th>Total Results</th>
+                                        <th className="row-icon">Download</th>
+                                        <th className="row-icon">Save</th>
+                                        <th className="row-icon">Delete</th>
+                                        <th className="row-icon">View</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     {
                                         this.props.history.map((eachResult, index) =>
@@ -98,9 +144,10 @@ class SearchHistoryComponent extends Component {
                                                 <td>{this.props.history.length - index}</td>
                                                 <td>{eachResult.description}</td>
                                                 <td>{eachResult.patients.length +' result(s)'}</td>
-                                                <td><span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}/></td>
-                                                <td><span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(index)} aria-hidden="true"/></td>
-                                                <td><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(index)} title="View" aria-hidden="true"/></td>
+                                                <td className="row-icon"><span className="glyphicon glyphicon-download download" onClick={this.downloadCSV(index, eachResult.description)} title="Download" aria-hidden="true"/></td>
+                                                <td className="row-icon"><span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}/></td>
+                                                <td className="row-icon"><span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(index)} aria-hidden="true"/></td>
+                                                <td className="row-icon"><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(index)} title="View" aria-hidden="true"/></td>
                                             </tr>
                                         )
                                     }

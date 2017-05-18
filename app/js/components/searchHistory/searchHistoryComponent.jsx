@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import shortId from 'shortid';
 import { ApiHelper } from '../../helpers/apiHelper';
 import { JSONHelper } from '../../helpers/jsonHelper';
 
+import Modal from './saveModal.jsx';
 import './searchHistory.css';
 
 class SearchHistoryComponent extends Component {
@@ -15,7 +16,8 @@ class SearchHistoryComponent extends Component {
             toDisplay: [],
             totalPage: 0,
             perPage: 10,
-            description: ''
+            description: '',
+            index: 0
         };
         this.navigatePage = this.navigatePage.bind(this);
     }
@@ -65,8 +67,24 @@ class SearchHistoryComponent extends Component {
         };
     }
 
-    render(){
+    setSaveSearch(index) {
+        const searchResult =  this.props.history[index];
+        return () => {
+            this.setState({index, description: searchResult.description});
+        };
+    }
+
+    render() {
         return (
+          <div>
+            <Modal
+                index={this.state.index}
+                description={this.state.description}
+                saveSearch={this.props.saveSearch}
+                history={this.props.history}
+                error={this.props.error}
+                loading={this.props.loading}
+             />
             <div className="col-sm-12 section">
                 <h3>Search History</h3>
                 <div className="result-window">
@@ -80,7 +98,7 @@ class SearchHistoryComponent extends Component {
                                                 <td>{this.props.history.length - index}</td>
                                                 <td>{eachResult.description}</td>
                                                 <td>{eachResult.patients.length +' result(s)'}</td>
-                                                <td><span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"/></td>
+                                                <td><span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}/></td>
                                                 <td><span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(index)} aria-hidden="true"/></td>
                                                 <td><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(index)} title="View" aria-hidden="true"/></td>
                                             </tr>
@@ -139,13 +157,17 @@ class SearchHistoryComponent extends Component {
                 null
             }
             </div>
+          </div>
         );
     }
 }
 
 SearchHistoryComponent.propTypes = {
     history: React.PropTypes.array.isRequired,
-    deleteHistory: React.PropTypes.func.isRequired
+    deleteHistory: React.PropTypes.func.isRequired,
+    saveSearch: PropTypes.func,
+    error: PropTypes.string,
+    loading: PropTypes.bool.isRequired
 };
 
 export default SearchHistoryComponent;

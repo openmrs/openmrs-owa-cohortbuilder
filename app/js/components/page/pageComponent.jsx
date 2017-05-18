@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import TabsComponent from '../tabs/tabsComponent';
-import SearchHistoryComponent from '../searchHistory/searchHistoryComponent';
+import SearchHistoryTab from '../searchHistory/searchHistoryTab.jsx';
 import ActionsComponent from '../cohorts/actionsComponent';
 import './pageComponent.css';
 
@@ -57,7 +57,7 @@ class PageComponent extends Component{
         return(
             <div id="body-wrapper" className="page-wrapper">
                 <TabsComponent addToHistory={this.addToHistory} />
-                <SearchHistoryComponent history={this.state.history} deleteHistory={this.deleteHistory} />
+                <SearchHistoryTab history={this.state.history} deleteHistory={this.deleteHistory} />
                 <ActionsComponent history={this.state.history} />
             </div>
         );

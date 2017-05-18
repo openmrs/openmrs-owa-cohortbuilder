@@ -36,3 +36,7 @@
 .view-result {
     color: #363463;
 }
+
+.submit {
+    min-width: 30%;
+}

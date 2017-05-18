@@ -25,6 +25,9 @@
             'interactive':true,
             'defaultText':'add a name'
         })
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').focus()
+        })
     })
 </script>
 </html>

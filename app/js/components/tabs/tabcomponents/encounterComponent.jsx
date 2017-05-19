@@ -312,6 +312,7 @@ class EncounterComponent extends Component {
                   <div className="form-group submit-btn">
                     <div className="col-sm-offset-2 col-sm-6">
                       <button type="submit" className="btn btn-success" onClick={this.searchByEncounter}>Search</button>
+                    <button type="reset" className="btn btn-default cancelBtn">Reset</button>
                     </div>
                   </div>
                 </form>
@@ -340,6 +341,7 @@ class EncounterComponent extends Component {
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-6">
                             <button type="submit" className="btn btn-success">Search</button>
+                            <button type="reset" className="btn btn-default cancelBtn">Reset</button>
                         </div>
                     </div>
                 </form>

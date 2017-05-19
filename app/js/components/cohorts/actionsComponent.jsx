@@ -58,9 +58,7 @@ class ActionsComponent extends Component {
                 .then((res) => {
                     this.setState(Object.assign({}, this.state, {
                             allCohort: [res, ...this.state.allCohort]
-                    }));
-                    document.getElementById('cohort').reset();
-                    
+                    }));                    
                 });
         } else {
             this.setState({ error: "all fields are required" });
@@ -218,7 +216,7 @@ class ActionsComponent extends Component {
                         <div className="form-group">
                             <div className="col-sm-offset-2 col-sm-10">
                                 <button type="submit" className="btn btn-success">Save</button>
-                                <button className="btn btn-default cancelBtn">Cancel</button>
+                                <button type="reset" className="btn btn-default cancelBtn">Reset</button>
                             </div>
                         </div>
                     </form>

@@ -72,7 +72,6 @@ class PatientComponent extends Component {
             this.setState({ livingStatus: '' });
         }
         this.performSearch(searchParameters);
-        document.querySelectorAll('form').forEach(form => form.reset());
     }
 
     getValuesFromFields(fields) {
@@ -82,7 +81,7 @@ class PatientComponent extends Component {
         for(const eachField in fields) {
             if(Array.isArray(fields[eachField])) {
                 fields[eachField].forEach((fieldInput, index) => {
-                    fields[eachField][index].value = document.getElementById(fieldInput.name).value
+                    fields[eachField][index].value = document.getElementById(fieldInput.name).value;
                 });
                 searchParameters[eachField] = fields[eachField];
                 continue;
@@ -132,7 +131,7 @@ class PatientComponent extends Component {
                 {name: "attributeType"},
                 {name: "values"}
             ]
-        }
+        };
         const searchParameters = this.getValuesFromFields(fields);
         // the plus is used as a delimiter to allow users to be able to search using several values
         // for example, the value for the attribute citizenship can look like Nigeria+England.
@@ -168,6 +167,10 @@ class PatientComponent extends Component {
 
     toggleLivingStatus(event) {
         this.setState({ livingStatus: event.target.value });
+    }
+
+    reset() {
+        $('#values').importTags('');
     }
 
     render() {
@@ -239,6 +242,8 @@ class PatientComponent extends Component {
                 <div className="form-group">
                     <div className="col-sm-offset-2 col-sm-6">
                         <button type="submit" onClick={this.searchDemographics} className="btn btn-success">Search</button>
+                        <button type="reset" className="btn btn-default cancelBtn">Reset</button>
+
                     </div>
                 </div>
             </form>
@@ -262,6 +267,7 @@ class PatientComponent extends Component {
                 <div className="form-group">
                     <div className="col-sm-offset-2 col-sm-6">
                         <button type="submit" onClick={this.searchByAttributes} className="btn btn-success">Search</button>
+                        <button onClick={this.reset} type="reset" className="btn btn-default cancelBtn">Reset</button>
                     </div>
                 </div>
             </form>

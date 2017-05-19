@@ -17,6 +17,6 @@ describe('<CompositionComponent />', ()=>{
         expect(wrapper.find("p")).to.have.length(1);
         expect(wrapper.find("form")).to.have.length(1);
         expect(wrapper.find("input")).to.have.length(2);
-        expect(wrapper.find("button")).to.have.length(1);
+        expect(wrapper.find("button")).to.have.length(2);
     });
 });

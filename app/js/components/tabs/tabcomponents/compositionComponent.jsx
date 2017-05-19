@@ -134,6 +134,8 @@ class CompositionComponent extends Component {
                     <div className="form-group">
                         <div className="col-sm col-sm-10">
                             <button type="submit" className="btn btn-success">Search</button>
+                            <button type="reset" className="btn btn-default cancelBtn">Reset</button>
+
                         </div>
                     </div>
                 </form>

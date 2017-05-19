@@ -106,6 +106,7 @@ class ObservationComponent extends Component {
                         <div className="form-group">
                             <div className="col-sm-offset-5 col-sm-6">
                                 <button type="submit" className="btn btn-success" onClick={this.searchObservation}>Search</button>
+                                <button type="reset" className="btn btn-default cancelBtn">Reset</button>
                             </div>
                         </div>
                     </form>

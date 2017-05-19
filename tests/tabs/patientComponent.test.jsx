@@ -23,9 +23,9 @@ describe('<PatientComponent /> tab component', () => {
   it('should add one submit button to each form', () => {
     const form1 = theComponent.find('form').at(0);
     const form2 = theComponent.find('form').at(1);
-    expect(form1.children().find('button')).to.have.length(1);
+    expect(form1.children().find('button')).to.have.length(2);
     expect(form1.children().find('button').at(0).props().type).to.equal('submit')
-    expect(form2.children().find('button')).to.have.length(1);
+    expect(form2.children().find('button')).to.have.length(2);
     expect(form2.children().find('button').at(0).props().type).to.equal('submit');
   });
 

@@ -12,6 +12,7 @@ class Modal extends Component {
         };
         this.onSave = this.onSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -30,6 +31,10 @@ class Modal extends Component {
         this.setState({
             [event.target.name] : event.target.value
         });
+    }
+    
+    reset() {
+        this.setState({ searchName : ""});
     }
 
     onSave(event) {
@@ -92,6 +97,7 @@ class Modal extends Component {
                         <button type="submit" className="btn btn-primary submit" disabled={this.state.loading}>
                             {this.state.loading ? <img src="img/spin.gif"/> : "Save changes"}
                         </button>
+                        <button onClick={this.reset} type="reset" className="btn btn-default cancelBtn">Reset</button>
                         </form>
                     </div>
                     <div className="modal-footer">

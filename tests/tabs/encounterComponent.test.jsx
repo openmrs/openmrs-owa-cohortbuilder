@@ -20,7 +20,7 @@ describe('<EncounterComponent /> tab component', () => {
 
   it('Search by location form should contain a search button', () => {
     const locationform = encounterComponent.childAt(1).childAt(4);
-    expect(locationform.children().find('button')).to.have.length(1);
+    expect(locationform.children().find('button')).to.have.length(2);
     expect(locationform.children().find('button').at(0).props().type)
       .to.equal('submit');
   });

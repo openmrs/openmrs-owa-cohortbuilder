@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import shortId from 'shortid';
+import DatePicker from "react-bootstrap-date-picker";
 import { JSONHelper } from '../../../helpers/jsonHelper';
 
 const FORMS_API_ENDPOINT = '/form';
@@ -20,13 +21,19 @@ class EncounterComponent extends Component {
             perPage: 10,
             locationError: false,
             location: '',
-            method: 'ANY'
+            method: 'ANY',
+            onOrBefore: '',
+            onOrAfter: ''
         };
         this.jsonHelper = new JSONHelper();
         this.searchByEncounter = this.searchByEncounter.bind(this);
         this.getFormValues = this.getFormValues.bind(this);
         this.handleSelectOption = this.handleSelectOption.bind(this);
         this.searchByLocation = this.searchByLocation.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+        this.getDateString = this.getDateString.bind(this);
+        this.resetEncounterFields = this.resetEncounterFields.bind(this);
+        this.resetEncounderDates = this.resetEncounderDates.bind(this);
     }
 
     componentWillMount(){
@@ -102,13 +109,20 @@ class EncounterComponent extends Component {
               { name: 'locationList', isArrayValue: true },
               { name: 'formList', isArrayValue: true },
               { name: 'atLeastCount' },
-              { name: 'atMostCount' },
-              { name: 'onOrAfter' },
-              { name: 'onOrBefore' }
+              { name: 'atMostCount' }
           ]
       };
-
       const searchParams = this.getFormValues(fields);
+      if (this.state.onOrAfter) {
+          searchParams.encounterSearchAdvanced.push({
+              name: 'onOrAfter', type: 'date', value: this.state.onOrAfter
+          });
+      }
+      if (this.state.onOrBefore) {
+          searchParams.encounterSearchAdvanced.push({
+              name: 'onOrBefore', type: 'date', value: this.state.onOrBefore
+          });
+      }
       const label = this.composeLabel(searchParams.encounterSearchAdvanced);
       const queryDetails = this.jsonHelper.composeJson(searchParams);
       this.props.search(queryDetails).then(results => {
@@ -145,9 +159,9 @@ class EncounterComponent extends Component {
                 case 'atMostCount':
                     label += ` at most ${aParameter.displayValue} ${aParameter.displayValue > 1 ? 'times' : 'time'}`; break;
                 case 'onOrAfter':
-                    label += ` from ${aParameter.displayValue}`; break;
+                    label += ` from ${this.state.onOrAfter}`; break;
                 case 'onOrBefore':
-                    label += ` to ${aParameter.displayValue}`; break;
+                    label += ` to ${this.state.onOrBefore}`; break;
                 }
             }
         });
@@ -242,6 +256,47 @@ class EncounterComponent extends Component {
         ];
     }
 
+    /**
+     * Method to update the date key for different date types in the state
+     * @param {String} stateKey - The key in the component state that should be
+     * updated
+     * @return {Function} - Call back function to be executed by the date input
+     * field
+     */
+    handleDateChange(stateKey) {
+        return value => this.setState({
+            [stateKey]: this.getDateString(value)
+        });
+    }
+
+    /**
+     * Method to get the date in the format MM-DD-YY from a date isoString
+     * @param {String} isoString - Date in isoString format
+     * @return {String} MM-DD-YY date formatted string
+     */
+    getDateString(isoString) {
+        return isoString ? isoString.split('T')[0]: '';
+    }
+
+    /**
+     * Metod to reset all fields in the encounter form of this component
+     * @return {undefined}
+     */
+    resetEncounterFields() {
+        this.resetEncounderDates();
+    }
+
+    /**
+     * Method to reset encounter dates state in this components state
+     * @return {undefined}
+     */
+    resetEncounderDates() {
+        this.setState({
+            onOrBefore: '',
+            onOrAfter: ''
+        });
+    }
+
     render(){
         return (
             <div className="encounter-component">
@@ -300,11 +355,25 @@ class EncounterComponent extends Component {
                   <div className="form-group">
                     <label htmlFor="startDate" className="col-sm-2 control-label">From: </label>
                     <div className="col-sm-3">
-                       <input type="date" className="form-control" id="onOrAfter"/>
+                        <DatePicker
+                            id="onOrAfter"
+                            className="form-control"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.onOrAfter}
+                            onChange={this.handleDateChange('onOrAfter')}
+                        />
+                       {/*<input type="date" className="form-control" id="onOrAfter"/>*/}
                     </div>
                     <label htmlFor="endDate" className="col-sm-2 control-label">To: </label>
                     <div className="col-sm-3">
-                        <input type="date" className="form-control" id="onOrBefore"/>
+                        <DatePicker
+                            id="onOrBefore"
+                            className="form-control"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.onOrBefore}
+                            onChange={this.handleDateChange('onOrBefore')}
+                        />
+                        {/*<input type="date" className="form-control" id="onOrBefore"/>*/}
                     </div>
                     <span className="inline-label">day(s)    (Optional)</span>
                   </div>
@@ -312,7 +381,7 @@ class EncounterComponent extends Component {
                   <div className="form-group submit-btn">
                     <div className="col-sm-offset-2 col-sm-6">
                       <button type="submit" className="btn btn-success" onClick={this.searchByEncounter}>Search</button>
-                    <button type="reset" className="btn btn-default cancelBtn">Reset</button>
+                    <button type="reset" onClick={this.resetEncounterFields} className="btn btn-default cancelBtn">Reset</button>
                     </div>
                   </div>
                 </form>

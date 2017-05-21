@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import DatePicker from "react-bootstrap-date-picker";
 import Error from '../../common/error';
 import Loader from '../../common/loader';
 import shortid from 'shortid';
@@ -118,11 +119,19 @@ class DrugOrderComponent extends Component {
                                 <span className="inline-label">From:</span>
                             </div>
                             <div className="col-sm-3">
-                                <input className="form-control" type="date" name="from-date" />
+                                <DatePicker
+                                    dateFormat="DD-MM-YYYY"
+                                    className="form-control"
+                                    name="from-date"
+                                />
                             </div>
                             <span className="inline-label">To:</span>
                             <div className="col-sm-3">
-                                <input className="form-control" name="to-date" type="date" />
+                                <DatePicker
+                                    dateFormat="DD-MM-YYYY"
+                                    className="form-control"
+                                    name="to-date"
+                                />
                             </div>
                             <span className="inline-label">(optional)</span>
                         </div>
@@ -158,11 +167,19 @@ class DrugOrderComponent extends Component {
                                 <span className="inline-label">From:</span>
                             </div>
                             <div className="col-sm-3">
-                                <input className="form-control" type="date" name="from-date" />
+                                <DatePicker
+                                    dateFormat="DD-MM-YYYY"
+                                    className="form-control"
+                                    name="from-date"
+                                />
                             </div>
                             <span className="inline-label">To:</span>
                             <div className="col-sm-3">
-                                <input className="form-control" name="to-date" type="date" />
+                                <DatePicker
+                                    dateFormat="DD-MM-YYYY"
+                                    className="form-control"
+                                    name="to-date"
+                                />
                             </div>
                             <span className="inline-label">(optional)</span>
                         </div>

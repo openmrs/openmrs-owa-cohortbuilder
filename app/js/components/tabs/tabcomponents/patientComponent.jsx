@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import shortId from 'shortid';
+import DatePicker from "react-bootstrap-date-picker";
 import { JSONHelper } from '../../../helpers/jsonHelper';
 
 class PatientComponent extends Component {
@@ -13,13 +14,18 @@ class PatientComponent extends Component {
             totalPage: 0,
             perPage: 10,
             livingStatus: '',
-            description: ''
+            description: '',
+            startDate: '',
+            endDate: ''
         };
         this.jsonHelper = new JSONHelper();
         this.searchDemographics = this.searchDemographics.bind(this);
         this.navigatePage = this.navigatePage.bind(this);
         this.searchByAttributes = this.searchByAttributes.bind(this);
         this.toggleLivingStatus = this.toggleLivingStatus.bind(this);
+        this.getDateString = this.getDateString.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+        this.resetSearchByDemographic = this.resetSearchByDemographic.bind(this);
     }
 
     componentDidMount(props) {
@@ -43,10 +49,6 @@ class PatientComponent extends Component {
             ageRangeOnDate: [
                 {name: 'minAge', dataType: 'int'},
                 {name: 'maxAge', dataType: 'int'}
-            ],
-            bornDuringPeriod: [
-                {name: 'startDate', dataType: 'date'},
-                {name: 'endDate', dataType: 'date'}
             ]
         };
         const searchParameters = this.getValuesFromFields(fields);
@@ -62,7 +64,7 @@ class PatientComponent extends Component {
         // for dead people, diedDuring period -> endDate === now
         // for living people, diedDuring period -> endDate !== now
         const today = new Date();
-        const dayFormat = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+        const dayFormat = this.getDateString(today.toISOString());
         const livingStatus = this.state.livingStatus;
         if (livingStatus === 'alive' || livingStatus === 'dead') {
             searchParameters.diedDuringPeriod = [
@@ -71,6 +73,14 @@ class PatientComponent extends Component {
             // reset the living status in the state
             this.setState({ livingStatus: '' });
         }
+
+        if (this.state.endDate && this.state.startDate) {
+            searchParameters.bornDuringPeriod = [
+                {name: 'startDate', dataType: 'date', value: this.state.startDate},
+                {name: 'endDate', dataType: 'date', value: this.state.endDate}
+            ];
+        }
+
         this.performSearch(searchParameters);
     }
 
@@ -139,8 +149,6 @@ class PatientComponent extends Component {
         const values = searchParameters.personWithAttribute[1].value.split(',');
         searchParameters.personWithAttribute[1].value = values;
         this.performSearch(searchParameters);
-        values.forEach((tag) => $('#values').removeTag(tag));
-
     }
 
     navigatePage(event) {
@@ -171,6 +179,46 @@ class PatientComponent extends Component {
 
     reset() {
         $('#values').importTags('');
+    }
+
+    /**
+     * Method to reset all state related to search by demographic in this
+     * component
+     * @return {undefined}
+     */
+    resetSearchByDemographic() {
+        this.setState({ startDate: '', endDate: '' });
+    }
+
+    /**
+     * Method to set the end date String in state
+     * @param {String} value - isoString formatted date value
+     * @return {undefined}
+     */
+    setEndDate(value) {
+        this.setState({ endDate: this.getDateString(value) });
+    }
+
+    /**
+     * Method to update the date key for different date types in the state
+     * @param {String} stateKey - The key in the component state that should be
+     * updated
+     * @return {Function} - Call back function to be executed by the date input
+     * field
+     */
+    handleDateChange(dateType) {
+        return value => this.setState({
+            [dateType]: this.getDateString(value)
+        });
+    }
+
+    /**
+     * Method to get the date in the format MM-DD-YY from a date isoString
+     * @param {String} isoString - Date in isoString format
+     * @return {String} MM-DD-YY date formatted string
+     */
+    getDateString(isoString) {
+        return isoString ? isoString.split('T')[0]: '';
     }
 
     render() {
@@ -218,11 +266,23 @@ class PatientComponent extends Component {
                          <span className="inline-label">Between:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input className="form-control" type="date" name="from-date" id="startDate" />
+                        <DatePicker
+                            className="form-control"
+                            id="startDate"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.startDate}
+                            onChange={this.handleDateChange('startDate')}
+                        />
                     </div>
                     <span className="inline-label">And:</span>
                     <div className="col-sm-3">
-                        <input className="form-control" name="to-date" type="date" id="endDate" />
+                        <DatePicker
+                            className="form-control"
+                            id="endDate"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.endDate}
+                            onChange={this.handleDateChange('endDate')}
+                        />
                     </div>
                 </div>
 
@@ -242,8 +302,7 @@ class PatientComponent extends Component {
                 <div className="form-group">
                     <div className="col-sm-offset-2 col-sm-6">
                         <button type="submit" onClick={this.searchDemographics} className="btn btn-success">Search</button>
-                        <button type="reset" className="btn btn-default cancelBtn">Reset</button>
-
+                        <button type="reset" onClick={this.resetSearchByDemographic} className="btn btn-default cancelBtn">Reset</button>
                     </div>
                 </div>
             </form>

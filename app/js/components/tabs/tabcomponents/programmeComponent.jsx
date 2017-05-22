@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import DatePicker from "react-bootstrap-date-picker";
 import { JSONHelper } from '../../../helpers/jsonHelper';
 import { ApiHelper } from '../../../helpers/apiHelper';
 class ProgrammeComponent extends Component {
@@ -21,7 +22,11 @@ class ProgrammeComponent extends Component {
         this.searchByProgram = this.searchByProgram.bind(this);
         this.handleSelectProgram = this.handleSelectProgram.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+        this.getDateString = this.getDateString.bind(this);
         this.handleWorkflowChange = this.handleWorkflowChange.bind(this);
+        this.resetFields = this.resetFields.bind(this);
+        this.resetDates = this.resetDates.bind(this);
     }
 
     // Make a call to the program endpoint to get backend field data when component mounts
@@ -254,6 +259,54 @@ class ProgrammeComponent extends Component {
             this.setState({ states: [], state: '' });
         }
     }
+
+    /**
+     * Method to get the date in the format MM-DD-YY from a date isoString
+     * @param {String} isoString - Date in isoString format
+     * @return {String} MM-DD-YY date formatted string
+     */
+    getDateString(isoString) {
+        return isoString ? isoString.split('T')[0]: '';
+    }
+
+
+    /**
+     * Method to update the date key for different date types in the state
+     * @param {String} stateKey - The key in the component state that should be
+     * updated
+     * @return {Function} - Call back function to be executed by the date input
+     * field
+     */
+    handleDateChange(dateType) {
+        return value => this.setState({
+            [dateType]: this.getDateString(value)
+        });
+    }
+
+    /**
+     * Method to reset all input fields in this components form
+     * @return {undefined}
+     */
+    resetFields() {
+        this.resetDates();
+    }
+
+    /**
+     * Method to reset all date in this component state
+     * @return {undefined}
+     */
+    resetDates() {
+        this.setState({
+            enrolledOnOrAfter: '',
+            enrolledOnOrBefore: '',
+            completedOnOrAfter: '',
+            completedOnOrBefore: '',
+            inStartDate: '',
+            inEndDate: '',
+        });
+    }
+
+
     render() {
         let programs = this.state.programs.map((program) => {
             return (
@@ -319,11 +372,27 @@ class ProgrammeComponent extends Component {
                          <span className="inline-label">On or after:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input className="form-control" type="date" name="from-date" id="inStartDate" onChange={this.handleInputChange} />
+                        <DatePicker
+                            className="form-control"
+                            name="from-date"
+                            id="inStartDate"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.inStartDate}
+                            onChange={this.handleDateChange('inStartDate')}
+                        />
+                        {/*<input className="form-control" type="date" name="from-date" id="inStartDate" onChange={this.handleInputChange} />*/}
                     </div>
                     <span className="inline-label">On or before:</span>
                     <div className="col-sm-3">
-                        <input className="form-control" name="to-date" type="date" id="inEndDate" onChange={this.handleInputChange} />
+                        <DatePicker
+                            className="form-control"
+                            name="to-date"
+                            id="inEndDate"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.inEndDate}
+                            onChange={this.handleDateChange('inEndDate')}
+                        />
+                        {/*<input className="form-control" name="to-date" type="date" id="inEndDate" onChange={this.handleInputChange} />*/}
                     </div>
                 </div>
 
@@ -334,11 +403,27 @@ class ProgrammeComponent extends Component {
                          <span className="inline-label">On or after:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input id="enrolledOnOrAfter" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />
+                        <DatePicker
+                            id="enrolledOnOrAfter"
+                            className="form-control"
+                            name="from-date"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.enrolledOnOrAfter}
+                            onChange={this.handleDateChange('enrolledOnOrAfter')}
+                        />
+                        {/*<input id="enrolledOnOrAfter" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />*/}
                     </div>
                     <span className="inline-label">On or before:</span>
                     <div className="col-sm-3">
-                        <input id="enrolledOnOrBefore" className="form-control" name="to-date" type="date" onChange={this.handleInputChange} />
+                        <DatePicker
+                            id="enrolledOnOrBefore"
+                            className="form-control"
+                            name="to-date"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.enrolledOnOrBefore}
+                            onChange={this.handleDateChange('enrolledOnOrBefore')}
+                        />
+                        {/*<input id="enrolledOnOrBefore" className="form-control" name="to-date" type="date" onChange={this.handleInputChange} />*/}
                     </div>
                 </div>
 
@@ -349,18 +434,34 @@ class ProgrammeComponent extends Component {
                          <span className="inline-label">On or after:</span>
                     </div>
                     <div className="col-sm-3">
-                        <input id="completedOnOrAfter" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />
+                        <DatePicker
+                            id="completedOnOrAfter"
+                            className="form-control"
+                            name="from-date"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.completedOnOrAfter}
+                            onChange={this.handleDateChange('completedOnOrAfter')}
+                        />
+                        {/*<input id="completedOnOrAfter" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />*/}
                     </div>
                     <span className="inline-label">On or before:</span>
                     <div className="col-sm-3">
-                        <input id="completedOnOrBefore" className="form-control" name="to-date" type="date" onChange={this.handleInputChange}/>
+                        <DatePicker
+                            id="completedOnOrBefore"
+                            className="form-control"
+                            name="to-date"
+                            dateFormat="DD-MM-YYYY"
+                            value={this.state.completedOnOrBefore}
+                            onChange={this.handleDateChange('completedOnOrBefore')}
+                        />
+                        {/*<input id="completedOnOrBefore" className="form-control" name="to-date" type="date" onChange={this.handleInputChange}/>*/}
                     </div>
                 </div>
                 
                 <div className="form-group">
                     <div className="col-sm-offset-2 col-sm-6">
                         <button type="submit" className="btn btn-success">Search</button>
-                        <button type="reset" className="btn btn-default cancelBtn">Reset</button>
+                        <button type="reset" onClick={this.resetFields} className="btn btn-default cancelBtn">Reset</button>
                     </div>
                 </div>
             </form>

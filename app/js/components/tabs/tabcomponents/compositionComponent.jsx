@@ -116,23 +116,29 @@ class CompositionComponent extends Component {
                 <div className="compositionsTitle">
                     <h3>Boolean Search</h3>
                 </div>
-                <p>Enter a search query and click search button below to execute:</p>
-                <i>e.g: "(1 and 2) or not 3"<br />
-                    Query parameters supported are: AND, OR, NOT, UNION, INTERSECTION, !, +
-                </i> <br />
-                <form className="form-horizontal col-md" onSubmit={this.performComposition}>
+                <div>
+                    <p>Enter a search query and click search button below to execute:</p>
+                    <i>e.g: "(1 and 2) or not 3"<br />
+                        Query parameters supported are: AND, OR, NOT, UNION, INTERSECTION, !, +
+                    </i>
+                </div>
+                <form className="form-horizontal" id="composition-form" onSubmit={this.performComposition}>
                     <div className={`form-group ${(this.state.hasCompositionError ? 'has-error' : '')}`}>
-                        <div className="col-sm-12">
+                        <label className="control-label col-sm-2" htmlFor="composition-search-query">Composition:</label>
+                        <div className="col-sm-6">
                             <input id="composition-search-query" type="text" className="form-control" placeholder="Enter search query. . ." onChange={this.handleInputChange}/>
                         </div>
+                        <span className="inline-label">(Required)</span>
                     </div>
                     <div className={`form-group ${(this.state.hasDescriptionError ? 'has-error' : '')}`}>
-                        <div className="col-sm-12">
+                        <label className="control-label col-sm-2" htmlFor="composition-description">Description:</label>
+                        <div className="col-sm-6">
                             <input id="composition-description" type="text" className="form-control" placeholder="Enter a description" onChange={this.handleInputChange}/>
                         </div>
+                        <span className="inline-label">(Required)</span>
                     </div>
                     <div className="form-group">
-                        <div className="col-sm col-sm-10">
+                        <div className="col-sm-offset-2 col-sm-10">
                             <button type="submit" className="btn btn-success">Search</button>
                             <button type="reset" className="btn btn-default cancelBtn">Reset</button>
 

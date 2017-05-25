@@ -17,6 +17,9 @@ import {Provider} from 'react-redux';
 
 import createStore from './redux-store';
 import routes from './routes';
+// css necessary for custom react-select input fields which would be used 
+// all through the app
+import 'react-select/dist/react-select.css';
 
 let store = createStore();
 

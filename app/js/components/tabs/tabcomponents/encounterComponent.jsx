@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import shortId from 'shortid';
+import Select from 'react-select';
 import DatePicker from "react-bootstrap-date-picker";
 import { JSONHelper } from '../../../helpers/jsonHelper';
 
@@ -23,7 +24,8 @@ class EncounterComponent extends Component {
             location: '',
             method: 'ANY',
             onOrBefore: '',
-            onOrAfter: ''
+            onOrAfter: '',
+            selectedEncounterTypes: []
         };
         this.jsonHelper = new JSONHelper();
         this.searchByEncounter = this.searchByEncounter.bind(this);
@@ -33,7 +35,7 @@ class EncounterComponent extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
         this.getDateString = this.getDateString.bind(this);
         this.resetEncounterFields = this.resetEncounterFields.bind(this);
-        this.resetEncounderDates = this.resetEncounderDates.bind(this);
+        this.handleSelectEncounters = this.handleSelectEncounters.bind(this);
     }
 
     componentWillMount(){
@@ -123,6 +125,13 @@ class EncounterComponent extends Component {
               name: 'onOrBefore', type: 'date', value: this.state.onOrBefore
           });
       }
+      const selectedEncounters = this.state.selectedEncounterTypes;
+      if (selectedEncounters.length > 0) {
+          searchParams.encounterSearchAdvanced.push({
+              name: 'encounterTypeList',
+              value: selectedEncounters.map(encounter => encounter.value)
+          });
+      }
       const label = this.composeLabel(searchParams.encounterSearchAdvanced);
       const queryDetails = this.jsonHelper.composeJson(searchParams);
       this.props.search(queryDetails).then(results => {
@@ -132,13 +141,29 @@ class EncounterComponent extends Component {
     }
 
     /**
+     * Method to handle selection changes from the custom encounter types Select
+     * input
+     * @param {Array} selectedEncounterTypes: Array containing Objects with data
+     * about selected encounter types
+     * @return {undefined}
+     */
+    handleSelectEncounters(selectedEncounterTypes) {
+        this.setState({ selectedEncounterTypes });
+    }
+
+    /**
      * composeLabel will compose the right description for every search that is performed
      * @param {object} searchParameter 
      * @return {string} the label
      */
     composeLabel(searchParameters) {
         const parameters = [...searchParameters];
-        let label = 'Patients with encounter(s)';
+        let label = 'Patients with Encounter(s)';
+        const selectedEncounters = this.state.selectedEncounterTypes
+            .map(encounter => encounter.label )
+            .join(', ')
+            .replace(/,(?=[^,]*$)/, ' and ');
+        label += selectedEncounters ? ` of Type(s) ${selectedEncounters}` : '';
         parameters.forEach(aParameter => {
             let theFieldValue = $('#encounter-search').find('#'+aParameter.name).val();
             if($('#encounter-search').find('#'+aParameter.name).prop("tagName") === 'SELECT') {
@@ -148,8 +173,6 @@ class EncounterComponent extends Component {
             }
             if(aParameter.displayValue != '') {
                 switch(aParameter.name) {
-                case 'encounterTypeList':
-                    label += ` of type(s) ${aParameter.displayValue}`; break;
                 case 'locationList':
                     label += ` at ${aParameter.displayValue}`; break;
                 case 'formList':
@@ -169,7 +192,7 @@ class EncounterComponent extends Component {
     }
 
     /**
-     * Function to generate a location search description based on the search values
+     * Method to generate a location search description based on the search values
      */
     getLocationSearchDescription() {
         // find the location name since we only have it's uuid
@@ -283,17 +306,10 @@ class EncounterComponent extends Component {
      * @return {undefined}
      */
     resetEncounterFields() {
-        this.resetEncounderDates();
-    }
-
-    /**
-     * Method to reset encounter dates state in this components state
-     * @return {undefined}
-     */
-    resetEncounderDates() {
         this.setState({
             onOrBefore: '',
-            onOrAfter: ''
+            onOrAfter: '',
+            selectedEncounterTypes: []
         });
     }
 
@@ -309,17 +325,20 @@ class EncounterComponent extends Component {
                       Of Type
                     </label>
                     <div className="col-sm-6">
-                      <select multiple="multiple" name="encounterTypes" id="encounterTypeList" className="form-control">
-                        <option value="">--Any Encounter--</option>
-                        {this.state.encouterTypes.map(encounterType => this.displaySelectOption(encounterType))}
-                      </select>
-                      { }
+                        <Select
+                            multi
+                            joinValues
+                            placeholder="Select Encounter Type"
+                            value={this.state.selectedEncounterTypes} 
+                            options={this.state.encouterTypes.map(d => {return {value: d.id, label: d.value};})}
+                            onChange={this.handleSelectEncounters}
+                        />
                     </div>
                     <span className="inline-label">(Leave blank for all encounter types)</span>
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="locations" className="col-sm-2 control-label">At Location</label>
+                    <label htmlFor="locations" className="col-sm-2 control-label">At Location:</label>
                     <div className="col-sm-3">
                         <select className="form-control" id="locationList">
                             <option value="">--Select Location--</option>
@@ -327,10 +346,8 @@ class EncounterComponent extends Component {
                         </select>
                     </div>
                     <span className="inline-label">(Optional)</span>
-                  </div>
 
-                  <div className="form-group">
-                    <label htmlFor="forms" className="col-sm-2 control-label">From Form</label>
+                    <label htmlFor="formList" className="col-sm-2 control-label">From Form:</label>
                     <div className="col-sm-3">
                         <select className="form-control" id="formList">
                             <option value="">--Select Form--</option>
@@ -345,6 +362,7 @@ class EncounterComponent extends Component {
                     <div className="col-sm-3">
                         <input type="number" className="form-control" id="atLeastCount"/>
                     </div>
+                    <span className="inline-label">(Optional)</span>
                     <label htmlFor="atMost" className="col-sm-2 control-label">Upto this many: </label>
                     <div className="col-sm-3">
                         <input type="number" className="form-control" id="atMostCount"/>
@@ -362,8 +380,8 @@ class EncounterComponent extends Component {
                             value={this.state.onOrAfter}
                             onChange={this.handleDateChange('onOrAfter')}
                         />
-                       {/*<input type="date" className="form-control" id="onOrAfter"/>*/}
                     </div>
+                    <span className="inline-label">(Optional)</span>
                     <label htmlFor="endDate" className="col-sm-2 control-label">To: </label>
                     <div className="col-sm-3">
                         <DatePicker
@@ -373,9 +391,8 @@ class EncounterComponent extends Component {
                             value={this.state.onOrBefore}
                             onChange={this.handleDateChange('onOrBefore')}
                         />
-                        {/*<input type="date" className="form-control" id="onOrBefore"/>*/}
                     </div>
-                    <span className="inline-label">day(s)    (Optional)</span>
+                    <span className="inline-label">(Optional)</span>
                   </div>
 
                   <div className="form-group submit-btn">
@@ -389,13 +406,14 @@ class EncounterComponent extends Component {
                 <h3>Search By Location</h3>
                 <form className="form-horizontal" onSubmit={this.searchByLocation}>
                     <div className={`form-group ${this.state.locationError ? "has-error": ""}`}>
-                        <label htmlFor="gender" className="col-sm-2 control-label">Patients belonging to?:</label>
+                        <label htmlFor="location" className="col-sm-2 control-label">Patients belonging to?:</label>
                         <div className="col-sm-6">
                             <select className="form-control" id="location" onChange={this.handleSelectOption} value={this.state.location}>
                                 <option value="">--Select Location--</option>
                                 {this.getLocationOptions()}
                             </select>
                         </div>
+                        <span className="inline-label">(Required)</span>
                     </div>
 
                     <div className="form-group">

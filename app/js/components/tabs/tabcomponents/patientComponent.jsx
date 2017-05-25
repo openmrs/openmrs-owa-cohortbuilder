@@ -224,7 +224,7 @@ class PatientComponent extends Component {
     render() {
         let attributes = this.state.patientAttributes.map((attribute) => {
             return (
-                <option key={attribute.uuid} value={attribute.display}>
+                <option key={attribute.uuid} value={attribute.uuid}>
                     {attribute.display}
                 </option>
             );

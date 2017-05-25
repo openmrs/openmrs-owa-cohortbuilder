@@ -150,7 +150,8 @@ export class JSONHelper {
       case 'bornDuringPeriod': 
         return ` date of birth between ${searchParameters[key][0].value} & ${searchParameters[key][1].value}`;
       case 'personWithAttribute': 
-        return ` ${searchParameters[key][0].value} as ${searchParameters[key][1].value}`;
+        return ` ${ document.querySelector("option[value='" + searchParameters[key][0].value+ "']").innerText} as 
+          ${searchParameters[key][1].value}`;
       case 'diedDuringPeriod':
         return searchParameters[key][0].livingStatus === 'alive' ? ' Alive' : ' Dead';
       default :

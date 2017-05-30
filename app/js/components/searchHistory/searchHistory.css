@@ -40,3 +40,7 @@
 .submit {
     min-width: 30%;
 }
+
+span {
+    padding: 0px 10px;
+}

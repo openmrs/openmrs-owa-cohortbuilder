@@ -22,13 +22,20 @@ class ActionsComponent extends Component {
         this.navigatePage = this.navigatePage.bind(this);
         this.getPatientsData = this.getPatientsData.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChnage = this.handleChnage.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.deleteCohort = this.deleteCohort.bind(this);
         this.downloadCSV = this.downloadCSV.bind(this);
     }
 
     componentWillMount() {
         this.getAllCohorts();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            query: nextProps.query,
+            queryId: nextProps.queryId
+        });
     }
 
     getAllCohorts() {
@@ -41,7 +48,7 @@ class ActionsComponent extends Component {
             });
     }
 
-    handleChnage(e) {
+    handleChange(e) {
         e.preventDefault();
         this.setState({
             [e.target.name]: e.target.value
@@ -50,15 +57,19 @@ class ActionsComponent extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const cohort = this.state.cohort;
-        if (cohort && !isNaN(cohort) && this.state.hasOwnProperty('name') &&
+        const query = this.state.query;
+        if (query && !isNaN(this.state.queryId) && this.state.hasOwnProperty('name') &&
             this.state.hasOwnProperty('description')) {
             const apiHelper = new ApiHelper();
             apiHelper.post('/cohort', this.getQueryData())
                 .then((res) => {
                     this.setState(Object.assign({}, this.state, {
-                            allCohort: [res, ...this.state.allCohort]
-                    }));                    
+                            allCohort: [res, ...this.state.allCohort],
+                            error: null,
+                            name :'', 
+                            description: ''
+                    }));
+                    $('#myCohort').modal('hide');          
                 });
         } else {
             this.setState({ error: "all fields are required" });
@@ -73,10 +84,10 @@ class ActionsComponent extends Component {
 
 	getQueryData() {
 		return {
-            display: this.state.name,
+            display: this.state.query,
             name: this.state.name,
             description: this.state.description,
-            memberIds: this.getPatientId(this.state.cohort)
+            memberIds: this.getPatientId(this.state.queryId)
 		};
 	}
 
@@ -185,26 +196,60 @@ class ActionsComponent extends Component {
 
     render() {
         return(
-            <div className="modal fade" id="myCohort" tabIndex="-1" role="dialog" aria-labelledby="myCohortLabel">
-                <div className="row cohort-table">
-                    <div className="col-sm-8 col-sm-offset-2">
-                        { (this.state.toDisplay.length > 0) ?
-                        <div>
-                            <CohortTable toDisplay={this.state.toDisplay} description={this.state.cohortDescription} />
-                            <Navigate totalPage={this.state.totalPage} currentPage={this.state.currentPage} navigatePage={this.navigatePage} />
-                        </div>
-                        :
-                        <div className="text-center">No data to display</div>
-                        }
+             <div className="modal fade" id="myCohort" tabIndex="-1" role="dialog" aria-labelledby="myCohortLabel">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 className="modal-title" id="myCohortLabel">Save Cohorts</h4>
+                    </div>
+                    <div className="modal-body" onSubmit={this.onSave}>  
+                        <form className="form-horizontal" id="cohort" onSubmit={this.handleSubmit}>
+                            { this.state.error ?
+                            <div className="alert alert-danger text-center">{this.state.error}</div> : ""}
+                            <div className="form-group">
+                                <label className="control-label col-sm-2">Query:</label>
+                                <div className="col-sm-8">
+                                    <input type="text" className="form-control" name="query" 
+                                        value={this.state.query}
+                                    placeholder="Enter name" onChange={this.handleChange} />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label col-sm-2">Name:</label>
+                                <div className="col-sm-8">
+                                    <input type="text" className="form-control" name="name" placeholder="Enter name" onChange={this.handleChange} />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label col-sm-2">Description:</label>
+                                <div className="col-sm-8">
+                                    <input type="text" className="form-control" name="description" placeholder="Enter description" onChange={this.handleChange} />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <div className="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" className="btn btn-success">Save</button>
+                                    <button type="reset" className="btn btn-default cancelBtn">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                     </div>
                 </div>
-            </div>            
+            </div>
+            
         );
     }
 }
 
 ActionsComponent.propTypes ={
-	history: PropTypes.array.isRequired
+	history: PropTypes.array.isRequired,
+    query: PropTypes.string.isRequired,
+    queryId: PropTypes.string.isRequired
 };
 
 export default ActionsComponent;

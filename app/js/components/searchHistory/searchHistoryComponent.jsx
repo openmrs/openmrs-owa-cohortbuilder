@@ -3,6 +3,7 @@ import shortId from 'shortid';
 import { ApiHelper } from '../../helpers/apiHelper';
 import DownloadHelper from '../../helpers/downloadHelper';
 import { JSONHelper } from '../../helpers/jsonHelper';
+import CohortModal from '../cohorts/cohortModal';
 
 import Modal from './saveModal.jsx';
 import './searchHistory.css';
@@ -18,7 +19,8 @@ class SearchHistoryComponent extends Component {
             totalPage: 0,
             perPage: 10,
             description: '',
-            index: 0
+            index: 0,
+            queryId: 0
         };
         this.navigatePage = this.navigatePage.bind(this);
         this.historyItemData = this.historyItemData.bind(this);
@@ -109,7 +111,14 @@ class SearchHistoryComponent extends Component {
         };
     }
 
+    setSaveCohort(description, index) {
+        return () => {
+            this.setState({queryId : index, description});
+        };
+    }
+
     render(){
+        const { history } = this.props;
         return (
           <div>
             <Modal
@@ -120,41 +129,48 @@ class SearchHistoryComponent extends Component {
                 error={this.props.error}
                 loading={this.props.loading}
              />
+             <CohortModal 
+               query={this.state.description}
+               queryId={this.state.queryId}
+               history={this.props.history}
+             />
             <div className="col-sm-12 section">
                 <h3>Search History</h3>
                 <div className="result-window">
+                   
                     {
-                        (this.props.history.length > 0) ?
-                            <table className="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>S/N</th>
-                                        <th>Description</th>
-                                        <th>Total Results</th>
-                                        <th className="row-icon">Download</th>
-                                        <th className="row-icon">Save</th>
-                                        <th className="row-icon">Delete</th>
-                                        <th className="row-icon">View</th>
+                        (history.length > 0) ?
+                         <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Query</th>
+                                    <th>Results</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               {
+                                   history.map((eachResult, index) => 
+                                    <tr key={shortId.generate()}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>
+                                            {eachResult.description} 
+                                            <span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}/>
+                                            <span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(index)} aria-hidden="true"/>
+                                        </td>
+                                        <td>{eachResult.patients.length +' result(s)'}
+                                            <span className="glyphicon glyphicon-download download" onClick={this.downloadCSV(index, eachResult.description)} title="Download" aria-hidden="true"/>
+                                            <span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"  data-toggle="modal" data-target="#myCohort" onClick={this.setSaveCohort(eachResult.description, index)}/>
+                                            <span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(index)} title="View" aria-hidden="true"/>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        this.props.history.map((eachResult, index) =>
-                                            <tr key={shortId.generate()}>
-                                                <td>{this.props.history.length - index}</td>
-                                                <td>{eachResult.description}</td>
-                                                <td>{eachResult.patients.length +' result(s)'}</td>
-                                                <td className="row-icon"><span className="glyphicon glyphicon-download download" onClick={this.downloadCSV(index, eachResult.description)} title="Download" aria-hidden="true"/></td>
-                                                <td className="row-icon"><span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}/></td>
-                                                <td className="row-icon"><span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(index)} aria-hidden="true"/></td>
-                                                <td className="row-icon"><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(index)} title="View" aria-hidden="true"/></td>
-                                            </tr>
-                                        )
-                                    }
-                                </tbody>
-                            </table>
-                            : <p className="text-center">No search History</p>
+                                   )
+                               }
+                            </tbody>
+                        </table>
+                            : ""
                     }
+                     
                 </div>
 
                 {(this.state.searchResults.length) ? 

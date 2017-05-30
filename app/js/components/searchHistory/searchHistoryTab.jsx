@@ -83,34 +83,16 @@ class  SearchHistoryTab  extends Component {
     render() {
         return (
             <div className="section">
-                <ul  id="myTab" className="nav nav-tabs" role="tablist">
-                    <li className="nav-item">
-                        <a className="nav-link active"  data-toggle="tab" href="#cached" role="tab">Cached</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" data-toggle="tab"   href="#saved" role="tab">Saved History</a>
-                    </li>
-                </ul>
-
-                <div className="tab-content">
-                    <div className="tab-pane active" id="cached" role="tabpanel">
-                        <SearchHistory 
-                            history={this.props.history} 
-                            deleteHistory={this.props.deleteHistory} 
-                            saveSearch={this.saveSearch}
-                            error={this.state.error}
-                            loading={this.state.loading}
-                            />
-                    </div>
-                    <div className="tab-pane" id="saved" role="tabpanel">
-                        <SavedHistory 
-                            history={this.state.history} 
-                            updateHistory={this.updateHistory}
-                            setError={this.setError}
+                <div className="tab-pane active" id="cached" role="tabpanel">
+                    <SearchHistory 
+                        history={this.props.history} 
+                        deleteHistory={this.props.deleteHistory} 
+                        saveSearch={this.saveSearch}
+                        error={this.state.error}
+                        loading={this.state.loading}
                         />
-                    </div>
                 </div>
-            </div>
+            </div> 
         );
     }
 }

@@ -7,6 +7,16 @@ ul.nav-tabs>li {
     text-align: center;
 }
 
+.link {
+     cursor:pointer;
+     padding-left: 10px;
+     color: #0000EE;
+}
+
+.link:hover {
+     text-decoration:underline;
+}
+
 .nav-tabs>li>a {
     border: none;
     color: #363463;

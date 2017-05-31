@@ -24,7 +24,7 @@ describe('<TabsComponent />', () => {
 
     it('should have the correct initial state', ()=>{
         const wrapper = shallow( <TabsComponent/> );
-        expect(wrapper.state('tabs')).to.have.length(6);
+        expect(wrapper.state('tabs')).to.have.length(7);
     });
 
     it('should set the first tab active', ()=>{

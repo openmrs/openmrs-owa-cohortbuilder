@@ -94,8 +94,8 @@ class Modal extends Component {
                                         className="form-control" placeholder="Enter a descriptive Name" />
                                 </div>
                             </div>
-                        <button type="submit" className="btn btn-primary submit" disabled={this.state.loading}>
-                            {this.state.loading ? <img src="img/spin.gif"/> : "Save changes"}
+                        <button type="submit" className="btn btn-success submit" disabled={this.state.loading}>
+                            {this.state.loading ? <img src="img/spin.gif"/> : "Save"}
                         </button>
                         <button onClick={this.reset} type="reset" className="btn btn-default cancelBtn">Reset</button>
                         </form>

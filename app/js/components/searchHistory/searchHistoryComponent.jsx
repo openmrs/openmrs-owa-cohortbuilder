@@ -152,16 +152,16 @@ class SearchHistoryComponent extends Component {
                                {
                                    history.map((eachResult, index) => 
                                     <tr key={shortId.generate()}>
-                                        <th scope="row">{index + 1}</th>
+                                        <td scope="row">{this.props.history.length - index}</td>
                                         <td>
                                             {eachResult.description} 
-                                            <span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}/>
-                                            <span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(index)} aria-hidden="true"/>
+                                            <a className="link" title="Save Query Definition" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}>Save</a>
+                                            <a className="link" title={`Delete ${eachResult.description}`} onClick={this.delete(index)} aria-hidden="true">Delete</a>
                                         </td>
-                                        <td>{eachResult.patients.length +' result(s)'}
-                                            <span className="glyphicon glyphicon-download download" onClick={this.downloadCSV(index, eachResult.description)} title="Download" aria-hidden="true"/>
-                                            <span className="glyphicon glyphicon-floppy-disk save" title="Save" aria-hidden="true"  data-toggle="modal" data-target="#myCohort" onClick={this.setSaveCohort(eachResult.description, index)}/>
-                                            <span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(index)} title="View" aria-hidden="true"/>
+                                        <td>
+                                            <a className="link" onClick={this.viewResult(index)} title={`View ${eachResult.description}`} aria-hidden="true">{`${eachResult.patients.length} result(s)`}</a>
+                                            <a className="link" onClick={this.downloadCSV(index, eachResult.description)} title={`Dowload ${eachResult.description}`} aria-hidden="true">Download</a>
+                                            <a className="link" title="Save Cohorts" aria-hidden="true"  data-toggle="modal" data-target="#myCohort" onClick={this.setSaveCohort(eachResult.description, index)}>Save</a>
                                         </td>
                                     </tr>
                                    )

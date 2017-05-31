@@ -4,6 +4,15 @@
     margin-bottom: 20px;
 }
 
+.saved-results-view {
+    max-height: 180px;
+    overflow-y: scroll;
+}
+
+hr {
+    margin-top: 0px;
+}
+
 .cohort-table {
     margin-bottom: 20px;
 }

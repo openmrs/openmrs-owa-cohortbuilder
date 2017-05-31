@@ -4,6 +4,7 @@ import EncounterComponent from './encounterComponent';
 import ProgrammeComponent from './programmeComponent';
 import DrugOrderComponent from './drugOrderComponent';
 import CompositionComponent from './compositionComponent';
+import SavedComponent from './savedComponent';
 
 export default {
     ConceptComponent,
@@ -11,5 +12,6 @@ export default {
     EncounterComponent,
     ProgrammeComponent,
     DrugOrderComponent,
-    CompositionComponent
+    CompositionComponent,
+    SavedComponent
 };

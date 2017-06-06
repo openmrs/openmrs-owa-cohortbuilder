@@ -5,7 +5,7 @@ const Loader = () => {
     width: '128',
     height: '128',
     margin: 'auto'
-  }
+  };
   return(
     <div style={style}>
       <img src="./img/loader.gif" />

@@ -39,12 +39,12 @@ class SearchHistoryComponent extends Component {
         this.setState({ toDisplay: pagePatientInfo, currentPage: pageToNavigate });
     }
 
-    viewResult(index) {
+    viewResult(index, description) {
         return (event) => {
             event.preventDefault();
+            this.props.getHistory(this.props.history[index], description);
             const allPatients = this.props.history[index].patients;
             const pagePatientInfo = this.getPagePatient(allPatients, 1);
-            const description = this.props.history[index].description;
             this.setState({
                 toDisplay: pagePatientInfo,
                 searchResults: allPatients,
@@ -121,7 +121,7 @@ class SearchHistoryComponent extends Component {
         const { history } = this.props;
         return (
           <div>
-            <Modal
+          <Modal
                 index={this.state.index}
                 description={this.state.description}
                 saveSearch={this.props.saveSearch}
@@ -159,7 +159,7 @@ class SearchHistoryComponent extends Component {
                                             <a className="link" title={`Delete ${eachResult.description}`} onClick={this.delete(index)} aria-hidden="true">Delete</a>
                                         </td>
                                         <td>
-                                            <a className="link" onClick={this.viewResult(index)} title={`View ${eachResult.description}`} aria-hidden="true">{`${eachResult.patients.length} result(s)`}</a>
+                                            <a className="link" onClick={this.viewResult(index, eachResult.description)} title={`View ${eachResult.description}`} aria-hidden="true">{`${eachResult.patients.length} result(s)`}</a>
                                             <a className="link" onClick={this.downloadCSV(index, eachResult.description)} title={`Dowload ${eachResult.description}`} aria-hidden="true">Download</a>
                                             <a className="link" title="Save Cohorts" aria-hidden="true"  data-toggle="modal" data-target="#myCohort" onClick={this.setSaveCohort(eachResult.description, index)}>Save</a>
                                         </td>
@@ -170,55 +170,7 @@ class SearchHistoryComponent extends Component {
                         </table>
                             : ""
                     }
-                     
                 </div>
-
-                {(this.state.searchResults.length) ? 
-                <div className="result row col-sm-8 col-sm-offset-2">
-                    <h2 className="center-align">{this.state.description}</h2>
-                    <table className="table table-striped" >
-                        <thead>
-                            <tr>
-                                <td>NAME</td>
-                                <td>AGE</td>
-                                <td>GENDER</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            this.state.toDisplay.map(patient => {
-                                return (
-                                    <tr key={shortId.generate()}>
-                                        <td>{`${patient.firstname} ${patient.lastname}`}</td>
-                                        <td>{patient.age}</td>
-                                        <td>{patient.gender}</td>
-                                    </tr>);
-                            })
-                        }
-                        </tbody>
-                    </table>
-                    
-                    <div className="tableNavigation">
-                        <button className="btn btn-primary" onClick={this.navigatePage} value="first">FIRST</button>
-                        {
-                            (this.state.currentPage > 1) ?
-                                <button className="btn btn-primary" onClick={this.navigatePage} value="previous">PREVIOUS</button> :
-                                null
-                        }
-
-                        {
-                            (this.state.currentPage < this.state.totalPage) ?
-                                <span>
-                                    <button className="btn btn-primary" onClick={this.navigatePage} value="next">NEXT</button>
-                                    <button className="btn btn-primary" onClick={this.navigatePage} value="last">LAST</button>
-                                </span> :
-                                null
-                        }
-                        <span className="page-display-counter">{this.state.currentPage + " of " + this.state.totalPage}</span>
-                    </div>
-                </div> :
-                null
-            }
             </div>
           </div>
         );
@@ -230,7 +182,8 @@ SearchHistoryComponent.propTypes = {
     deleteHistory: React.PropTypes.func.isRequired,
     saveSearch: PropTypes.func,
     error: PropTypes.string,
-    loading: PropTypes.bool.isRequired
+    loading: PropTypes.bool.isRequired,
+    getHistory: PropTypes.func
 };
 
 export default SearchHistoryComponent;

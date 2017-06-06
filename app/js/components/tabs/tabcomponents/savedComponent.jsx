@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import SavedResultsTable from '../../common/savedResultsTable';
 import { ApiHelper } from '../../../helpers/apiHelper';
 import DownloadHelper from '../../../helpers/downloadHelper';
@@ -7,8 +7,8 @@ const RECENT_RESULTS_MAX_LENGTH = 5;
 
 class SavedComponent extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       // cohort related variables
       cohortsQuery: '',
@@ -25,7 +25,6 @@ class SavedComponent extends React.Component {
       definitionDownloadJobs: [],
       definitionDeleteJobs: []
     };
-
     // cohort related methods
     this.getLastSavedCohorts = this.getLastSavedCohorts.bind(this);
     this.searchSavedCohorts = this.searchSavedCohorts.bind(this);
@@ -120,11 +119,21 @@ class SavedComponent extends React.Component {
    * @param {String} uuid - selected cohort UUID
    * @return {undefined} 
    */
-  viewCohort(uuid) {
-    return (event) => {
-      event.preventDefault();
-      // TODO: To be implemented when setting up the View component
-    };
+  viewCohort(uuid, description) {
+     const apiHelper = new ApiHelper();
+      return () => {
+          apiHelper.get(`/cohort/${uuid}/member?v=full`)
+              .then((res) => {
+                  res.rows = res.results.map(data => {
+                    return {
+                      name:  data.patient.person.display,
+                      gender: data.patient.person.gender,
+                      age: data.patient.person.age
+                    };
+                  });
+                this.props.getHistory(res, description);
+            });
+        };
   }
 
   /**
@@ -193,12 +202,15 @@ class SavedComponent extends React.Component {
    * @param {String} uuid - Selected definition query uuid
    * @return {undefined}
    */
-  viewDefinition(uuid) {
-    return (event) => {
-      event.preventDefault();
-      // TODO: To be implemented when setting up the View component
-    };
-  }
+  viewDefinition(uuid, description) {
+    const apiHelper = new ApiHelper();
+      return () => {
+          apiHelper.get(`reportingrest/dataSet/${uuid}`)
+              .then((res) => {
+                  this.props.getHistory(res, description);
+            });
+        };
+    }
 
   /**
    * Method to search for saved cohorts and update the state
@@ -427,5 +439,9 @@ class SavedComponent extends React.Component {
     );
   }
 }
+
+SavedComponent.propTypes = {
+  getHistory: PropTypes.func
+};
 
 export default SavedComponent;

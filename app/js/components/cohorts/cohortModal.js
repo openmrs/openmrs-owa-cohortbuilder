@@ -2,8 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import shortId from 'shortid';
 
 import { ApiHelper } from '../../helpers/apiHelper';
-import { Navigate } from './navigate';
-import CohortTable from './cohortTable';
 import DownloadHelper from '../../helpers/downloadHelper';
 import './cohorts.css';
 
@@ -249,7 +247,7 @@ class ActionsComponent extends Component {
 ActionsComponent.propTypes ={
 	history: PropTypes.array.isRequired,
     query: PropTypes.string.isRequired,
-    queryId: PropTypes.string.isRequired
+    queryId: PropTypes.number.isRequired
 };
 
 export default ActionsComponent;

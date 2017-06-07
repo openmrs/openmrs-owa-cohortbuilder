@@ -13,15 +13,58 @@ import React, {Component} from 'react';
 import {Header} from './common/Header';
 import PageComponent from './page/pageComponent';
 import BreadCrumbComponent from './breadCrumb/breadCrumbComponent';
+import CohortTable from '../components/common/table';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            history: [],
+            description: "",
+            display: 'block',
+            table: 'none'
+        };
+        this.getHistory = this.getHistory.bind(this);
+        this.back = this.back.bind(this);
+    }
 
+    back() {
+        this.setState({
+            table: 'none',
+            display: 'block'
+        });
+    }
+
+    getHistory(data, description = "") {
+        this.setState({ 
+            history : data.rows || data.patients,
+            description: description || data.searchDescription,
+            display: 'none',
+            table: 'block'
+        });
+    }
+ 
     render() {
+            const { display, table, history, description , getHistory } = this.state;
         return (
             <div>
-                <Header/>
-                <BreadCrumbComponent/>
-                <PageComponent/>
+                <div 
+                    id="tabbed-cohort" style={{display}}>
+                    <Header/>
+                    <BreadCrumbComponent/>
+                    <PageComponent getHistory = {this.getHistory} />
+                
+                </div>
+                <div id="body-wrapper" 
+                    style={{display :table}}>
+                    <div id="displayTable"  className="col-md-12 section">
+                        <CohortTable
+                            toDisplay = {history}
+                            description = {description}
+                            back={this.back}
+                        />
+                    </div>
+                </div>
             </div>
         );
     }

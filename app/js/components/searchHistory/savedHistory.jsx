@@ -2,8 +2,6 @@ import React,{ Component, PropTypes } from 'react';
 import shortId from 'shortid';
 import DownloadHelper from '../../helpers/downloadHelper';
 import SearchHistory from './searchHistoryComponent.jsx';
-import SavedHistoryTable from './savedHistoryTable.jsx';
-import { Navigate } from '../cohorts/navigate.jsx';
 import { ApiHelper }  from '../../helpers/apiHelper';
 
 
@@ -61,7 +59,7 @@ class  SavedHistory extends Component {
     getPagePatient(allHistory, currentPage) {
 		const pagePatientInfo = [];
 		for (let index = (currentPage - 1) * this.state.perPage; index < currentPage * this.state.perPage && index < allHistory.length; index++) {
-			pagePatientInfo.push(
+			pagePatientInfo.push (
 				allHistory[index]
 			);
 		}
@@ -176,18 +174,6 @@ class  SavedHistory extends Component {
                             </table>
                             : <p className="text-center">No search History</p>
                     }
-                </div>
-                 <div className="row cohort-table">
-                    <div className="col-sm-8 col-sm-offset-2">
-                        { (this.state.toDisplay.length > 0) ?
-                        <div>
-                            <SavedHistoryTable toDisplay={this.state.toDisplay} description={this.state.description} />
-                            <Navigate totalPage={this.state.totalPage} currentPage={this.state.currentPage} navigatePage={this.navigatePage} />
-                        </div>
-                        :
-                        <div className="text-center">No data to display</div>
-                        }
-                    </div>
                 </div>
             </div>
         );

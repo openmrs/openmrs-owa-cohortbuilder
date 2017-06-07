@@ -10,6 +10,6 @@ const Loader = ({message}) => {
 
 Loader.propTypes = {
   message: PropTypes.string.isRequired
-}
+};
 
 export default Loader;

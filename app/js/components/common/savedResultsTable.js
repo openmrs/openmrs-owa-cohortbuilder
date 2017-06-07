@@ -25,7 +25,7 @@ const SavedResultsTable = ({
           <tbody>
             {
               results.map((result, index) => {
-                const uuid = result.uuid;
+                const { uuid, description } = result;
                 return (
                   <tr key={uuid}>
                     <td>{index + 1}</td>
@@ -34,14 +34,14 @@ const SavedResultsTable = ({
                       {result.description}
                       {result.totalResults !== undefined ? 
                         <a
-                          onClick={onView(uuid)}
+                          onClick={onView(uuid, description)}
                           className="link"
                           title="View Patients"
                         >
                           {result.totalResults} Patients
                         </a> : 
                         <a
-                          onClick={onView(uuid)}
+                          onClick={onView(uuid, description)}
                           className="link"
                           title="View Patients"
                         >

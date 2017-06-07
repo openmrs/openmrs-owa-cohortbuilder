@@ -16,7 +16,7 @@ describe('<App />', () => {
 
     it('should mount the PageComponent in itself', () => {
         const wrapper = shallow( <App/> )
-        expect(wrapper.contains( <PageComponent/> )).to.equal(true);
+        expect(wrapper.find('PageComponent')).to.have.length(1)
     });
 
     it('should mount the Header in itself', () => {

@@ -19,12 +19,15 @@
     margin-bottom: 20px;
 }
 
-.result-window {
+.result-window, .table-window {
     padding: 10px;
     margin-top: 20px;
     margin-bottom: 20px;
     max-height: 300px;
     overflow-y: auto;
+}
+.table-window {
+    max-height: none;
 }
 
 .save, .view, .remove, .download {

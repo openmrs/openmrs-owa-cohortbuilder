@@ -83,23 +83,22 @@ class  SearchHistoryTab  extends Component {
     render() {
         return (
             <div className="section">
-                <div className="tab-pane active" id="cached" role="tabpanel">
-                    <SearchHistory 
-                        history={this.props.history} 
-                        deleteHistory={this.props.deleteHistory} 
-                        saveSearch={this.saveSearch}
-                        error={this.state.error}
-                        loading={this.state.loading}
-                        />
-                </div>
-            </div> 
+                <SearchHistory 
+                    history={this.props.history} 
+                    deleteHistory={this.props.deleteHistory} 
+                    saveSearch={this.saveSearch}
+                    error={this.state.error}
+                    loading={this.state.loading}
+                    getHistory = {this.props.getHistory} />
+            </div>
         );
     }
 }
 
 SearchHistoryTab.propTypes = {
     history: PropTypes.array.isRequired,
-    deleteHistory: PropTypes.func.isRequired
+    deleteHistory: PropTypes.func.isRequired,
+    getHistory: PropTypes.func
 };
 
 export default SearchHistoryTab;

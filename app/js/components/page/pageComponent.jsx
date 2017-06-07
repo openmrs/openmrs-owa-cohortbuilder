@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component ,PropTypes } from 'react';
 import TabsComponent from '../tabs/tabsComponent';
 import SearchHistoryTab from '../searchHistory/searchHistoryTab.jsx';
-import ActionsComponent from '../cohorts/actionsComponent';
 import './pageComponent.css';
 
 class PageComponent extends Component{
@@ -56,12 +55,20 @@ class PageComponent extends Component{
     render(){
         return(
             <div id="body-wrapper" className="page-wrapper">
-                <TabsComponent addToHistory={this.addToHistory} />
-                <SearchHistoryTab history={this.state.history} deleteHistory={this.deleteHistory} />
-                <ActionsComponent history={this.state.history} />
+                <TabsComponent 
+                    addToHistory={this.addToHistory} 
+                    getHistory = {this.props.getHistory} />
+                <SearchHistoryTab 
+                    history={this.state.history} 
+                    deleteHistory={this.deleteHistory} 
+                    getHistory = {this.props.getHistory} />
             </div>
         );
     }
 }
+
+PageComponent.propTypes = {
+    getHistory: PropTypes.func
+};
 
 export default PageComponent;

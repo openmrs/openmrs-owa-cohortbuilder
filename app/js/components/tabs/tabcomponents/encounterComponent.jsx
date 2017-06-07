@@ -134,7 +134,7 @@ class EncounterComponent extends Component {
       }
       const label = this.composeLabel(searchParams.encounterSearchAdvanced);
       const queryDetails = this.jsonHelper.composeJson(searchParams);
-      this.props.search(queryDetails).then(results => {
+      this.props.search(queryDetails, label).then(results => {
           const allEncounterTypes = results.rows || [];
           this.props.addToHistory(label, allEncounterTypes, results.query);
       });
@@ -234,7 +234,7 @@ class EncounterComponent extends Component {
             ]
         };
         const queryDetails = this.jsonHelper.composeJson(searchParameter);
-        this.props.search(queryDetails).then(results => {
+        this.props.search(queryDetails, this.getLocationSearchDescription()).then(results => {
             const allEncounterTypes = results.rows || [];
             this.props.addToHistory(this.getLocationSearchDescription(), allEncounterTypes, results.query);
             // reset fields to default

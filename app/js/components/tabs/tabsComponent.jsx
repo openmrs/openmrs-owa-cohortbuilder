@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,PropTypes } from 'react';
 
 import Components from './tabcomponents';
 import TabBarComponent from './tabBarComponent';
@@ -22,6 +22,7 @@ class TabsComponent extends Component {
                 {active: false, name: 'Saved', divId: 'saved', component:  Components.SavedComponent }
             ]
         };
+        this.search  = this.search.bind(this);
     }
 
     componentDidMount(){}
@@ -33,13 +34,15 @@ class TabsComponent extends Component {
     }
 
 
-    search(queryDetails) {
+    search(queryDetails, description = "") {
         const apiHelper = new ApiHelper(null);
+        const { getHistory } = this.props;
         const searchResult = new Promise(function(resolve, reject) {
             apiHelper.post('reportingrest/adhocquery?v=full', queryDetails.query).then(response => {
                 response.json().then(data => {
-                    data.searchDescription = queryDetails.label;
+                    data.searchDescription = description || queryDetails.label;
                     data.query = queryDetails.query;
+                    getHistory(data, data.searchDescription);
                     resolve(data);
                 });
             });
@@ -59,17 +62,19 @@ class TabsComponent extends Component {
         return getData;
     }
 
-    drawComponent(tabs, fetchData, search, addToHistory) {
+    drawComponent(tabs, fetchData, search, addToHistory, getHistory) {
         return tabs.map((tab,index) => {
             return(
                 <div id={tab.divId} key={index} className={'tab-pane ' + (tab.active ? 'active' : '')}>
-                    <tab.component fetchData={fetchData} search={search} addToHistory={addToHistory} />
+                    <tab.component fetchData={fetchData} search={search} addToHistory={addToHistory} getHistory={getHistory} />
                 </div>
             );
         });
     }
 
     render(){
+        const { getHistory } = this.props; 
+    
         return (
             <div className="col-sm-12 section">
                 <TabBarComponent tabs={this.state.tabs} drawTabHeader={this.drawTabHeader} />
@@ -79,6 +84,7 @@ class TabsComponent extends Component {
                     drawComponent={this.drawComponent}
                     fetchData={this.fetchData}
                     addToHistory={this.props.addToHistory}
+                    getHistory={getHistory}
                 />
             </div>
         );
@@ -86,4 +92,8 @@ class TabsComponent extends Component {
 
 }
 
+TabsComponent.propTypes = {
+    getHistory : PropTypes.func,
+    addToHistory: PropTypes.func,
+};
 export default TabsComponent;

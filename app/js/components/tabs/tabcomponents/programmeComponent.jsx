@@ -21,7 +21,7 @@ class ProgrammeComponent extends Component {
         };
         this.searchByProgram = this.searchByProgram.bind(this);
         this.handleSelectProgram = this.handleSelectProgram.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSelectState = this.handleSelectState.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.getDateString = this.getDateString.bind(this);
         this.handleWorkflowChange = this.handleWorkflowChange.bind(this);
@@ -101,9 +101,40 @@ class ProgrammeComponent extends Component {
 
             jsonQuery.query.customRowFilterCombination = (initialNumberOfFilters === 1) ? '1 and 2' : '1 and 2 and 3';
         }
-        new ApiHelper().post('reportingrest/adhocquery?v=full', jsonQuery.query).then(response => {
-            this.props.addToHistory(this.composeLabel(), response.rows, jsonQuery.query);
+        new ApiHelper().post('reportingrest/adhocquery?v=full', jsonQuery.query).then(res => {
+            const label = this.composeLabel();
+            this.props.addToHistory(label, res.rows, jsonQuery.query);
+            this.props.getHistory(res, label);
         });
+    }
+
+    /**
+     * Helper method to get the Name of the selectedState using it's uuid
+     * @return {String} Name of the selected state
+     */
+    getSelectedStateName() {
+        return this.state.states
+            .find(state => state.uuid === this.state.state)
+            .concept.display;
+    }
+
+    /**
+     * Helper method to get the name of the selectedProgram using it's uuid
+     * @return {String} Name of the selected program
+     */
+    getSelectedProgramName() {
+        return this.state.programs
+            .find(element => element.uuid === this.state.program).name;
+    }
+
+    /**
+     * Helper method to get the name of the selectedWorkflow for it's uuid
+     * @return {String} Name of the selected program
+     */
+    getSelectedWorkflowName() {
+        return this.state.workflows
+            .find(workflow => workflow.uuid === this.state.workflow)
+            .concept.display;
     }
 
     /**
@@ -112,14 +143,17 @@ class ProgrammeComponent extends Component {
      * @return {undefined} - Descriptive label for this search request
      */
     composeLabel() {
-        const element = document.getElementById(this.state.program);
-        const program =  element ? element.innerText : 'all programs';
+        let program = this.state.program;
+        program =  !program ? 
+            'all programs' : 
+            this.getSelectedProgramName();
+        
         let label = `Patients in ${program}`;
-
-        if(this.state.state) {
-            const stateOptionElement = document.getElementById(this.state.state);
-            label = `Patients in ${stateOptionElement.innerText}`;
+        if (this.state.workflow && this.state.state) {
+            label += ` with workflow of ${this.getSelectedWorkflowName()}`;
+            label += ` and state of ${this.getSelectedStateName()}`;
         }
+
         if (this.state.inEndDate || this.state.inStartDate) {
             label += this.composerHelper('inStartDate', 'inEndDate', 'were in');
         }
@@ -180,14 +214,14 @@ class ProgrammeComponent extends Component {
     }
 
     /**
-     * Method to handle events fired by input elements in this components forms
-     * It sets the input elements value to the corresponding state value
+     * Method to handle selected state for the search
      * @param {Object} event - Event object containing data about this event
      * @return {undefined} - returns undefined
      */
-    handleInputChange(event) {
+    handleSelectState(event) {
         event.preventDefault();
-        this.setState({[event.target.id]: event.target.value});
+        const state = event.target.value;
+        this.setState({ state });
     }
 
     /**
@@ -289,6 +323,11 @@ class ProgrammeComponent extends Component {
      */
     resetFields() {
         this.resetDates();
+        this.setState({
+            state: '',
+            workflow: '',
+            program: ''
+        });
     }
 
     /**
@@ -338,7 +377,13 @@ class ProgrammeComponent extends Component {
                 <div className="form-group">
                     <label htmlFor="gender" className="col-sm-2 control-label">Program:</label>
                     <div className="col-sm-6">
-                        <select onChange={this.handleSelectProgram} className="form-control" id="program" name="program">
+                        <select
+                            onChange={this.handleSelectProgram}
+                            value={this.state.program}
+                            className="form-control"
+                            id="program"
+                            name="program"
+                        >
                             <option value="">All</option>
                             { programs }
                         </select>
@@ -348,7 +393,12 @@ class ProgrammeComponent extends Component {
                 <div className="form-group">
                     <label htmlFor="gender" className="col-sm-2 control-label">Workflow:</label>
                     <div className="col-sm-6">
-                        <select className="form-control" id="workflow" onChange={this.handleWorkflowChange}>
+                        <select
+                            className="form-control" 
+                            id="workflow"
+                            onChange={this.handleWorkflowChange}
+                            value={this.state.workflow}
+                        >
                             <option value="">All</option>
                             { workflows }
                         </select>
@@ -358,8 +408,13 @@ class ProgrammeComponent extends Component {
                 <div className="form-group">
                     <label htmlFor="gender" className="col-sm-2 control-label">State:</label>
                     <div className="col-sm-6">
-                        <select className="form-control" id="state" onChange={this.handleInputChange}>
-                            <option value="all">All</option>
+                        <select
+                            className="form-control"
+                            id="state"
+                            onChange={this.handleSelectState}
+                            value={this.state.state}
+                        >
+                            <option value="">All</option>
                             { states }
                         </select>
                     </div>
@@ -380,7 +435,6 @@ class ProgrammeComponent extends Component {
                             value={this.state.inStartDate}
                             onChange={this.handleDateChange('inStartDate')}
                         />
-                        {/*<input className="form-control" type="date" name="from-date" id="inStartDate" onChange={this.handleInputChange} />*/}
                     </div>
                     <span className="inline-label">On or before:</span>
                     <div className="col-sm-3">
@@ -392,7 +446,6 @@ class ProgrammeComponent extends Component {
                             value={this.state.inEndDate}
                             onChange={this.handleDateChange('inEndDate')}
                         />
-                        {/*<input className="form-control" name="to-date" type="date" id="inEndDate" onChange={this.handleInputChange} />*/}
                     </div>
                 </div>
 
@@ -411,7 +464,6 @@ class ProgrammeComponent extends Component {
                             value={this.state.enrolledOnOrAfter}
                             onChange={this.handleDateChange('enrolledOnOrAfter')}
                         />
-                        {/*<input id="enrolledOnOrAfter" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />*/}
                     </div>
                     <span className="inline-label">On or before:</span>
                     <div className="col-sm-3">
@@ -423,7 +475,6 @@ class ProgrammeComponent extends Component {
                             value={this.state.enrolledOnOrBefore}
                             onChange={this.handleDateChange('enrolledOnOrBefore')}
                         />
-                        {/*<input id="enrolledOnOrBefore" className="form-control" name="to-date" type="date" onChange={this.handleInputChange} />*/}
                     </div>
                 </div>
 
@@ -442,7 +493,6 @@ class ProgrammeComponent extends Component {
                             value={this.state.completedOnOrAfter}
                             onChange={this.handleDateChange('completedOnOrAfter')}
                         />
-                        {/*<input id="completedOnOrAfter" className="form-control" type="date" name="from-date" onChange={this.handleInputChange} />*/}
                     </div>
                     <span className="inline-label">On or before:</span>
                     <div className="col-sm-3">
@@ -454,7 +504,6 @@ class ProgrammeComponent extends Component {
                             value={this.state.completedOnOrBefore}
                             onChange={this.handleDateChange('completedOnOrBefore')}
                         />
-                        {/*<input id="completedOnOrBefore" className="form-control" name="to-date" type="date" onChange={this.handleInputChange}/>*/}
                     </div>
                 </div>
                 
@@ -473,7 +522,8 @@ class ProgrammeComponent extends Component {
 ProgrammeComponent.propTypes = {
     fetchData: React.PropTypes.func.isRequired,
     search: React.PropTypes.func.isRequired,
-    addToHistory: React.PropTypes.func.isRequired
+    addToHistory: React.PropTypes.func.isRequired,
+    getHistory: React.PropTypes.func.isRequired
 };
 
 export default ProgrammeComponent;

@@ -129,3 +129,12 @@ lay above other components*/
 .Select-control, .Select-menu-outer {
     text-align: left;
 }
+
+.Select-multi-value-wrapper {
+    overflow: scroll;
+    max-height: 85px;
+}
+
+.error {
+    color: #d9534f
+}

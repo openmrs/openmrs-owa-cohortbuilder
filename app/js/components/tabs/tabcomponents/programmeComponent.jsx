@@ -196,7 +196,9 @@ class ProgrammeComponent extends Component {
     handleSelectProgram(event) {
         event.preventDefault();
         const program = event.target.value;
-        this.setState({ program, states: [] });
+        this.setState({
+            program, states: [], workflows: [], state: '', workflow: ''
+        });
         this.getWorkflow(program);
     }
 

@@ -25,8 +25,7 @@ export class JSONHelper {
       counter += 1;
     }
     query.customRowFilterCombination = this.composeFilterCombination(query.rowFilters);
-    const label = this.composeDescription(searchParameters);
-    return {query, label};
+    return {query};
   }
 
   isNullValues(fieldValues) {
@@ -104,62 +103,5 @@ export class JSONHelper {
       return aColumn;
     });
     return colValues;
-  }
-  
-  composeDescription(searchParameters) {
-    const newParameters = Object.assign({}, searchParameters);
-    let definitionKeys = Object.keys(newParameters);
-    if(definitionKeys.length === 0) {
-      return 'All Patients';
-    } else {
-      let label = '';
-      if (definitionKeys.indexOf('gender') >= 0) {
-        label = `${this.getGenderName(newParameters['gender'])} patients`;
-        delete newParameters.gender;
-        definitionKeys = Object.keys(newParameters);
-      } else {
-        label = 'Patients';
-      }
-      let counter = 0;
-      for(let eachKey in newParameters) {
-        if(counter === 0) {
-          if (eachKey !== 'diedDuringPeriod')
-            label += ' with';
-          else
-            label += ' that are';
-        } else if ((counter > 0) && (counter < definitionKeys.length - 1)) {
-          label += ',';
-        } else {
-          label += ' and';
-        }
-        label += this.createLabel(eachKey, newParameters);
-        counter++;
-      }
-      return label;
-    }
-  }
-
-  createLabel(key, searchParameters) {
-    switch(key) {
-      case 'upToAgeOnDate': 
-        return ` maximum age of ${searchParameters[key][0].value} years`;
-      case 'atLeastAgeOnDate': 
-        return ` minimum age of ${searchParameters[key][0].value} years`;
-      case 'ageRangeOnDate': 
-        return ` age between ${searchParameters[key][0].value} & ${searchParameters[key][1].value} years`; 
-      case 'bornDuringPeriod': 
-        return ` date of birth between ${searchParameters[key][0].value} & ${searchParameters[key][1].value}`;
-      case 'personWithAttribute': 
-        return ` ${ document.querySelector("option[value='" + searchParameters[key][0].value+ "']").innerText} as 
-          ${searchParameters[key][1].value}`;
-      case 'diedDuringPeriod':
-        return searchParameters[key][0].livingStatus === 'alive' ? ' Alive' : ' Dead';
-      default :
-        return '';
-    }
-  }
-
-  getGenderName(gender) {
-    return gender.charAt(0).toUpperCase()+gender.slice(1, gender.length-1); 
   }
 }

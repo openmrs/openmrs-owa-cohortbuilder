@@ -3,8 +3,6 @@ import SavedResultsTable from '../../common/savedResultsTable';
 import { ApiHelper } from '../../../helpers/apiHelper';
 import DownloadHelper from '../../../helpers/downloadHelper';
 
-const RECENT_RESULTS_MAX_LENGTH = 5;
-
 class SavedComponent extends React.Component {
 
   constructor(props) {
@@ -26,29 +24,17 @@ class SavedComponent extends React.Component {
       definitionDeleteJobs: []
     };
     // cohort related methods
-    this.getLastSavedCohorts = this.getLastSavedCohorts.bind(this);
     this.searchSavedCohorts = this.searchSavedCohorts.bind(this);
     this.deleteCohort = this.deleteCohort.bind(this);
     this.downloadCohort = this.downloadCohort.bind(this);
     this.viewCohort = this.viewCohort.bind(this);
     // definition related methods
-    this.getLastSavedDefinitions = this.getLastSavedDefinitions.bind(this);
     this.searchSavedDefinitions = this.searchSavedDefinitions.bind(this);
     this.deleteDefinition = this.deleteDefinition.bind(this);
     this.viewDefinition = this.viewDefinition.bind(this);
     this.downloadDefinition = this.downloadDefinition.bind(this);
     // method to handle text input changes for cohorts and definitions
     this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
-  /**
-   * Method called by React when this component is about to be mounted in to
-   * the DOM
-   * @return {undefined}
-   */
-  componentWillMount() {
-    this.getLastSavedCohorts();
-    this.getLastSavedDefinitions();
   }
 
   /**
@@ -69,8 +55,6 @@ class SavedComponent extends React.Component {
         .then(() => {
           if (this.state.inSearchCohortMode) {
             this.searchSavedCohorts();
-          } else {
-            this.getLastSavedCohorts();
           }
         });
       }
@@ -154,8 +138,6 @@ class SavedComponent extends React.Component {
         .then(() => {
           if (this.state.inSearchDefinitionMode) {
             this.searchSavedDefinitions();
-          } else {
-            this.getLastSavedDefinitions();
           }
         });
       }
@@ -269,48 +251,6 @@ class SavedComponent extends React.Component {
   }
 
   /**
-   * Method to get last saved definition query
-   * @return {undefined}
-   */
-  getLastSavedDefinitions() {
-    new ApiHelper()
-    .get(
-      `reportingrest/dataSetDefinition?v=full&limit=${RECENT_RESULTS_MAX_LENGTH}`
-    )
-    .then(response => {
-      this.setState({
-        definitionResults: response.results.map(result => {
-          return {
-            name: result.name.replace(/\[AdHocDataExport\] /, ''),
-            description: result.description,
-            uuid: result.uuid
-          };
-        })
-      });
-    });
-  }
-
-  /**
-   * Method to fetch the last saved Cohorts and update the state
-   * @return {undefined}
-   */
-  getLastSavedCohorts() {
-    new ApiHelper().get(`/cohort?v=full&limit=${RECENT_RESULTS_MAX_LENGTH}`)
-    .then(response => {
-      this.setState({
-        cohortResults: response.results.map(result => {
-          return { 
-            name: result.display,
-            description: result.description,
-            totalResults: result.memberIds.length,
-            uuid: result.uuid
-          };
-        })
-      });
-    });
-  }
-
-  /**
    * Method to handle changes on text input elements in this component
    * @param {Object} event  - Object containing details of this event
    * @return {undefined}
@@ -323,14 +263,12 @@ class SavedComponent extends React.Component {
           definitionResults: [],
           inSearchDefinitionMode: false
         });
-        this.getLastSavedDefinitions();
       }
       if (event.target.id === 'cohortsQuery') {
         this.setState({
           cohortResults: [],
           inSearchCohortMode: false
         });
-        this.getLastSavedCohorts();
       }
     }
   }
@@ -383,8 +321,7 @@ class SavedComponent extends React.Component {
           results={this.state.definitionResults}
           isSearching={this.state.searchingDefinitions}
           tableName={this.state.inSearchDefinitionMode ?
-            'Definition Search Results':
-            `${RECENT_RESULTS_MAX_LENGTH} Most Recently Saved Definitions`}
+            'Definition Search Results': ''}
         />
         <hr/>
         <form 
@@ -433,7 +370,7 @@ class SavedComponent extends React.Component {
           isSearching={this.state.searchingCohorts}
           tableName={this.state.inSearchCohortMode ?
             'Cohort Search Results':
-            `${RECENT_RESULTS_MAX_LENGTH} Most Recently Saved Cohorts`}
+            ''}
         />
       </div>
     );

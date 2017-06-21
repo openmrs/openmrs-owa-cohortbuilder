@@ -20,9 +20,6 @@ class DowloadHelper {
     if (!(data instanceof Array) && typeof data[0] !== 'object') {
       throw new Error('Expected an Array of objects');
     }
-    if (data.length < 1) {
-      throw new Error('Cannot download an empty CSV file');
-    }
     const toProcess = data.unshift(header);
     const csv = DowloadHelper.formatToCSV(data);
     const blob = new Blob([csv], { type: "text/plain;charset=utf-8" });

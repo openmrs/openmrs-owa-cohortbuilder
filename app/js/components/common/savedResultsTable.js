@@ -11,9 +11,11 @@ const SavedResultsTable = ({
     </div>) : 
     (<div className="table-responsive">     
       <h4 className="text-center">{tableName}</h4>
-      {results.length <= 0 ?
-      <p>No Results</p> :
+      {results.length <= 0 && !isSearching ?
+      null :
       <div className="saved-results-view col-sm-10 col-sm-offset-1">
+        {results.length <= 0 ?
+        <p> No Results</p> : 
         <table className="table table-hover">
           <thead>
             <tr>
@@ -70,7 +72,7 @@ const SavedResultsTable = ({
               })
             }
           </tbody>
-        </table>
+        </table>}
       </div>}
     </div>
   );

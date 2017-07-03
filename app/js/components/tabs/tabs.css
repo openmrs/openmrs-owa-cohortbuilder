@@ -130,6 +130,13 @@ lay above other components*/
     text-align: left;
 }
 
+.bootstrap-typeahead-menu {
+    width: 100%;
+}
+
+.custom-typehead {
+    margin-bottom: 20px;
+}
 .Select-multi-value-wrapper {
     overflow: scroll;
     max-height: 85px;

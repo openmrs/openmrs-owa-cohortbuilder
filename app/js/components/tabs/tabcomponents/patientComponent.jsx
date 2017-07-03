@@ -49,7 +49,7 @@ class PatientComponent extends Component {
 
   searchDemographics(event) {
     event.preventDefault();
-    const { gender, minAge, maxAge, startDate, endDate } = this.state;
+    const { gender, minAge, maxAge, startDate, endDate, livingStatus } = this.state;
     const searchParameters = { gender };
     // add appropriate age constraints to the search parameters
     if (minAge || maxAge) {
@@ -82,7 +82,7 @@ class PatientComponent extends Component {
     // for living people, diedDuring period -> endDate !== now
     const today = new Date();
     const dayFormat = this.getDateString(today.toISOString());
-    const livingStatus = this.state.livingStatus;
+    
     if (livingStatus === 'alive' || livingStatus === 'dead') {
       searchParameters.diedDuringPeriod = [
         { name: 'endDate', dataType: 'date', value: dayFormat, livingStatus }
@@ -256,7 +256,8 @@ class PatientComponent extends Component {
    * component
    * @return {undefined}
    */
-  resetSearchByDemographics() {
+  resetSearchByDemographics(event) {
+    event.preventDefault();
     this.setState({
       startDate: '',
       endDate: '',
@@ -404,11 +405,23 @@ class PatientComponent extends Component {
             <div className="col-sm-offset-2 col-sm-6">
               <div className="checkbox patient-status">
                 <label>
-                  <input type="radio" value="alive" name="livingStatus" onChange={this.toggleLivingStatus} /> Alive Only
-                            </label>
+                  <input
+                    type="radio"
+                    value="alive"
+                    name="livingStatus"
+                    checked={this.state.livingStatus === 'alive'}
+                    onChange={this.toggleLivingStatus}
+                  /> Alive Only
+                </label>
                 <label>
-                  <input type="radio" value="dead" name="livingStatus" onChange={this.toggleLivingStatus} /> Dead Only
-                            </label>
+                  <input
+                    type="radio"
+                    value="dead"
+                    name="livingStatus"
+                    checked={this.state.livingStatus === 'dead'}
+                    onChange={this.toggleLivingStatus}
+                  /> Dead Only
+                </label>
               </div>
             </div>
           </div>
@@ -416,7 +429,7 @@ class PatientComponent extends Component {
           <div className="form-group">
             <div className="col-sm-offset-2 col-sm-6">
               <button type="submit" onClick={this.searchDemographics} className="btn btn-success">Search</button>
-              <button type="reset" onClick={this.resetSearchByDemographics} className="btn btn-default cancelBtn">Reset</button>
+              <button onClick={this.resetSearchByDemographics} className="btn btn-default cancelBtn">Reset</button>
             </div>
           </div>
         </form>

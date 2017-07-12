@@ -9,7 +9,7 @@ import TabContentComponent from '../app/js/components/tabs/tabContentComponent';
 import Components from '../app/js/components/tabs/tabcomponents';
 
 const tabs = [
-    {active: true, name: 'Concept / Observation', divId: 'concept', component: Components.ConceptComponent },
+    {active: true, name: 'Concept / Observation', divId: 'concept', component: Components.ConceptComponent,  },
     {active: false, name: 'Patient Attributes', divId: 'patient', component: Components.PatientComponent },
     {active: false, name: 'Encounter', divId: 'encounter', component: Components.EncounterComponent},
 ]
@@ -18,22 +18,22 @@ describe('<TabsComponent />', () => {
 
     it('should mount the TabsComponent in the dom', () => {
         sinon.spy(TabsComponent.prototype, 'componentDidMount');
-        const wrapper = mount(<TabsComponent/>);
+        const wrapper = mount(<TabsComponent getHistory={() => ({})} addToHistory={() => ({})} />);
         expect(TabsComponent.prototype.componentDidMount.calledOnce).to.equal(true);
     });
 
     it('should have the correct initial state', ()=>{
-        const wrapper = shallow( <TabsComponent/> );
+        const wrapper = shallow( <TabsComponent getHistory={() => ({})} addToHistory={() => ({})} /> );
         expect(wrapper.state('tabs')).to.have.length(6);
     });
 
     it('should set the first tab active', ()=>{
-        const wrapper = shallow( <TabsComponent/> );
+        const wrapper = shallow( <TabsComponent getHistory={() => ({})} addToHistory={() => ({})} /> );
         expect(wrapper.state('tabs')[0].active).to.equal(true);
     });
 
     it('should contain the right components', () => {
-        const wrapper = mount( <TabsComponent/> );
+        const wrapper = mount( <TabsComponent getHistory={() => ({})} addToHistory={() => ({})} /> );
         wrapper.setState({tabs: tabs});
         const drawTabHeader = sinon.spy();
         const drawComponent = sinon.spy();
@@ -49,7 +49,7 @@ describe('<TabsComponent />', () => {
     });
 
     it('drawComponent function should return a tabComponent', ()=>{
-        const mountComponent = TabsComponent.prototype.drawComponent(tabs,0)[0];
+        const mountComponent = TabsComponent.prototype.drawComponent(tabs, () => ({}), () => ({}), () => ({}), () => ({}),)[0];
         const wrapper = mount(mountComponent);
         expect(wrapper.find('.tab-pane')).to.have.length(1);
     });

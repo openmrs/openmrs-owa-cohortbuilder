@@ -55,8 +55,10 @@ class TabsComponent extends Component {
             apiHelper.get(url).then(response => {
                 response.json().then(data => {
                     resolve(data);
-                });
-            });
+                
+                //TODO: This errors need to be handled
+                }).catch((error) => error);
+            }).catch(error => error);
         });
         return getData;
     }

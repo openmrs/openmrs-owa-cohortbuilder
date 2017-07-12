@@ -47,7 +47,7 @@ class EncounterComponent extends Component {
     this.props.fetchData(FORMS_API_ENDPOINT)
       .then(response => {
         const displayData = [];
-        response.results.map(result => {
+        response.results && response.results.map(result => {
           displayData.push({ id: result.uuid, value: result.display });
         });
         this.setState({ forms: displayData });
@@ -56,7 +56,7 @@ class EncounterComponent extends Component {
     this.props.fetchData(LOCATIONS_API_ENDPOINT)
       .then(response => {
         const displayData = [];
-        response.results.map(result => {
+        response.results && response.results.map(result => {
           displayData.push({ id: result.uuid, value: result.display });
         });
         this.setState({ locations: displayData });
@@ -65,7 +65,7 @@ class EncounterComponent extends Component {
     this.props.fetchData(ENCOUNTER_TYPES_API_ENDPOINT)
       .then(response => {
         const displayData = [];
-        response.results.map(result => {
+        response.results && response.results.map(result => {
           displayData.push({ id: result.uuid, value: result.display });
         });
         this.setState({ encouterTypes: displayData });

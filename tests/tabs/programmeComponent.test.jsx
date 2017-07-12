@@ -6,7 +6,7 @@ import ProgrammeComponent from '../../app/js/components/tabs/tabcomponents/progr
 describe('ProgrammeComponent', () => {
   let renderedComponent;
   beforeEach(() => {
-    renderedComponent = shallow(<ProgrammeComponent />);
+    renderedComponent = shallow(<ProgrammeComponent fetchData={() => ({})} search={() => ({})} addToHistory={() => ({})} getHistory={() => ({})} />);
   });
 
   it('Should render 1 forms', () => {

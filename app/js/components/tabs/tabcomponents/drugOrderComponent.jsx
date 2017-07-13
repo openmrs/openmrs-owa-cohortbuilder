@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import DatePicker from "react-bootstrap-date-picker";
 import Error from '../../common/error';
 import Loader from '../../common/loader';
@@ -219,5 +219,9 @@ class DrugOrderComponent extends Component {
         }
     }
 }
+
+DrugOrderComponent.propTypes = {
+  fetchData: PropTypes.func.isRequired
+};
 
 export default DrugOrderComponent;

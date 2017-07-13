@@ -6,7 +6,7 @@ import PatientComponent from '../../app/js/components/tabs/tabcomponents/patient
 describe('<PatientComponent /> tab component', () => {
   let theComponent = null;
   beforeEach(() => {
-    theComponent = shallow(<PatientComponent />);
+    theComponent = shallow(<PatientComponent addToHistory={() => ({})} search={() => ({})} fetchData={() => ({})}/>);
   });
 
   it('should have two forms', () => {

@@ -24,11 +24,12 @@ describe('Api Helper Class', () => {
 
   it('should make a request', () => {
     const url = 'http://google.com';
+    const responseUrl = '/undefined/ws/rest/v1/http://google.com';
     apiHelper.build(url).send()
       .then(response => {
         expect(response.statusCode).to.equal(200);
-        expect(response.body.message).to.equal(`You called ${url}`);
-        expect(response.url).to.equal(url);
+        expect(response.body.message).to.equal(`You called /undefined/ws/rest/v1/${url}`);
+        expect(response.url).to.equal(responseUrl);
       });
   });
 

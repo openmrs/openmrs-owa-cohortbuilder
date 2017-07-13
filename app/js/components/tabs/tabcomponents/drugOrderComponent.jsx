@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import DatePicker from "react-bootstrap-date-picker";
 import Error from '../../common/error';
 import Loader from '../../common/loader';
@@ -38,7 +38,8 @@ class DrugOrderComponent extends Component {
             });
         this.props.fetchData('concept?name=REASON%20ORDER%20STOPPED')
             .then(conceptReason => {
-                conceptReason.results && this.props.fetchData(`concept/${conceptReason.results[0].uuid}`)
+                conceptReason.results && 
+                    this.props.fetchData(`concept/${conceptReason.results[0].uuid}`)
                     .then(conceptDetails => {
                         this.setState({
                             reasons: conceptDetails.answers
@@ -219,5 +220,9 @@ class DrugOrderComponent extends Component {
         }
     }
 }
+
+DrugOrderComponent.propTypes = {
+  fetchData: PropTypes.func.isRequired
+};
 
 export default DrugOrderComponent;

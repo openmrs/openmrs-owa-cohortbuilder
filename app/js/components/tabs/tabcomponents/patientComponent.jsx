@@ -49,7 +49,8 @@ class PatientComponent extends Component {
 
   searchDemographics(event) {
     event.preventDefault();
-    const { gender, minAge, maxAge, startDate, endDate, livingStatus } = this.state;
+    const { gender, minAge, maxAge, livingStatus } = this.state;
+    let { startDate, endDate } = this.state;
     const searchParameters = { gender };
     // add appropriate age constraints to the search parameters
     if (minAge || maxAge) {
@@ -71,7 +72,18 @@ class PatientComponent extends Component {
       }
     }
     // add appropriate birthdate constraints to the search parameters
-    if (startDate && endDate) {
+    if (startDate && endDate) {  
+      // coerce the values of start date and end date to numbers for comparison    
+      let startYear = Number(startDate.split('-')[0]);
+      let endYear = Number(endDate.split('-')[0]);
+
+      // switch the start and end dates if the start year is before the end year
+      if (startYear > endYear) {
+        const startDateStore = startDate;
+        startDate = endDate;
+        endDate = startDateStore;
+      }
+
       searchParameters.bornDuringPeriod = [
         { name: 'startDate', dataType: 'date', value: startDate },
         { name: 'endDate', dataType: 'date', value: endDate }

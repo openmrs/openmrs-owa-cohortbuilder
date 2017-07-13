@@ -38,7 +38,7 @@ class DrugOrderComponent extends Component {
             });
         this.props.fetchData('concept?name=REASON%20ORDER%20STOPPED')
             .then(conceptReason => {
-                this.props.fetchData(`concept/${conceptReason.results[0].uuid}`)
+                conceptReason.results && this.props.fetchData(`concept/${conceptReason.results[0].uuid}`)
                     .then(conceptDetails => {
                         this.setState({
                             reasons: conceptDetails.answers

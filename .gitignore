@@ -10,3 +10,4 @@ cohortbuilder.zip
 coverage
 libs
 .DS_STORE
+package-lock.json

@@ -7,7 +7,7 @@ import EncounterComponent from '../../app/js/components/tabs/tabcomponents/encou
 describe('<EncounterComponent /> tab component', () => {
   let encounterComponent = null;
   beforeEach(() => {
-    encounterComponent = shallow(<EncounterComponent fetchData={fakeRequestLibrary} />);
+    encounterComponent = shallow(<EncounterComponent fetchData={fakeRequestLibrary} search={() => ({})} addToHistory={() => ({})} />);
   });
 
   it('should render 2 forms', () => {

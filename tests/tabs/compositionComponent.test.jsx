@@ -7,12 +7,12 @@ import CompositionComponent from '../../app/js/components/tabs/tabcomponents/com
 describe('<CompositionComponent />', ()=>{
     it('should mount the compositionComponent in the dom', ()=>{
         sinon.spy(CompositionComponent.prototype, 'componentDidMount');
-        const wrapper = mount(<CompositionComponent />);
+        const wrapper = mount(<CompositionComponent addToHistory={() => ({})} getHistory={() => ({})} />);
         expect(CompositionComponent.prototype.componentDidMount.calledOnce).to.equal(true);
     });
 
     it('should contain the correct HTML elements', ()=>{
-        const wrapper = shallow(<CompositionComponent />);
+        const wrapper = shallow(<CompositionComponent addToHistory={() => ({})} getHistory={() => ({})} />);
         expect(wrapper.find("div")).to.have.length(9);
         expect(wrapper.find("p")).to.have.length(1);
         expect(wrapper.find("form")).to.have.length(1);

@@ -18,6 +18,8 @@ ul.nav-tabs>li {
 }
 
 .nav-tabs>li>a {
+    border-width: 0;
+    margin: 0px;
     border: none;
     color: #363463;
     -moz-border-radius: 3px;

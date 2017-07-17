@@ -23,6 +23,7 @@ class ActionsComponent extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.deleteCohort = this.deleteCohort.bind(this);
         this.downloadCSV = this.downloadCSV.bind(this);
+        this.resetError = this.resetError.bind(this);
     }
 
     componentWillMount() {
@@ -56,8 +57,8 @@ class ActionsComponent extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const query = this.state.query;
-        if (query && !isNaN(this.state.queryId) && this.state.hasOwnProperty('name') &&
-            this.state.hasOwnProperty('description')) {
+        if (query && !isNaN(this.state.queryId) && e.target.name.value.length > 0 &&
+            e.target.description.value.length > 0) {
             const apiHelper = new ApiHelper();
             apiHelper.post('/cohort', this.getQueryData())
                 .then((res) => {
@@ -72,6 +73,10 @@ class ActionsComponent extends Component {
         } else {
             this.setState({ error: "all fields are required" });
         }
+    }
+
+    resetError(){
+        this.setState({error: ''});
     }
 
 	displayHistory(history, index) {
@@ -198,7 +203,7 @@ class ActionsComponent extends Component {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                     <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.resetError}><span aria-hidden="true">&times;</span></button>
                         <h4 className="modal-title" id="myCohortLabel">Save Cohorts</h4>
                     </div>
                     <div className="modal-body" onSubmit={this.onSave}>  
@@ -228,13 +233,13 @@ class ActionsComponent extends Component {
                             <div className="form-group">
                                 <div className="col-sm-offset-2 col-sm-10">
                                     <button type="submit" className="btn btn-success">Save</button>
-                                    <button type="reset" className="btn btn-default cancelBtn">Reset</button>
+                                    <button type="reset" className="btn btn-default cancelBtn" onClick={this.resetError}>Reset</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" className="btn btn-default" data-dismiss="modal" onClick={this.resetError}>Close</button>
                     </div>
                     </div>
                 </div>

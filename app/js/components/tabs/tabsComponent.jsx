@@ -62,16 +62,6 @@ class TabsComponent extends Component {
         return getData;
     }
 
-    drawComponent(tabs, fetchData, search, addToHistory, getHistory) {
-        return tabs.map((tab,index) => {
-            return(
-                <div id={tab.divId} key={index} className={'tab-pane ' + (tab.active ? 'active' : '')}>
-                    <tab.component fetchData={fetchData} search={search} addToHistory={addToHistory} getHistory={getHistory} />
-                </div>
-            );
-        });
-    }
-
     render(){
         const { getHistory } = this.props; 
     
@@ -81,7 +71,6 @@ class TabsComponent extends Component {
                 <TabContentComponent
                     tabs={this.state.tabs}
                     search={this.search}
-                    drawComponent={this.drawComponent}
                     fetchData={this.fetchData}
                     addToHistory={this.props.addToHistory}
                     getHistory={getHistory}

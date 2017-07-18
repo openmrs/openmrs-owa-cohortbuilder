@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import shortId from 'shortid';
 import DatePicker from "react-bootstrap-date-picker";
 import { Creatable } from 'react-select';
+import utility from '../../../utility';
 import { JSONHelper } from '../../../helpers/jsonHelper';
 
 class PatientComponent extends Component {
@@ -192,9 +193,14 @@ class PatientComponent extends Component {
     }
     this.props.search(queryDetails, description).then(results => {
       const allPatients = results.rows || [];
+      if (JSON.stringify(allPatients) === JSON.stringify([])) {
+        utility.notifications('info', 'Search completed successfully but no results found');
+      } else {
+        utility.notifications('success', 'Search completed successfully');
+      }
       // adds the current search to search history
       this.props.addToHistory( description, allPatients, results.query );
-    });
+    }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
   }
 
   /**

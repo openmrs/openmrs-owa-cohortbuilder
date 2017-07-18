@@ -3,6 +3,7 @@ import shortId from 'shortid';
 import Select from 'react-select';
 import DatePicker from "react-bootstrap-date-picker";
 import { JSONHelper } from '../../../helpers/jsonHelper';
+import utility from '../../../utility';
 
 const FORMS_API_ENDPOINT = '/form';
 const LOCATIONS_API_ENDPOINT = '/location';
@@ -139,8 +140,13 @@ class EncounterComponent extends Component {
     const queryDetails = this.jsonHelper.composeJson(searchParams);
     this.props.search(queryDetails, label).then(results => {
       const allEncounterTypes = results.rows || [];
+      if (JSON.stringify(allEncounterTypes) === JSON.stringify([])) {
+        utility.notifications('info', 'Search completed successfully but no results found');
+      } else {
+        utility.notifications('success', 'Search completed successfully');
+      }
       this.props.addToHistory(label, allEncounterTypes, results.query);
-    });
+    }).catch((error) => utility.notifications('error', 'Search error, check the server log for details'));
   }
 
   /**
@@ -247,8 +253,13 @@ class EncounterComponent extends Component {
     const queryDetails = this.jsonHelper.composeJson(searchParameter);
     this.props.search(queryDetails, this.getLocationSearchDescription()).then(results => {
       const allEncounterTypes = results.rows || [];
+      if (JSON.stringify(allEncounterTypes) === JSON.stringify([])) {
+        utility.notifications('info', 'Search completed successfully but no results found');
+      } else {
+        utility.notifications('success', 'Search completed successfully');
+      }
       this.props.addToHistory(this.getLocationSearchDescription(), allEncounterTypes, results.query);
-    });
+    }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
   }
 
   /**

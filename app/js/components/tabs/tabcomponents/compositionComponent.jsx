@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { ApiHelper } from '../../../helpers/apiHelper';
 import { JSONHelper } from '../../../helpers/jsonHelper';
+import utility from '../../../utility';
 
 class CompositionComponent extends Component {
   constructor(props) {
@@ -70,10 +71,15 @@ class CompositionComponent extends Component {
     const apiHelper = new ApiHelper(null);
     apiHelper.post('reportingrest/adhocquery?v=full', compositionQuery.query).then(response => {
         response.json().then(data => {
+          if (JSON.stringify(data.rows) === JSON.stringify([])) {
+            utility.notifications('info', 'Search completed successfully but no results found');
+          } else {
+            utility.notifications('success', 'Search completed successfully');
+          }
           this.props.getHistory(data, compositionQuery.label);
           this.props.addToHistory(compositionQuery.label, data.rows, compositionQuery.query);
         });
-    });
+    }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
   }
 
   /**

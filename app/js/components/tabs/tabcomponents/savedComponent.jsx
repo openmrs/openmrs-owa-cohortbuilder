@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import SavedResultsTable from '../../common/savedResultsTable';
 import { ApiHelper } from '../../../helpers/apiHelper';
 import DownloadHelper from '../../../helpers/downloadHelper';
+import utility from '../../../utility';
 
 class SavedComponent extends React.Component {
 
@@ -124,10 +125,12 @@ class SavedComponent extends React.Component {
    * Method which utilizes closure to delete a query specified by it's uuid.
    * It makes a delete request to the backend to delete the specified query and
    * fetches the updated results
+   * 
    * @param {String} uuid - unique identifier for the query to be deleted
    * @return {Function} - function that performs the actual deletion process
+   * @memberof SavedComponent
    */
-   deleteDefinition(uuid) {
+  deleteDefinition(uuid) {
     return (event) => {
       event.preventDefault();
       const deleteJobs = [...this.state.definitionDeleteJobs];
@@ -186,13 +189,13 @@ class SavedComponent extends React.Component {
    */
   viewDefinition(uuid, description) {
     const apiHelper = new ApiHelper();
-      return () => {
-          apiHelper.get(`reportingrest/dataSet/${uuid}`)
-              .then((res) => {
-                  this.props.getHistory(res, description);
-            });
-        };
-    }
+    return () => {
+      apiHelper.get(`reportingrest/dataSet/${uuid}`)
+        .then((res) => {
+          this.props.getHistory(res, description);
+      });
+    };
+  }
 
   /**
    * Method to search for saved cohorts and update the state
@@ -205,6 +208,11 @@ class SavedComponent extends React.Component {
       this.setState({ searchingCohorts: true, inSearchCohortMode: true });
       new ApiHelper().get(`/cohort?v=full&q=${this.state.cohortsQuery}`)
       .then(response => {
+        if (JSON.stringify(response.results) === JSON.stringify([])) {
+            utility.notifications('info', 'Search completed successfully but no results found');
+          } else {
+            utility.notifications('success', 'Search completed successfully');
+          }
         this.setState({
           searchingCohorts: false,
           cohortResults: response.results.map(result => {
@@ -216,7 +224,7 @@ class SavedComponent extends React.Component {
             };
           })
         });
-      });
+      }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
     }
   }
 
@@ -236,6 +244,11 @@ class SavedComponent extends React.Component {
         `reportingrest/dataSetDefinition?v=full&q=${this.state.definitionsQuery}`
       )
       .then(response => {
+        if (JSON.stringify(response.results) === JSON.stringify([])) {
+            utility.notifications('info', 'Search completed successfully but no results found');
+          } else {
+            utility.notifications('success', 'Search completed successfully');
+          }
         this.setState({
           searchingDefinitions: false,
           definitionResults: response.results.map(result => {
@@ -246,7 +259,7 @@ class SavedComponent extends React.Component {
             };
           })
         });
-      });
+      }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
     }
   }
 

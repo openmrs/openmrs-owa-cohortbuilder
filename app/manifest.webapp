@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "1.0.0",
   "name": "CohortBuilder",
   "description": "modern refresh of the OpenMRS Cohort Builder tool",
   "launch_path": "index.html",
@@ -7,8 +7,8 @@
     "48": "/img/omrs-button.png"
   },
   "developer": {
-    "name": "andela-odaniel",
-    "url": "https://github.com/andela-odaniel/openmrs-module-cohortbuilder"
+    "name": "andela-odaniel, wanjikum, andela-jomadoye, andela-pupendo, kingisaac95",
+    "url": "https://github.com/openmrs/openmrs-owa-cohortbuilder"
   },
   "default_locale": "en",
     "activities": {

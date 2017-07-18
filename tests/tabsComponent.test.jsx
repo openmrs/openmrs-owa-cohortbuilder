@@ -46,12 +46,7 @@ describe('<TabsComponent />', () => {
         const wrapper = mount(mountComponent);
         expect(wrapper.find('.active')).to.have.length(1);
         expect(wrapper.find('.active').text()).to.equal(tabs[0].name);
-    });
-
-    it('drawComponent function should return a tabComponent', ()=>{
-        const mountComponent = TabsComponent.prototype.drawComponent(tabs, () => ({}), () => ({}), () => ({}), () => ({}),)[0];
-        const wrapper = mount(mountComponent);
-        expect(wrapper.find('.tab-pane')).to.have.length(1);
-    });
-        
+    }); 
+    
+    
 });

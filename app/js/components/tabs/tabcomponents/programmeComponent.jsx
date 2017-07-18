@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import DatePicker from "react-bootstrap-date-picker";
 import { JSONHelper } from '../../../helpers/jsonHelper';
 import { ApiHelper } from '../../../helpers/apiHelper';
+import utility from '../../../utility';
 class ProgrammeComponent extends Component {
     constructor(props) {
         super(props);
@@ -103,9 +104,14 @@ class ProgrammeComponent extends Component {
         }
         new ApiHelper().post('reportingrest/adhocquery?v=full', jsonQuery.query).then(res => {
             const label = this.composeLabel();
+            if (JSON.stringify(res.rows) === JSON.stringify([])) {
+                utility.notifications('info', 'Search completed successfully but no results found');
+            } else {
+                utility.notifications('success', 'Search completed successfully');
+            }
             this.props.addToHistory(label, res.rows, jsonQuery.query);
             this.props.getHistory(res, label);
-        });
+        }).catch(() => utility.notifications('error', 'Search error, check the server log for details.'));
     }
 
     /**
@@ -168,6 +174,7 @@ class ProgrammeComponent extends Component {
 
         return label;
     }
+
     /**
      * Helper function to compose a repeating part of different searches label
      * @param {String} startProperty 

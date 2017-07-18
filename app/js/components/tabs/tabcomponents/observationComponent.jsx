@@ -2,6 +2,7 @@ import React from 'react';
 import DatePicker from "react-bootstrap-date-picker";
 import shortid from 'shortid';
 import { JSONHelper } from '../../../helpers/jsonHelper';
+import utility from '../../../utility';
 
 export default class ObsFilter extends React.Component {
 
@@ -79,8 +80,13 @@ export default class ObsFilter extends React.Component {
         }
         this.props.search(searchData, description)
             .then((data) => {
-                 this.props.addToHistory(description, data.rows, searchData.query);
-            });
+                if (JSON.stringify(data.rows) === JSON.stringify([])) {
+                    utility.notifications('info', 'Search completed successfully but no results found');
+                } else {
+                    utility.notifications('success', 'Search completed successfully');
+                }
+                this.props.addToHistory(description, data.rows, searchData.query);
+            }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
 
     }
     handleDateChange(name) {

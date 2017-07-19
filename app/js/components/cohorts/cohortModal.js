@@ -24,6 +24,7 @@ class ActionsComponent extends Component {
         this.deleteCohort = this.deleteCohort.bind(this);
         this.downloadCSV = this.downloadCSV.bind(this);
         this.resetError = this.resetError.bind(this);
+        this.onSave = this.onSave.bind(this);
     }
 
     componentWillMount() {
@@ -58,7 +59,7 @@ class ActionsComponent extends Component {
         e.preventDefault();
         const query = this.state.query;
         if (query && !isNaN(this.state.queryId) && e.target.name.value.length > 0 &&
-            e.target.description.value.length > 0) {
+            e.target.description.value.length > 0 && e.target.name.value.trim() && e.target.description.value.trim()) {
             const apiHelper = new ApiHelper();
             apiHelper.post('/cohort', this.getQueryData())
                 .then((res) => {
@@ -68,6 +69,7 @@ class ActionsComponent extends Component {
                             name :'', 
                             description: ''
                     }));
+                    
                     $('#myCohort').modal('hide');          
                 });
         } else {
@@ -75,8 +77,20 @@ class ActionsComponent extends Component {
         }
     }
 
+    onSave(event) {
+        event.preventDefault();
+        const {name, description} = this.state;
+        if(name && description && name.trim() && description.trim()) {
+            event.target.name.value= "";
+            event.target.description.value="";
+        }
+    }
     resetError(){
-        this.setState({error: ''});
+        this.setState({
+            error: '',
+            name :'', 
+            description: ''
+        });
     }
 
 	displayHistory(history, index) {

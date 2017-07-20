@@ -287,7 +287,7 @@ class PatientComponent extends Component {
    * @memberof PatientComponent
    */
   isAgeValid(age, identifier) {
-      if (age >= 0 && age <= 200 && typeof(age)==="string" && age !== '-0') {
+      if (age >= 0 && age <= 200 && typeof(age)==="string" && /^\d+$/.test(age) && age !== '-0') {
         this.setState((previousState) => {
           previousState.ageErrorObject[`${identifier}ErrorMsg`] = '';
           return previousState;
@@ -514,6 +514,7 @@ class PatientComponent extends Component {
             </div>
             <div className={ageErrorObject ? "col-sm-3 error" : "col-sm-3"}>
               <input
+                min="0"
                 type="number"
                 name="minage"
                 id="minAge"
@@ -527,6 +528,7 @@ class PatientComponent extends Component {
             <span className="inline-label">And:</span>
             <div className={ageErrorObject ? "col-sm-3 error" : "col-sm-3"}>
               <input
+                min="0"
                 type="number"
                 name="maxage"
                 id="maxAge"

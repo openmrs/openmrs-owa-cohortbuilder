@@ -29,8 +29,6 @@ class PatientComponent extends Component {
         minAgeErrorMsg: '',
         maxAgeErrorMsg: '',
       },
-      isAgeDisabled: false,
-      isDateDisabled: false
     };
     this.jsonHelper = new JSONHelper();
     this.searchDemographics = this.searchDemographics.bind(this);
@@ -62,34 +60,28 @@ class PatientComponent extends Component {
     let { startDate, endDate, minAge, maxAge } = this.state;
     const searchParameters = { gender };
 
-    // coerce the values of min age and max age to numbers for comparison
-    minAge = Number(minAge);
-    maxAge = Number(maxAge);
-
     // add appropriate age constraints to the search parameters
-    if (minAge || maxAge) {
-      if (minAge && maxAge) {
-        // switch the min and max ages if the min age is greater than the max age
-        if (minAge > maxAge) {
-          const minAgeStore = minAge;
-          minAge = maxAge;
-          maxAge = minAgeStore;
-        }
+    if (minAge && maxAge) {
+      // switch the min and max ages if the min age is greater than the max age
+      if (minAge > maxAge) {
+        const minAgeStore = minAge;
+        minAge = maxAge;
+        maxAge = minAgeStore;
+      }
 
-        searchParameters.ageRangeOnDate = [
-          { name: 'minAge', value: minAge },
-          { name: 'maxAge', value: maxAge}
+      searchParameters.ageRangeOnDate = [
+        { name: 'minAge', value: minAge },
+        { name: 'maxAge', value: maxAge}
+      ];
+    } else {
+      if (minAge) {
+        searchParameters.atLeastAgeOnDate = [
+          { name: 'minAge', value: minAge }
         ];
       } else {
-        if (minAge) {
-          searchParameters.atLeastAgeOnDate = [
-            { name: 'minAge', value: minAge }
-          ];
-        } else {
-          searchParameters.upToAgeOnDate = [
-            { name: 'maxAge', value: maxAge }
-          ];
-        }
+        searchParameters.upToAgeOnDate = [
+          { name: 'maxAge', value: maxAge }
+        ];
       }
     }
     // add appropriate birthdate constraints to the search parameters
@@ -293,7 +285,7 @@ class PatientComponent extends Component {
           return previousState;
         });
         return true;
-      } else if(age < 0 || age === -0) {
+      } else if(age < 0 || age === '-0' || age === -0) {
         this.setState((previousState) => {
           identifier === 'minAge' ?
           previousState.ageErrorObject.minAgeErrorMsg = 'The age must be greater than 0' : 
@@ -314,7 +306,7 @@ class PatientComponent extends Component {
   /**
    * This method validates if a user types a number
    * onKeyDown
-   * @param {object} event 
+   * @param {object} event
    */
   handleValidateAgeInput(event) {
     // validate if the user inputs a number
@@ -334,17 +326,7 @@ class PatientComponent extends Component {
    * @param {object} event The HTML event
    * @memberof PatientComponent
    */
-  handleSelectAge(event) {
-    /*
-    * reset minAge and maxAge by targeting the elements directly
-    * the element contents are handled with onKeyDown and onKeyUp
-    */
-    let minAge = Number(document.getElementById('minAge').value);
-    let maxAge = Number(document.getElementById('maxAge').value);
-
-    // disable date fields if age is selected
-    minAge || maxAge ? this.setState({isDateDisabled: true}) : this.setState({isDateDisabled: false});
-    
+  handleSelectAge(event) {    
     if (this.isAgeValid(event.target.value, event.target.id)) {
       this.setState({ [event.target.id]: event.target.value });
       this.setState((previousState) => {
@@ -385,13 +367,13 @@ class PatientComponent extends Component {
       endDate: '',
       livingStatus: '',
       gender: 'all',
+      minAge: '',
+      maxAge: '',
       ageErrorObject: {
         status: false,
         minAgeErrorMsg: '',
         maxAgeErrorMsg: '',
       },
-      isAgeDisabled: false,
-      isDateDisabled: false
     });
 
     /*
@@ -460,10 +442,7 @@ class PatientComponent extends Component {
    * @param {String} isoString - Date in isoString format
    * @return {String} MM-DD-YY date formatted string
    */
-  getDateString(isoString) {
-    // disable age fields if date is selected
-    !this.state.isDateDisabled ?
-    this.setState({isAgeDisabled: true}) : this.setState({isAgeDisabled: false});
+  getDateString(isoString) {    
     return isoString ? isoString.split('T')[0] : '';
   }
 
@@ -481,8 +460,6 @@ class PatientComponent extends Component {
       endDate,
       selectedAttribute,
       ageErrorObject,
-      isAgeDisabled,
-      isDateDisabled
     } = this.state;
 
     return (
@@ -518,10 +495,10 @@ class PatientComponent extends Component {
                 type="number"
                 name="minage"
                 id="minAge"
-                disabled={isAgeDisabled}
                 className="form-control"
                 onKeyDown={this.handleValidateAgeInput}
                 onKeyUp={this.handleSelectAge}
+                value={this.minAge}
               />
               <span>{ageErrorObject.status && ageErrorObject.minAgeErrorMsg}</span>
             </div>
@@ -532,7 +509,6 @@ class PatientComponent extends Component {
                 type="number"
                 name="maxage"
                 id="maxAge"
-                disabled={isAgeDisabled}
                 className="form-control"
                 onKeyDown={this.handleValidateAgeInput}
                 onKeyUp={this.handleSelectAge}
@@ -555,7 +531,6 @@ class PatientComponent extends Component {
               className={`col-sm-3 ${endDate && !startDate ? 'has-error' : ''}`}
             >
               <DatePicker
-                disabled={isDateDisabled}
                 className="form-control"
                 id="startDate"
                 dateFormat="DD-MM-YYYY"
@@ -568,7 +543,6 @@ class PatientComponent extends Component {
               className={`col-sm-3 ${startDate && !endDate ? 'has-error' : ''}`}
             >
               <DatePicker
-                disabled={isDateDisabled}
                 className="form-control"
                 id="endDate"
                 dateFormat="DD-MM-YYYY"

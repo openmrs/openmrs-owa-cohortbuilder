@@ -105,20 +105,20 @@ class SavedComponent extends React.Component {
    * @return {undefined} 
    */
   viewCohort(uuid, description) {
-     const apiHelper = new ApiHelper();
-      return () => {
-          apiHelper.get(`/cohort/${uuid}/member?v=full`)
+    const apiHelper = new ApiHelper();
+    return () => {
+      apiHelper.get(`/cohort/${uuid}/member?v=full`)
               .then((res) => {
-                  res.rows = res.results.map(data => {
-                    return {
-                      name:  data.patient.person.display,
-                      gender: data.patient.person.gender,
-                      age: data.patient.person.age
-                    };
-                  });
+                res.rows = res.results.map(data => {
+                  return {
+                    name:  data.patient.person.display,
+                    gender: data.patient.person.gender,
+                    age: data.patient.person.age
+                  };
+                });
                 this.props.getHistory(res, description);
-            });
-        };
+              });
+    };
   }
 
   /**
@@ -193,7 +193,7 @@ class SavedComponent extends React.Component {
       apiHelper.get(`reportingrest/dataSet/${uuid}`)
         .then((res) => {
           this.props.getHistory(res, description);
-      });
+        });
     };
   }
 
@@ -209,10 +209,10 @@ class SavedComponent extends React.Component {
       new ApiHelper().get(`/cohort?v=full&q=${this.state.cohortsQuery}`)
       .then(response => {
         if (JSON.stringify(response.results) === JSON.stringify([])) {
-            utility.notifications('info', 'Search completed successfully but no results found');
-          } else {
-            utility.notifications('success', 'Search completed successfully');
-          }
+          utility.notifications('info', 'Search completed successfully but no results found');
+        } else {
+          utility.notifications('success', 'Search completed successfully');
+        }
         this.setState({
           searchingCohorts: false,
           cohortResults: response.results.map(result => {
@@ -245,10 +245,10 @@ class SavedComponent extends React.Component {
       )
       .then(response => {
         if (JSON.stringify(response.results) === JSON.stringify([])) {
-            utility.notifications('info', 'Search completed successfully but no results found');
-          } else {
-            utility.notifications('success', 'Search completed successfully');
-          }
+          utility.notifications('info', 'Search completed successfully but no results found');
+        } else {
+          utility.notifications('success', 'Search completed successfully');
+        }
         this.setState({
           searchingDefinitions: false,
           definitionResults: response.results.map(result => {

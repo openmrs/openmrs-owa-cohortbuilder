@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
 
-
 export  const Navigate = ({currentPage, totalPage, navigatePage}) => {
-     return(
+  return(
         <div className="tableNavigation">
             <button className="btn btn-primary" onClick={navigatePage} value="first">FIRST</button>
             {
@@ -25,7 +24,7 @@ export  const Navigate = ({currentPage, totalPage, navigatePage}) => {
 };
 
 Navigate.propTypes = {
-    currentPage: PropTypes.number.isRequired,
-    totalPage: PropTypes.number.isRequired,
-    navigatePage: PropTypes.func.isRequired
+  currentPage: PropTypes.number.isRequired,
+  totalPage: PropTypes.number.isRequired,
+  navigatePage: PropTypes.func.isRequired
 };

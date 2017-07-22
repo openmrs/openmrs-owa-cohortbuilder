@@ -5,57 +5,57 @@ import { JSONHelper } from '../../helpers/jsonHelper';
 
 class Modal extends Component {
 
-    constructor (props) {
-        super(props);
-        this.state = {
-            loading: false
-        };
-        this.onSave = this.onSave.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.reset = this.reset.bind(this);
-    }
+  constructor (props) {
+    super(props);
+    this.state = {
+      loading: false
+    };
+    this.onSave = this.onSave.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.reset = this.reset.bind(this);
+  }
 
-    componentWillReceiveProps(nextProps) {
-        const state = {
-            description: nextProps.description,
-            index: nextProps.index,
-            loading: nextProps.loading
-        };
-        nextProps.error ? state.error = nextProps.error : "";
+  componentWillReceiveProps(nextProps) {
+    const state = {
+      description: nextProps.description,
+      index: nextProps.index,
+      loading: nextProps.loading
+    };
+    nextProps.error ? state.error = nextProps.error : "";
 
-        this.setState(state);
-    }
+    this.setState(state);
+  }
 
-    handleChange(event) {
-        event.preventDefault();
-        this.setState({
-            [event.target.name] : event.target.value
-        });
-    }
+  handleChange(event) {
+    event.preventDefault();
+    this.setState({
+      [event.target.name] : event.target.value
+    });
+  }
     
-    reset() {
-        this.setState({ searchName : ""});
-    }
+  reset() {
+    this.setState({ searchName : ""});
+  }
 
-    onSave(event) {
-        event.preventDefault();
-        const { index, searchName } = this.state;
-        if (searchName && searchName.length > 0 ) {
-            this.props.saveSearch(index, searchName)
+  onSave(event) {
+    event.preventDefault();
+    const { index, searchName } = this.state;
+    if (searchName && searchName.length > 0 ) {
+      this.props.saveSearch(index, searchName)
                 .then((res) => {
-                    res ? this.setState({ error: "", searchName: "" }) : "";
+                  res ? this.setState({ error: "", searchName: "" }) : "";
                 });
             
-        } else {
-            this.setState({
-                error : "The name field is required and be descriptive",
-                loading: false
-            });
-        }
+    } else {
+      this.setState({
+        error : "The name field is required and be descriptive",
+        loading: false
+      });
     }
+  }
 
-    render() {
-        return (
+  render() {
+    return (
             <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
@@ -106,16 +106,16 @@ class Modal extends Component {
                     </div>
                 </div>
             </div>
-        );
-    }
+    );
+  }
 }
 
 Modal.propTypes = {
-    description: PropTypes.string,
-    index: PropTypes.number,
-    loading: PropTypes.bool,
-    error: PropTypes.string,
-    saveSearch: PropTypes.func
+  description: PropTypes.string,
+  index: PropTypes.number,
+  loading: PropTypes.bool,
+  error: PropTypes.string,
+  saveSearch: PropTypes.func
 };
 
 export default Modal;

@@ -25,6 +25,7 @@
     "mocha": true
   },
   "rules": {
+    "indent": [1, 2, { "SwitchCase": 1 }],
     "quotes": 0,
     "no-console": 1,
     "no-debugger": 1,

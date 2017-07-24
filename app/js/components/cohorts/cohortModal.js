@@ -6,158 +6,158 @@ import DownloadHelper from '../../helpers/downloadHelper';
 import './cohorts.css';
 
 class ActionsComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            allCohort: [],
-            cohortResult: [],
-            toDisplay: [],
-            perPage: 10,
-            downloadJobIds: []
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      allCohort: [],
+      cohortResult: [],
+      toDisplay: [],
+      perPage: 10,
+      downloadJobIds: []
+    };
 
-        this.apiHelper = new ApiHelper();
-        this.navigatePage = this.navigatePage.bind(this);
-        this.getPatientsData = this.getPatientsData.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.deleteCohort = this.deleteCohort.bind(this);
-        this.downloadCSV = this.downloadCSV.bind(this);
-        this.resetError = this.resetError.bind(this);
-        this.onSave = this.onSave.bind(this);
-    }
+    this.apiHelper = new ApiHelper();
+    this.navigatePage = this.navigatePage.bind(this);
+    this.getPatientsData = this.getPatientsData.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.deleteCohort = this.deleteCohort.bind(this);
+    this.downloadCSV = this.downloadCSV.bind(this);
+    this.resetError = this.resetError.bind(this);
+    this.onSave = this.onSave.bind(this);
+  }
 
-    componentWillMount() {
-        this.getAllCohorts();
-    }
+  componentWillMount() {
+    this.getAllCohorts();
+  }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            query: nextProps.query,
-            queryId: nextProps.queryId
-        });
-    }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      query: nextProps.query,
+      queryId: nextProps.queryId
+    });
+  }
 
-    getAllCohorts() {
-        const apiHelper = new ApiHelper();
-        apiHelper.get('/cohort?v=full')
+  getAllCohorts() {
+    const apiHelper = new ApiHelper();
+    apiHelper.get('/cohort?v=full')
             .then(res => {
-                this.setState(Object.assign({}, this.state, {
-                    allCohort: res.results
-                }));
+              this.setState(Object.assign({}, this.state, {
+                allCohort: res.results
+              }));
             });
-    }
+  }
 
-    handleChange(e) {
-        e.preventDefault();
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-    }
+  handleChange(e) {
+    e.preventDefault();
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        const query = this.state.query;
-        if (query && !isNaN(this.state.queryId) && e.target.name.value.length > 0 &&
+  handleSubmit(e) {
+    e.preventDefault();
+    const query = this.state.query;
+    if (query && !isNaN(this.state.queryId) && e.target.name.value.length > 0 &&
             e.target.description.value.length > 0 && e.target.name.value.trim() && e.target.description.value.trim()) {
-            const apiHelper = new ApiHelper();
-            apiHelper.post('/cohort', this.getQueryData())
+      const apiHelper = new ApiHelper();
+      apiHelper.post('/cohort', this.getQueryData())
                 .then((res) => {
-                    this.setState(Object.assign({}, this.state, {
-                            allCohort: [res, ...this.state.allCohort],
-                            error: null,
-                            name :'', 
-                            description: ''
-                    }));
+                  this.setState(Object.assign({}, this.state, {
+                    allCohort: [res, ...this.state.allCohort],
+                    error: null,
+                    name :'', 
+                    description: ''
+                  }));
                     
-                    $('#myCohort').modal('hide');          
+                  $('#myCohort').modal('hide');          
                 });
-        } else {
-            this.setState({ error: "all fields are required" });
-        }
+    } else {
+      this.setState({ error: "all fields are required" });
     }
+  }
 
-    onSave(event) {
-        event.preventDefault();
-        const {name, description} = this.state;
-        if(name && description && name.trim() && description.trim()) {
-            event.target.name.value= "";
-            event.target.description.value="";
-        }
+  onSave(event) {
+    event.preventDefault();
+    const {name, description} = this.state;
+    if(name && description && name.trim() && description.trim()) {
+      event.target.name.value= "";
+      event.target.description.value="";
     }
-    resetError(){
-        this.setState({
-            error: '',
-            name :'', 
-            description: ''
-        });
-    }
+  }
+  resetError(){
+    this.setState({
+      error: '',
+      name :'', 
+      description: ''
+    });
+  }
 
-	displayHistory(history, index) {
-		return (
+  displayHistory(history, index) {
+    return (
 			<option value={index} key={shortId.generate()}>{history.description}</option>
-		);
-	}
+    );
+  }
 
-	getQueryData() {
-		return {
-            display: this.state.query,
-            name: this.state.name,
-            description: this.state.description,
-            memberIds: this.getPatientId(this.state.queryId)
-		};
-	}
+  getQueryData() {
+    return {
+      display: this.state.query,
+      name: this.state.name,
+      description: this.state.description,
+      memberIds: this.getPatientId(this.state.queryId)
+    };
+  }
 
 
-	getPatientId(cohortId) {
-		return this.props.history[cohortId].patients.map((patient) => patient.patientId);
-	}
+  getPatientId(cohortId) {
+    return this.props.history[cohortId].patients.map((patient) => patient.patientId);
+  }
 
-	getPagePatient(allPatients, currentPage) {
-		const pagePatientInfo = [];
-		for (let index = (currentPage - 1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
-			pagePatientInfo.push(
+  getPagePatient(allPatients, currentPage) {
+    const pagePatientInfo = [];
+    for (let index = (currentPage - 1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
+      pagePatientInfo.push(
 				allPatients[index]
 			);
-		}
-		return pagePatientInfo;
-	}
+    }
+    return pagePatientInfo;
+  }
 
-	navigatePage(event) {
-		event.preventDefault();
-		let pageToNavigate = 0;
-		switch (event.target.value) {
-			case 'first':
-				pageToNavigate = 1;
-				break;
-			case 'last':
-				pageToNavigate = this.state.totalPage;
-				break;
-			default:
-				pageToNavigate = (event.target.value === 'next') ? this.state.currentPage + 1 : this.state.currentPage - 1;
-		}
-		const pagePatientInfo = this.getPagePatient(this.state.cohortResult, pageToNavigate);
-		this.setState(Object.assign({}, this.state, {
-			toDisplay: pagePatientInfo,
-			currentPage: pageToNavigate
-		}));
-	}
+  navigatePage(event) {
+    event.preventDefault();
+    let pageToNavigate = 0;
+    switch (event.target.value) {
+      case 'first':
+        pageToNavigate = 1;
+        break;
+      case 'last':
+        pageToNavigate = this.state.totalPage;
+        break;
+      default:
+        pageToNavigate = (event.target.value === 'next') ? this.state.currentPage + 1 : this.state.currentPage - 1;
+    }
+    const pagePatientInfo = this.getPagePatient(this.state.cohortResult, pageToNavigate);
+    this.setState(Object.assign({}, this.state, {
+      toDisplay: pagePatientInfo,
+      currentPage: pageToNavigate
+    }));
+  }
 
-	getPatientsData(cohortId, description) {
-		return (e) => {
-			this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
+  getPatientsData(cohortId, description) {
+    return (e) => {
+      this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
 				.then(res => {
-					const toDisplay = this.getPagePatient(res.results, 1);
-					this.setState(Object.assign({}, this.state, {
-						cohortResult: res.results,
-						currentPage: 1,
-						toDisplay,
-						totalPage:  Math.ceil(res.results.length/this.state.perPage),
-						cohortDescription: description
-					}));
-				}); 
-		};
-	}
+  const toDisplay = this.getPagePatient(res.results, 1);
+  this.setState(Object.assign({}, this.state, {
+    cohortResult: res.results,
+    currentPage: 1,
+    toDisplay,
+    totalPage:  Math.ceil(res.results.length/this.state.perPage),
+    cohortDescription: description
+  }));
+}); 
+    };
+  }
 
     /**
      * Method to fetch data using the cohort uuid, format the data and download
@@ -167,35 +167,35 @@ class ActionsComponent extends Component {
      * the saved csv file name)
      * @return {undefined}
      */
-    downloadCSV(cohortId, description) {
-        return event => {
-            event.preventDefault();
-            if (this.state.downloadJobIds.includes(cohortId)) {
-                return;
-            }
-            const downloadJobIds = [...this.state.downloadJobIds, cohortId];
-            this.setState({ downloadJobIds });
-            this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
+  downloadCSV(cohortId, description) {
+    return event => {
+      event.preventDefault();
+      if (this.state.downloadJobIds.includes(cohortId)) {
+        return;
+      }
+      const downloadJobIds = [...this.state.downloadJobIds, cohortId];
+      this.setState({ downloadJobIds });
+      this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
 				.then(response => {
-                    const toSplice = this.state.downloadJobIds;
-                    const spliceIndex = toSplice.indexOf(cohortId);
-                    toSplice.splice(spliceIndex, 1);
-                    const formattedData = this.preFromatForCSV(response.results);
-                    DownloadHelper.downloadCSV(formattedData, description);
-                    this.setState({ downloadJobIds: toSplice });
-				}); 
-        };
-    }
+  const toSplice = this.state.downloadJobIds;
+  const spliceIndex = toSplice.indexOf(cohortId);
+  toSplice.splice(spliceIndex, 1);
+  const formattedData = this.preFromatForCSV(response.results);
+  DownloadHelper.downloadCSV(formattedData, description);
+  this.setState({ downloadJobIds: toSplice });
+}); 
+    };
+  }
 
-    deleteCohort(cohortId) {
-        return (e) => {
-            const apiHelper = new ApiHelper();
-            apiHelper.delete(`/cohort/${cohortId}`)
+  deleteCohort(cohortId) {
+    return (e) => {
+      const apiHelper = new ApiHelper();
+      apiHelper.delete(`/cohort/${cohortId}`)
                 .then(() => {
-                    this.getAllCohorts();
+                  this.getAllCohorts();
                 });
-        };
-    }
+    };
+  }
 
     /**
      * Method to help filter and return only required patient attributes from a
@@ -203,16 +203,16 @@ class ActionsComponent extends Component {
      * @return { Array } - Array containing all patients in a cohort
      * item of the specified index
      */
-    preFromatForCSV(results) {
-        const data = [...results];
-        return data.map(item => {
-            const person = item.patient.person;
-            return { name: person.display, age: person.age, gender: person.gender };
-        });
-    }
+  preFromatForCSV(results) {
+    const data = [...results];
+    return data.map(item => {
+      const person = item.patient.person;
+      return { name: person.display, age: person.age, gender: person.gender };
+    });
+  }
 
-    render() {
-        return(
+  render() {
+    return(
              <div className="modal fade" id="myCohort" tabIndex="-1" role="dialog" aria-labelledby="myCohortLabel">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
@@ -259,14 +259,14 @@ class ActionsComponent extends Component {
                 </div>
             </div>
             
-        );
-    }
+    );
+  }
 }
 
 ActionsComponent.propTypes ={
-	history: PropTypes.array.isRequired,
-    query: PropTypes.string.isRequired,
-    queryId: PropTypes.number.isRequired
+  history: PropTypes.array.isRequired,
+  query: PropTypes.string.isRequired,
+  queryId: PropTypes.number.isRequired
 };
 
 export default ActionsComponent;

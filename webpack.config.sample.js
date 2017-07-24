@@ -46,114 +46,114 @@ let localOwaFolder;
 let devtool;
 
 const getConfig = function () {
-		let config;
+  let config;
 
-		try {
+  try {
 			// look for config file
-			config = require('./config.json');
-		} catch (err) {
+    config = require('./config.json');
+  } catch (err) {
 			// create file with defaults if not found
-			config = {
-				'LOCAL_OWA_FOLDER': '/home/sims01/openmrs/openmrs-server/owa/',
-				'APP_ENTRY_POINT': 'http://localhost:8080/openmrs/owa/cohortbuilder/index.html'
-		};
+    config = {
+      'LOCAL_OWA_FOLDER': '/home/sims01/openmrs/openmrs-server/owa/',
+      'APP_ENTRY_POINT': 'http://localhost:8080/openmrs/owa/cohortbuilder/index.html'
+    };
 
-		fs.writeFile('config.json', JSON.stringify(config));
+    fs.writeFile('config.json', JSON.stringify(config));
 
-		} finally {
-			return config;
-		}
-	};
+  } finally {
+    return config;
+  }
+};
 const config = getConfig();
 
 /** Minify for production */
 if (env === 'production') {
 
-		plugins.push(new UglifyPlugin({
-			output: {
-				comments: false
-			},
-			minimize: true,
-			sourceMap: false,
-			compress: {
-				warnings: false
-			}
-		}));
-		plugins.push(new DedupePlugin());
-		outputFile = `${outputFile}.min.js`;
-		outputPath = `${__dirname}/dist/`;
-		plugins.push(new WebpackOnBuildPlugin(function(stats){
+  plugins.push(new UglifyPlugin({
+    output: {
+      comments: false
+    },
+    minimize: true,
+    sourceMap: false,
+    compress: {
+      warnings: false
+    }
+  }));
+  plugins.push(new DedupePlugin());
+  outputFile = `${outputFile}.min.js`;
+  outputPath = `${__dirname}/dist/`;
+  plugins.push(new WebpackOnBuildPlugin(function(stats){
       //create zip file
-      const archiver = require('archiver');
-			const output = fs.createWriteStream(THIS_APP_ID+'.zip');
-			const archive = archiver('zip');
+    const archiver = require('archiver');
+    const output = fs.createWriteStream(THIS_APP_ID+'.zip');
+    const archive = archiver('zip');
 
-			output.on('close', function () {
+    output.on('close', function () {
 					/*eslint-disable no-console*/
-					console.log('distributable has been zipped! size: '+archive.pointer());
-			});
+      console.log('distributable has been zipped! size: '+archive.pointer());
+    });
 
-			archive.on('error', function(err){
-					throw err;
-			});
+    archive.on('error', function(err){
+      throw err;
+    });
 
-			archive.pipe(output);
+    archive.pipe(output);
 
-      archive.directory(`${outputPath}`, '');
+    archive.directory(`${outputPath}`, '');
 
-			archive.finalize();
-		}));
+    archive.finalize();
+  }));
 
 } else if (env === 'deploy') {
-		outputFile = `${outputFile}.js`;
-		outputPath = `${config.LOCAL_OWA_FOLDER}${THIS_APP_ID}`;
-		devtool = 'source-map';
+  outputFile = `${outputFile}.js`;
+  outputPath = `${config.LOCAL_OWA_FOLDER}${THIS_APP_ID}`;
+  devtool = 'source-map';
 
 } else if (env === 'dev') {
-		outputFile = `${outputFile}.js`;
-		outputPath = `${__dirname}/dist/`;
-		devtool = 'source-map';
+  outputFile = `${outputFile}.js`;
+  outputPath = `${__dirname}/dist/`;
+  devtool = 'source-map';
 }
 
 plugins.push(new BrowserSyncPlugin({
-    proxy: {
-			target : config.APP_ENTRY_POINT
-    }
+  proxy: {
+    target : config.APP_ENTRY_POINT
+  }
 }));
 
 plugins.push(new CommonsChunkPlugin("vendor", "vendor.bundle.js"));
 
 plugins.push(new HtmlWebpackPlugin({
-    template: './app/index.html',
-    inject: 'body'
+  template: './app/index.html',
+  inject: 'body'
 }));
 
 plugins.push(new CopyWebpackPlugin([{
-    from: './app/manifest.webapp'
+  from: './app/manifest.webapp'
 }]));
 
 plugins.push(new CopyWebpackPlugin([{
-    from: './app/img/',
-    to: 'img'
-	}, {
-		from: './app/img/loader.gif',
-    to: 'img/loader.gif'
-	},
-	{
-		from: 'libs',
-    to: 'libs'
-	}
+  from: './app/img/',
+  to: 'img'
+}, {
+  from: './app/img/loader.gif',
+  to: 'img/loader.gif'
+},
+{
+  from: 'libs',
+  to: 'libs'
+}
 ]));
 
 const webpackConfig = {
   quiet: false,
   entry: {
-		app : `${__dirname}/app/js/cohortbuilder`,
-		css: `${__dirname}/app/css/cohortbuilder.css`,
-		vendor : [
-                    'react', 'react-router'
+    app : `${__dirname}/app/js/cohortbuilder`,
+    css: `${__dirname}/app/css/cohortbuilder.css`,
+    vendor : [
+      'react', 'react-router'
                         , 'redux', 'redux-promise-middleware', 'redux-thunk', 'react-redux'
-						]
+    ]
   },
   devtool: devtool,
   target,
@@ -163,23 +163,23 @@ const webpackConfig = {
   },
   module: {
     loaders: [{
-			test: /\.jsx?$/,
-			loader: 'babel-loader',
-			exclude: /node_modules/,
-			query: {
-					presets: [ 'es2015', 'react' ],
-					cacheDirectory : true
-			}
+      test: /\.jsx?$/,
+      loader: 'babel-loader',
+      exclude: /node_modules/,
+      query: {
+        presets: [ 'es2015', 'react' ],
+        cacheDirectory : true
+      }
     },{
-			test: /\.css$/,
-			loader: 'style-loader!css-loader'
-	}, {
-			test: /\.(png|jpg|jpeg|gif|svg)$/,
-			loader: 'url'
-	}, {
-			test: /\.html$/,
-			loader: 'html'
-	}]
+      test: /\.css$/,
+      loader: 'style-loader!css-loader'
+    }, {
+      test: /\.(png|jpg|jpeg|gif|svg)$/,
+      loader: 'url'
+    }, {
+      test: /\.html$/,
+      loader: 'html'
+    }]
   },
   resolve: {
     root: path.resolve('./src'),

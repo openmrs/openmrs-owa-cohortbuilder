@@ -63,22 +63,22 @@ class CompositionComponent extends Component {
       });
       this.performSearch({label: compositionLabel, query: compositionQuery});
     } catch (error) {
-        this.setState({ hasCompositionError: error ? true : false });
+      this.setState({ hasCompositionError: error ? true : false });
     }
   }
 
   performSearch(compositionQuery) {
     const apiHelper = new ApiHelper(null);
     apiHelper.post('reportingrest/adhocquery?v=full', compositionQuery.query).then(response => {
-        response.json().then(data => {
-          if (JSON.stringify(data.rows) === JSON.stringify([])) {
-            utility.notifications('info', 'Search completed successfully but no results found');
-          } else {
-            utility.notifications('success', 'Search completed successfully');
-          }
-          this.props.getHistory(data, compositionQuery.label);
-          this.props.addToHistory(compositionQuery.label, data.rows, compositionQuery.query);
-        });
+      response.json().then(data => {
+        if (JSON.stringify(data.rows) === JSON.stringify([])) {
+          utility.notifications('info', 'Search completed successfully but no results found');
+        } else {
+          utility.notifications('success', 'Search completed successfully');
+        }
+        this.props.getHistory(data, compositionQuery.label);
+        this.props.addToHistory(compositionQuery.label, data.rows, compositionQuery.query);
+      });
     }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
   }
 
@@ -131,12 +131,12 @@ class CompositionComponent extends Component {
     this.setState({ [id]: event.target.value });
     // reset approriate error when a field value is changed
     switch(id) {
-      case 'compositionQuery': {
-        return this.setState({ hasCompositionError: false });
-      }
-      case 'compositionLabel': {
-        return this.setState({ hasDescriptionError: false });
-      }
+    case 'compositionQuery': {
+      return this.setState({ hasCompositionError: false });
+    }
+    case 'compositionLabel': {
+      return this.setState({ hasDescriptionError: false });
+    }
     }
   }
 

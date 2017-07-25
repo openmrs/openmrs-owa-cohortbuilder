@@ -148,21 +148,27 @@ class SearchHistoryComponent extends Component {
                             <tr>
                                 <th>#</th>
                                 <th>Query</th>
+                                <th>Query Definition Options</th>
                                 <th>Results</th>
+                                <th>Cohort Definition Options</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 history.map((eachResult, index) => 
                                 (<tr key={shortId.generate()}>
-                                    <td scope="row">{this.props.history.length - index}</td>
+                                    <th scope="row">{this.props.history.length - index}</th>
                                     <td>
-                                        {eachResult.description} 
+                                        {eachResult.description}
+                                    </td>
+                                    <td> 
                                         <a className="link" title="Save Query Definition" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}>Save</a>
                                         <a className="link" title={`Delete ${eachResult.description}`} onClick={this.delete(index)} aria-hidden="true">Delete</a>
                                     </td>
                                     <td>
                                         <a className="link" onClick={this.viewResult(index, eachResult.description)} title={`View ${eachResult.description}`} aria-hidden="true">{`${eachResult.patients.length} result(s)`}</a>
+                                    </td>
+                                    <td>
                                         <a className="link" onClick={this.downloadCSV(index, eachResult.description)} title={`Dowload ${eachResult.description}`} aria-hidden="true">Download</a>
                                         <a className="link" title="Save Cohorts" aria-hidden="true"  data-toggle="modal" data-target="#myCohort" onClick={this.setSaveCohort(eachResult.description, index)}>Save</a>
                                     </td>

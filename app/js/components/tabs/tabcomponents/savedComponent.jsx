@@ -22,7 +22,9 @@ class SavedComponent extends React.Component {
       searchingDefinitions: false,
       inSearchDefinitionMode: false,
       definitionDownloadJobs: [],
-      definitionDeleteJobs: []
+      definitionDeleteJobs: [],
+      isDeleteDefinition: false,
+      isDeleteCohort: false,
     };
     // cohort related methods
     this.searchSavedCohorts = this.searchSavedCohorts.bind(this);
@@ -55,6 +57,7 @@ class SavedComponent extends React.Component {
         new ApiHelper().delete(`/cohort/${uuid}?purge=true`)
         .then(() => {
           if (this.state.inSearchCohortMode) {
+            this.setState({isDeleteCohort: true});
             this.searchSavedCohorts();
           }
         });
@@ -140,6 +143,7 @@ class SavedComponent extends React.Component {
         new ApiHelper().delete(`reportingrest/adhocdataset/${uuid}?purge=true`)
         .then(() => {
           if (this.state.inSearchDefinitionMode) {
+            this.setState({isDeleteDefinition: true});
             this.searchSavedDefinitions();
           }
         });
@@ -208,12 +212,15 @@ class SavedComponent extends React.Component {
       this.setState({ searchingCohorts: true, inSearchCohortMode: true });
       new ApiHelper().get(`/cohort?v=full&q=${this.state.cohortsQuery}`)
       .then(response => {
-        if (JSON.stringify(response.results) === JSON.stringify([])) {
+        if (JSON.stringify(response.results) === JSON.stringify([]) && !this.state.isDeleteCohort) {
           utility.notifications('info', 'Search completed successfully but no results found');
+        } else if (this.state.isDeleteCohort) {
+          utility.notifications('error', 'Cohort deleted successfully');
         } else {
           utility.notifications('success', 'Search completed successfully');
         }
         this.setState({
+          isDeleteCohort: false,
           searchingCohorts: false,
           cohortResults: response.results.map(result => {
             return { 
@@ -244,12 +251,15 @@ class SavedComponent extends React.Component {
         `reportingrest/dataSetDefinition?v=full&q=${this.state.definitionsQuery}`
       )
       .then(response => {
-        if (JSON.stringify(response.results) === JSON.stringify([])) {
+        if (JSON.stringify(response.results) === JSON.stringify([]) && !this.state.isDeleteDefinition) {
           utility.notifications('info', 'Search completed successfully but no results found');
+        } else if (this.state.isDeleteDefinition) {
+          utility.notifications('error', 'Definition deleted successfully');
         } else {
           utility.notifications('success', 'Search completed successfully');
         }
         this.setState({
+          isDeleteDefinition: false,
           searchingDefinitions: false,
           definitionResults: response.results.map(result => {
             return {

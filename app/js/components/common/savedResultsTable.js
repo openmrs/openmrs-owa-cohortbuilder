@@ -59,7 +59,7 @@ const SavedResultsTable = ({
                           'Downloading...': 'Download'}
                       </a>
                       <a
-                        onClick={onDelete(uuid)}
+                        onClick={onDelete(uuid, result.name)}
                         className="link"
                         title={`Delete ${result.name}`}
                       >

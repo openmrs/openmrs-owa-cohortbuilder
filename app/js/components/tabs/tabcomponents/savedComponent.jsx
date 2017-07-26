@@ -47,20 +47,22 @@ class SavedComponent extends React.Component {
    * @param {String} uuid - unique identifier for the cohort to be deleted
    * @return {Function} - function that performs the actual deletion process
    */
-  deleteCohort(uuid) {
+  deleteCohort(uuid, cohortName) {
     return (event) => {
       event.preventDefault();
       const deleteJobs = [...this.state.cohortDeleteJobs];
       if (!deleteJobs.includes(uuid)) {
-        deleteJobs.push(uuid);
-        this.setState({ cohortDeleteJobs: deleteJobs });
-        new ApiHelper().delete(`/cohort/${uuid}?purge=true`)
-        .then(() => {
-          if (this.state.inSearchCohortMode) {
-            this.setState({isDeleteCohort: true});
-            this.searchSavedCohorts();
-          }
-        });
+        let confirmResult = confirm(`Are you sure you want to delete this ${cohortName} cohort?`);
+        if(confirmResult){
+          deleteJobs.push(uuid);         
+          this.setState({ cohortDeleteJobs: deleteJobs });
+          new ApiHelper().delete(`/cohort/${uuid}?purge=true`)
+            .then(() => {
+              if (this.state.inSearchCohortMode) {
+                this.searchSavedCohorts();
+              }
+            });
+        }
       }
     };
   }
@@ -133,20 +135,23 @@ class SavedComponent extends React.Component {
    * @return {Function} - function that performs the actual deletion process
    * @memberof SavedComponent
    */
-  deleteDefinition(uuid) {
+  deleteDefinition(uuid, definitionName) {
     return (event) => {
       event.preventDefault();
       const deleteJobs = [...this.state.definitionDeleteJobs];
       if (!deleteJobs.includes(uuid)) {
-        deleteJobs.push(uuid);
-        this.setState({ definitionDeleteJobs: deleteJobs });
-        new ApiHelper().delete(`reportingrest/adhocdataset/${uuid}?purge=true`)
-        .then(() => {
-          if (this.state.inSearchDefinitionMode) {
-            this.setState({isDeleteDefinition: true});
-            this.searchSavedDefinitions();
-          }
-        });
+        let confirmResult = confirm(`Do you want to delete this ${definitionName} definition?`);
+        if(confirmResult){
+          deleteJobs.push(uuid);
+          this.setState({ definitionDeleteJobs: deleteJobs });
+          new ApiHelper().delete(`reportingrest/adhocdataset/${uuid}?purge=true`)
+            .then(() => {
+              if (this.state.inSearchDefinitionMode) {
+                this.searchSavedDefinitions();
+              }
+            }
+          );
+        }
       }
     };
   }

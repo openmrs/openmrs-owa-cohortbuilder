@@ -68,7 +68,10 @@ class SearchHistoryComponent extends Component {
   delete(index) {
     return (event) => {
       event.preventDefault();
-      this.props.deleteHistory(index);
+      let confirmResult = confirm("Are you sure you want to delete this search history item?");
+      if(confirmResult){
+        this.props.deleteHistory(index);
+      }
     };
   }
     

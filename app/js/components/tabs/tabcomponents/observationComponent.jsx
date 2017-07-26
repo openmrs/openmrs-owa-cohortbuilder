@@ -33,6 +33,7 @@ export default class ObsFilter extends React.Component {
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
     this.nullDatatype = this.nullDatatype.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   componentDidUpdate() {
@@ -43,6 +44,17 @@ export default class ObsFilter extends React.Component {
     event.preventDefault();
     this.setState({
       [ event.target.name ] :  event.target.value
+    });
+  }
+
+  handleReset() {
+    this.setState({
+      timeModifier: 'ANY',
+      operator: '',
+      modifier: '',
+      onOrBefore: '',
+      onOrAfter: '',
+      formToRender: '',
     });
   }
 
@@ -335,7 +347,11 @@ export default class ObsFilter extends React.Component {
           <div className="form-group">
               <div className="col-sm-offset-3 col-sm-6">
                   <button type="submit" className="btn btn-success" >Search</button>
-                  <button type="reset" className="btn btn-default cancelBtn">Reset</button>
+                  <button
+                    type="reset"
+                    className="btn btn-default cancelBtn"
+                    onClick={this.handleReset}
+                  >Reset</button>
               </div>
           </div>
       </div>

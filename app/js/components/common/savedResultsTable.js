@@ -22,6 +22,8 @@ const SavedResultsTable = ({
               <th>S/N</th>
               <th>Name</th>
               <th>Description</th>
+              <th>Number of Patients</th>
+              <th>Options</th>
             </tr>
           </thead>
           <tbody>
@@ -34,6 +36,8 @@ const SavedResultsTable = ({
                     <td>{result.name}</td>
                     <td>
                       {result.description}
+                    </td>
+                    <td>
                       {result.totalResults !== undefined ? 
                         <a
                           onClick={onView(uuid, description)}
@@ -50,6 +54,8 @@ const SavedResultsTable = ({
                           View
                         </a>
                       }
+                    </td>
+                    <td>
                       <a
                         onClick={onDownload(uuid, result.name)}
                         className="link"

@@ -59,6 +59,7 @@ class SavedComponent extends React.Component {
           new ApiHelper().delete(`/cohort/${uuid}?purge=true`)
             .then(() => {
               if (this.state.inSearchCohortMode) {
+                this.setState({isDeleteCohort: true});
                 this.searchSavedCohorts();
               }
             });
@@ -147,6 +148,7 @@ class SavedComponent extends React.Component {
           new ApiHelper().delete(`reportingrest/adhocdataset/${uuid}?purge=true`)
             .then(() => {
               if (this.state.inSearchDefinitionMode) {
+                this.setState({isDeleteDefinition: true});
                 this.searchSavedDefinitions();
               }
             }

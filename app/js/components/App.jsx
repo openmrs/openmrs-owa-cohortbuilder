@@ -55,7 +55,7 @@ class App extends Component {
             <PageComponent getHistory = {this.getHistory} />
           </div>
 
-          <div id="body-wrapper" 
+          <div id="body" 
             style={{display :table}}>
             <div id="displayTable"  className="col-md-12 section">
                 <CohortTable

@@ -288,15 +288,15 @@ class PatientComponent extends Component {
     } else if(age < 0 || age === '-0' || age === -0) {
       this.setState((previousState) => {
         identifier === 'minAge' ?
-          previousState.ageErrorObject.minAgeErrorMsg = 'The age must be greater than 0' : 
-          previousState.ageErrorObject.maxAgeErrorMsg = 'The age must be greater than 0';
+        previousState.ageErrorObject.minAgeErrorMsg = 'The age must be greater than 0' : 
+        previousState.ageErrorObject.maxAgeErrorMsg = 'The age must be greater than 0';
         return previousState;
       });
     } else if(age > 200) {
       this.setState((previousState) => {
         identifier === 'minAge' ?
-          previousState.ageErrorObject.minAgeErrorMsg = 'The age must be less than 200' :
-          previousState.ageErrorObject.maxAgeErrorMsg = 'The age must be less than 200';
+        previousState.ageErrorObject.minAgeErrorMsg = 'The age must be less than 200' :
+        previousState.ageErrorObject.maxAgeErrorMsg = 'The age must be less than 200';
         return previousState;
       });
     }
@@ -463,12 +463,14 @@ class PatientComponent extends Component {
     } = this.state;
 
     return (
-      <div>
-        <h3>Search By Demographic</h3>
-        <form className="form-horizontal">
-          <div className="form-group">
-            <label htmlFor="gender" className="col-sm-2 control-label">Gender</label>
-            <div className="col-sm-6">
+      <div className="row">
+        <div className="col-sm-12 col-md-6 first-col">
+          <div className="sub-heading">
+            <h3 className="title">Search By Demographic</h3>
+          </div>
+          <form className="form-horizontal demographic-form">
+            <div className="form-group">
+              <label htmlFor="gender" className="control-label">Gender</label>
               <select
                 className="form-control"
                 onChange={this.handleSelectGender}
@@ -481,123 +483,121 @@ class PatientComponent extends Component {
                 <option value="females">Female</option>
               </select>
             </div>
-          </div>
 
-          <div className="form-group">
-            <label className="col-sm-2 control-label">Age</label>
-
-            <div className="col-sm-1">
-              <span className="inline-label">Between:</span>
-            </div>
-            <div className={ageErrorObject ? "col-sm-3 error" : "col-sm-3"}>
-              <input
-                min="0"
-                type="number"
-                name="minage"
-                id="minAge"
-                className="form-control"
-                onKeyDown={this.handleValidateAgeInput}
-                onKeyUp={this.handleSelectAge}
-                value={this.minAge}
-              />
-              <span>{ageErrorObject.status && ageErrorObject.minAgeErrorMsg}</span>
-            </div>
-            <span className="inline-label">And:</span>
-            <div className={ageErrorObject ? "col-sm-3 error" : "col-sm-3"}>
-              <input
-                min="0"
-                type="number"
-                name="maxage"
-                id="maxAge"
-                className="form-control"
-                onKeyDown={this.handleValidateAgeInput}
-                onKeyUp={this.handleSelectAge}
-                value={this.maxAge}
-              />
-              <span>{ageErrorObject.status && ageErrorObject.maxAgeErrorMsg}</span>
-            </div>
-          </div>
-          {startDate && !endDate || endDate && !startDate ?
-            <div className="col-sm-offset-2 error">
-              Select both Start and End <strong>Birthdates</strong> or none.
-                    </div> : null}
-          <div className="form-group">
-            <label className="col-sm-2 control-label">Birthdate</label>
-
-            <div className="col-sm-1">
-              <span className="inline-label">Between:</span>
-            </div>
-            <div
-              className={`col-sm-3 ${endDate && !startDate ? 'has-error' : ''}`}
-            >
-              <DatePicker
-                className="form-control"
-                id="startDate"
-                dateFormat="DD-MM-YYYY"
-                value={startDate}
-                onChange={this.handleDateChange('startDate')}
-              />
-            </div>
-            <span className="inline-label">And:</span>
-            <div
-              className={`col-sm-3 ${startDate && !endDate ? 'has-error' : ''}`}
-            >
-              <DatePicker
-                className="form-control"
-                id="endDate"
-                dateFormat="DD-MM-YYYY"
-                value={endDate}
-                onChange={this.handleDateChange('endDate')}
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <div className="col-sm-offset-2 col-sm-6">
-              <div className="checkbox patient-status">
-                <label>
+            <div className="form-group">
+              <div>
+                <label>Age</label>
+              </div>
+              <div className="col-sm-12 col-md-6 inner-controls btw">
+                <span className="inline-label">Between:</span>
                   <input
-                    type="radio"
-                    value="alive"
-                    name="livingStatus"
-                    checked={this.state.livingStatus === 'alive'}
-                    onChange={this.toggleLivingStatus}
-                  /> Alive Only
-                </label>
-                <label>
+                    min="0"
+                    type="number"
+                    name="minage"
+                    id="minAge"
+                    className="form-control"
+                    onKeyDown={this.handleValidateAgeInput}
+                    onKeyUp={this.handleSelectAge}
+                    value={this.minAge}
+                  />
+                  <span className="error">{ageErrorObject.status && ageErrorObject.minAgeErrorMsg}</span>
+              </div>
+              <div className="col-sm-12 col-md-6 inner-controls and">
+                <span className="inline-label">And:</span>
                   <input
-                    type="radio"
-                    value="dead"
-                    name="livingStatus"
-                    checked={this.state.livingStatus === 'dead'}
-                    onChange={this.toggleLivingStatus}
-                  /> Dead Only
-                </label>
+                    min="0"
+                    type="number"
+                    name="maxage"
+                    id="maxAge"
+                    className="form-control"
+                    onKeyDown={this.handleValidateAgeInput}
+                    onKeyUp={this.handleSelectAge}
+                    value={this.maxAge}
+                  />
+                  <span className="error">{ageErrorObject.status && ageErrorObject.maxAgeErrorMsg}</span>
               </div>
             </div>
-          </div>
-
-          <div className="form-group">
-            <div className="col-sm-offset-2 col-sm-6">
-              <button
-                type="submit"
-                onClick={this.searchDemographics}
-                className="btn btn-success"
-                disabled={ageErrorObject.status}
-              >Search</button>
-              <button
-                onClick={this.resetSearchByDemographics}
-                className="btn btn-default cancelBtn"
-              >Reset</button>
+            
+            <div className="form-group">
+              <div>
+                <label>Birthdate</label>
+              </div>
+              <div className="col-sm-12 col-md-6 inner-controls btw">
+                <span>Between:</span>
+                <DatePicker
+                  className="form-control date"
+                  id="startDate"
+                  dateFormat="DD-MM-YYYY"
+                  value={startDate}
+                  onChange={this.handleDateChange('startDate')}
+                />
+              </div>
+              <div className="col-sm-12 col-md-6 inner-controls and">
+                <span>And:</span>
+                <DatePicker
+                  className="form-control date"
+                  id="endDate"
+                  dateFormat="DD-MM-YYYY"
+                  value={endDate}
+                  onChange={this.handleDateChange('endDate')}
+                />
+              </div>
+               {startDate && !endDate || endDate && !startDate ?
+              <div className="col-sm-offset-2 error">
+                Select both Start and End <strong>Birthdates</strong> or none.
+                      </div> : null} 
             </div>
-          </div>
-        </form>
 
-        <h3>Search By Person Attributes</h3>
-        <form className="form-horizontal">
-          <div className="form-group">
-            <label htmlFor="gender" className="col-sm-2 control-label">Which Attribute</label>
-            <div className="col-sm-3">
+            <div className="form-group">
+              <div className="checkbox patient-status">
+                <div className="col-sm-12 inner-controls">
+                  <label>
+                    <input
+                      type="radio"
+                      value="alive"
+                      name="livingStatus"
+                      checked={this.state.livingStatus === 'alive'}
+                      onChange={this.toggleLivingStatus}
+                    /> Alive Only
+                  </label>
+                
+                  <label>
+                    <input
+                      type="radio"
+                      value="dead"
+                      name="livingStatus"
+                      checked={this.state.livingStatus === 'dead'}
+                      onChange={this.toggleLivingStatus}
+                    /> Dead Only
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="col-sm-12 text-right">
+                <button
+                  type="submit"
+                  onClick={this.searchDemographics}
+                  className="btn btn-success"
+                  disabled={ageErrorObject.status}
+                >Search</button>
+                <button
+                  onClick={this.resetSearchByDemographics}
+                  className="btn btn-default cancelBtn"
+                >Reset</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div className="col-sm-12 col-md-6 second-col">
+          <div>
+            <h3>Search By Person Attributes</h3>
+          </div>
+          <form className="form-horizontal attribute-form">
+            <div className="form-group pad-control">
+              <label htmlFor="gender" className="control-label">Which Attribute</label>
               <select
                 className="form-control"
                 id="attributeType"
@@ -608,8 +608,8 @@ class PatientComponent extends Component {
                 {attributes}
               </select>
             </div>
-            <label className="col-sm-1 control-label">Values</label>
-            <div className="col-sm-4">
+            <div className="form-group pad-control">
+              <label className="control-label">Values</label>
               <Creatable
                 multi
                 disabled={selectedAttribute ? false : true}
@@ -621,24 +621,22 @@ class PatientComponent extends Component {
                 onChange={this.handleAddAttributeValue}
               />
             </div>
-          </div>
-
-          <div className="form-group">
-            <div className="col-sm-offset-2 col-sm-6">
-              <button
-                type="submit"
-                onClick={this.searchByAttributes}
-                className="btn btn-success"
-              >Search</button>
-              <button
-                onClick={this.resetSearchByAttributes}
-                type="reset"
-                className="btn btn-default cancelBtn"
-              >Reset</button>
+            <div className="form-group">
+              <div className="text-right btn-container">
+                <button
+                  type="submit"
+                  onClick={this.searchByAttributes}
+                  className="btn btn-success"
+                >Search</button>
+                <button
+                  onClick={this.resetSearchByAttributes}
+                  type="reset"
+                  className="btn btn-default cancelBtn"
+                >Reset</button>
+              </div>
             </div>
-          </div>
-        </form>
-        <hr />
+          </form>
+        </div>        
       </div>
     );
   }

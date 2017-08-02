@@ -49,7 +49,7 @@ header .logo img {
 }
 
 #body-wrapper {
-    padding: 10px;
+    margin-top: 10px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     -o-border-radius: 5px;
@@ -214,9 +214,29 @@ a:hover {
     margin-top: 20px;
 }
 
-.section {
+.main-section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+.main-section, .section {
+    border-radius: 5px;
+}
+
+.section, .main-section, .history-section {
     background-color: #fff;
-    margin-bottom: 15px;
+}
+
+.sub-heading {
+    padding: 0 10px;
+}
+
+.title {
+    padding-left: 20px;
+}
+
+.section {
+    padding: 10px;
 }
 
 #concept-name {
@@ -225,4 +245,51 @@ a:hover {
 
 #concept-verbose {
     text-indent: '20px';
+}
+
+.demographic-form {
+    padding: 0 30px;
+    margin-left: 15px;
+}
+
+.date {
+    display: block;
+    width: 100%;
+}
+
+.col-sm-12 {
+    padding: 0 5px;
+}
+
+.inner-controls {
+    padding: 0;
+}
+
+.btw {
+    padding-right: 5px;
+}
+
+.and {
+    padding-left: 5px;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.first-col {
+    border-right: 1px solid #00463f;
+}
+
+.second-col, .pad-control {
+    padding: 0 5px 0 20px;
+}
+
+.pad-control {
+    width: 100%;
+    padding-right: 15px;
+}
+
+.btn-container {
+    padding-right: 45px;
 }

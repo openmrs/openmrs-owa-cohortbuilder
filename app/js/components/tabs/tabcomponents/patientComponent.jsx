@@ -63,12 +63,12 @@ class PatientComponent extends Component {
     // add appropriate age constraints to the search parameters
     if (minAge && maxAge) {
       // switch the min and max ages if the min age is greater than the max age
-      if (minAge > maxAge) {
+      if (parseInt(minAge) > parseInt(maxAge)) {
         const minAgeStore = minAge;
         minAge = maxAge;
         maxAge = minAgeStore;
       }
-
+  
       searchParameters.ageRangeOnDate = [
         { name: 'minAge', value: minAge },
         { name: 'maxAge', value: maxAge}

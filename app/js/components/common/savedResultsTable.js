@@ -4,6 +4,7 @@ const SavedResultsTable = ({
   results, tableName, downloadJobs, deleteJobs,
   onDelete, onView, onDownload, isSearching
 }) => {
+  let serialNumber = 0;
   return isSearching ? 
     (<div>
       <h4 className="text-center">{tableName}</h4>
@@ -28,11 +29,13 @@ const SavedResultsTable = ({
           </thead>
           <tbody>
             {
-              results.map((result, index) => {
-                const { uuid, description } = result;
-                return (
+              results.map((result) => {
+                if (result.name != 'appointmentschedulingui.appointmentDataSetDefinition.dailyAppointments') {
+                  const { uuid, description } = result;
+                  serialNumber++;
+                  return (
                   <tr key={uuid}>
-                    <td>{index + 1}</td>
+                    <td>{serialNumber}</td>
                     <td>{result.name}</td>
                     <td>
                       {result.description}
@@ -74,7 +77,8 @@ const SavedResultsTable = ({
                       </a>
                     </td>
                   </tr>
-                );
+                  );
+                }
               })
             }
           </tbody>

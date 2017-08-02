@@ -34,7 +34,8 @@ class ActionsComponent extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       query: nextProps.query,
-      queryId: nextProps.queryId
+      queryId: nextProps.queryId,
+      description: nextProps.query,
     });
   }
 
@@ -241,7 +242,8 @@ class ActionsComponent extends Component {
                             <div className="form-group">
                                 <label className="control-label col-sm-2">Description:</label>
                                 <div className="col-sm-8">
-                                    <input type="text" className="form-control" name="description" placeholder="Enter description" onChange={this.handleChange} />
+                                    <input type="text" className="form-control" name="description" placeholder="Enter description" onChange={this.handleChange}
+                                        value={this.state.description} />
                                 </div>
                             </div>
                             <div className="form-group">

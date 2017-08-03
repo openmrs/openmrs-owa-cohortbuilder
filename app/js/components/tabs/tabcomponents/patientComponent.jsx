@@ -279,28 +279,28 @@ class PatientComponent extends Component {
    * @memberof PatientComponent
    */
   isAgeValid(age, identifier) {
-      if (age >= 0 && age <= 200 && typeof(age)==="string" && /^\d+$/.test(age) && age !== '-0') {
-        this.setState((previousState) => {
-          previousState.ageErrorObject[`${identifier}ErrorMsg`] = '';
-          return previousState;
-        });
-        return true;
-      } else if(age < 0 || age === '-0' || age === -0) {
-        this.setState((previousState) => {
-          identifier === 'minAge' ?
+    if (age >= 0 && age <= 200 && typeof(age)==="string" && parseInt(age + 1) && age !== '-0') {
+      this.setState((previousState) => {
+        previousState.ageErrorObject[`${identifier}ErrorMsg`] = '';
+        return previousState;
+      });
+      return true;
+    } else if(age < 0 || age === '-0' || age === -0) {
+      this.setState((previousState) => {
+        identifier === 'minAge' ?
           previousState.ageErrorObject.minAgeErrorMsg = 'The age must be greater than 0' : 
           previousState.ageErrorObject.maxAgeErrorMsg = 'The age must be greater than 0';
-          return previousState;
-        });
-      } else if(age > 200) {
-        this.setState((previousState) => {
-          identifier === 'minAge' ?
+        return previousState;
+      });
+    } else if(age > 200) {
+      this.setState((previousState) => {
+        identifier === 'minAge' ?
           previousState.ageErrorObject.minAgeErrorMsg = 'The age must be less than 200' :
           previousState.ageErrorObject.maxAgeErrorMsg = 'The age must be less than 200';
-          return previousState;
-        });
-      }
-      return false;
+        return previousState;
+      });
+    }
+    return false;
   }
 
   /**
@@ -330,17 +330,17 @@ class PatientComponent extends Component {
     if (this.isAgeValid(event.target.value, event.target.id)) {
       this.setState({ [event.target.id]: event.target.value });
       this.setState((previousState) => {
-          this.state.ageErrorObject.minAgeErrorMsg === '' &&
+        this.state.ageErrorObject.minAgeErrorMsg === '' &&
           this.state.ageErrorObject.maxAgeErrorMsg === '' ?
           previousState.ageErrorObject.status = false
           : null;
-          return previousState;
-        });
+        return previousState;
+      });
     } else {
       this.setState((previousState) => {
-          previousState.ageErrorObject.status = true;
-          return previousState;
-        });
+        previousState.ageErrorObject.status = true;
+        return previousState;
+      });
     }
   }
 

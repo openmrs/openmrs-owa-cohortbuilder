@@ -146,7 +146,7 @@ class SearchHistoryComponent extends Component {
                       <table className="table table-striped">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th className="table-header">#</th>
                                 <th>Query</th>
                                 <th>Query Definition Options</th>
                                 <th>Results</th>

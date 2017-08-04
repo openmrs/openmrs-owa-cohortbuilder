@@ -107,6 +107,28 @@ li>a:hover {
 li>a:focus {
     color: gold;
 }
+.table thead {
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: sticky;
+    top: 0;
+    background-color: #FFF;
+}
+.table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+th, td {
+    width: 180px;
+    word-wrap:break-word;
+}
+
+.table-header {
+    width: 50px;
+}
 
 a:hover {
     text-decoration: none;

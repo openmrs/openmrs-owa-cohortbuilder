@@ -19,7 +19,7 @@ const SavedResultsTable = ({
         <table className="table table-hover">
           <thead>
             <tr>
-              <th>S/N</th>
+              <th className="table-header">S/N</th>
               <th>Name</th>
               <th>Description</th>
               <th>Number of Patients</th>

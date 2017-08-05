@@ -1,4 +1,30 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
+/**
+ * The JSONHelper class
+ * 
+ * @export
+ * @class JSONHelper
+ */
 export class JSONHelper {
+
+  /**
+   * The composeJson method
+   * 
+   * @param {Object} searchParameters 
+   * @returns 
+   * @memberof JSONHelper
+   */
   composeJson(searchParameters) {
     const query = {};
     query.type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
@@ -28,6 +54,13 @@ export class JSONHelper {
     return {query};
   }
 
+  /**
+   * The isNullValues method
+   * 
+   * @param {Object} fieldValues 
+   * @returns 
+   * @memberof JSONHelper
+   */
   isNullValues(fieldValues) {
     if(Array.isArray(fieldValues) && fieldValues.length >= 1) {
       return (!fieldValues[0].value) ? true : false;
@@ -35,6 +68,14 @@ export class JSONHelper {
     return (fieldValues === 'all' || !fieldValues) ? true : false;
   }
 
+  /**
+   * The getDefinitionLibraryKey method
+   * 
+   * @param {String} field 
+   * @param {String} value 
+   * @returns 
+   * @memberof JSONHelper
+   */
   getDefinitionLibraryKey(field, value) {
     let definitionLibraryKey = 'reporting.library.cohortDefinition.builtIn';
     switch (field) {
@@ -47,6 +88,13 @@ export class JSONHelper {
     return definitionLibraryKey;
   }
 
+  /**
+   * The getParameterValues method
+   * 
+   * @param {Array} parameterFields 
+   * @returns 
+   * @memberof JSONHelper
+   */
   getParameterValues(parameterFields) {
     const parameter = {};
     parameterFields.forEach(eachParam => {
@@ -55,6 +103,13 @@ export class JSONHelper {
     return parameter;
   }
 
+  /**
+   * The composeFilterCombination method
+   * 
+   * @param {Object} filterColumns 
+   * @returns 
+   * @memberof JSONHelper
+   */
   composeFilterCombination(filterColumns) {
     let compositionTitle = '';
     const totalNumber = filterColumns.length;
@@ -71,6 +126,12 @@ export class JSONHelper {
     return compositionTitle;
   }
 
+  /**
+   * The addColumnsToDisplay method
+   * 
+   * @returns 
+   * @memberof JSONHelper
+   */
   addColumnsToDisplay() {
     // the constant columns should not be hardcoded, at the longrun, users should be able to select the columns
     // they want displayed on the result table

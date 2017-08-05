@@ -1,3 +1,15 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, {Component} from 'react';
 import shortId from 'shortid';
 import DatePicker from "react-bootstrap-date-picker";
@@ -5,7 +17,19 @@ import { Creatable } from 'react-select';
 import utility from '../../../utility';
 import { JSONHelper } from '../../../helpers/jsonHelper';
 
+/**
+ * The PatientComponent component class
+ * 
+ * @class PatientComponent
+ * @extends {Component}
+ */
 class PatientComponent extends Component {
+  
+  /**
+   * Creates an instance of PatientComponent.
+   * @param {Object} props 
+   * @memberof PatientComponent
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -46,6 +70,12 @@ class PatientComponent extends Component {
     this.isAgeValid = this.isAgeValid.bind(this);
   }
 
+  /**
+   * This method executes after the component has mounted
+   * 
+   * @param {Object} props 
+   * @memberof PatientComponent
+   */
   componentDidMount(props) {
     this.props.fetchData('/personattributetype').then(data => {
       this.setState({
@@ -54,6 +84,12 @@ class PatientComponent extends Component {
     });
   }
 
+  /**
+   * This method searches by demographic
+   * 
+   * @param {Object} event the search event
+   * @memberof PatientComponent
+   */
   searchDemographics(event) {
     event.preventDefault();
     const { gender, livingStatus } = this.state;
@@ -123,7 +159,8 @@ class PatientComponent extends Component {
   }
 
   /**
-   * Mehtod to get the search by attributes description
+   * Method to get the search by attributes description
+   * 
    * @return {String} - Search by attributes description
    */
   getSearchByAttributesDescription() {
@@ -152,6 +189,7 @@ class PatientComponent extends Component {
 
   /**
    * Method to get the demographic search description
+   * 
    * @return {String} - Demographic search description
    */
   getSearchByDemographicsDescription() {
@@ -184,6 +222,13 @@ class PatientComponent extends Component {
     return label;
   }
 
+  /**
+   * This method searches for patients
+   * 
+   * @param {Object} searchParameters the search query
+   * @param {String} description 
+   * @memberof PatientComponent
+   */
   performSearch(searchParameters, description) {
     const theParameter = Object.assign({}, searchParameters);
     const queryDetails = this.jsonHelper.composeJson(theParameter);
@@ -217,6 +262,7 @@ class PatientComponent extends Component {
 
   /**
    * Method to perform a search by Patient attributes
+   * 
    * @param {Object} Event Object 
    * @return {undefined}
    */
@@ -239,6 +285,12 @@ class PatientComponent extends Component {
     );
   }
 
+  /**
+   * This method handle the pagination event
+   * 
+   * @param {Object} event the pagination event
+   * @memberof PatientComponent
+   */
   navigatePage(event) {
     event.preventDefault();
     let pageToNavigate = 0;
@@ -251,6 +303,14 @@ class PatientComponent extends Component {
     this.setState({ toDisplay: pagePatientInfo, currentPage: pageToNavigate });
   }
 
+  /**
+   * This method gets patients details 
+   * 
+   * @param {Array} allPatients all the patients
+   * @param {Integer} currentPage the current page
+   * @returns 
+   * @memberof PatientComponent
+   */
   getPatientDetailsPromises(allPatients, currentPage) {
     const pagePatientInfo = [];
     for (let index = (currentPage - 1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
@@ -261,10 +321,22 @@ class PatientComponent extends Component {
     return pagePatientInfo;
   }
 
+  /**
+   * This method handles the living status
+   * 
+   * @param {Object} event the toggle event
+   * @memberof PatientComponent
+   */
   toggleLivingStatus(event) {
     this.setState({ livingStatus: event.target.value });
   }
 
+  /**
+   * This method handles the select gender event
+   * 
+   * @param {Object} event the select gender event
+   * @memberof PatientComponent
+   */
   handleSelectGender(event) {
     this.setState({ gender: event.target.value });
   }
@@ -306,6 +378,7 @@ class PatientComponent extends Component {
   /**
    * This method validates if a user types a number
    * onKeyDown
+   * 
    * @param {object} event
    */
   handleValidateAgeInput(event) {
@@ -346,6 +419,7 @@ class PatientComponent extends Component {
 
   /**
    * Method to reset search by attribute fields to default
+   * 
    * @return {undefined}
    */
   resetSearchByAttributes() {
@@ -358,6 +432,7 @@ class PatientComponent extends Component {
   /**
    * Method to reset all state related to search by demographic in this
    * component
+   * 
    * @return {undefined}
    */
   resetSearchByDemographics(event) {
@@ -388,6 +463,7 @@ class PatientComponent extends Component {
 
   /**
    * Method to set the end date String in state
+   * 
    * @param {String} value - isoString formatted date value
    * @return {undefined}
    */
@@ -397,6 +473,7 @@ class PatientComponent extends Component {
 
   /**
    * Method to update the date key for different date types in the state
+   * 
    * @param {String} stateKey - The key in the component state that should be
    * updated
    * @return {Function} - Call back function to be executed by the date input
@@ -410,6 +487,7 @@ class PatientComponent extends Component {
 
   /**
    * Method to add selected attribute values
+   * 
    * @param {Array} selectedAttributeValues - Array containing selected
    * attribute values
    * @return {undefined}
@@ -425,6 +503,7 @@ class PatientComponent extends Component {
 
   /**
    * Method to handle selection of different attribute types
+   * 
    * @param {Object} event - Event Object
    * @return {undefined}
    */
@@ -439,6 +518,7 @@ class PatientComponent extends Component {
 
   /**
    * Method to get the date in the format MM-DD-YY from a date isoString
+   * 
    * @param {String} isoString - Date in isoString format
    * @return {String} MM-DD-YY date formatted string
    */
@@ -446,6 +526,12 @@ class PatientComponent extends Component {
     return isoString ? isoString.split('T')[0] : '';
   }
 
+  /**
+   * This method renders the PatientComponent component
+   * 
+   * @returns 
+   * @memberof PatientComponent
+   */
   render() {
     let attributes = this.state.patientAttributes.map((attribute) => {
       return (
@@ -644,6 +730,9 @@ class PatientComponent extends Component {
   }
 }
 
+/**
+ * Proptype validation for the PatientComponent component
+ */
 PatientComponent.propTypes = {
   addToHistory: React.PropTypes.func.isRequired,
   search: React.PropTypes.func.isRequired,

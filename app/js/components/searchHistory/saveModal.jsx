@@ -1,10 +1,33 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React,{ Component, PropTypes } from 'react';
 
 import { ApiHelper } from '../../helpers/apiHelper';
 import { JSONHelper } from '../../helpers/jsonHelper';
 
+/**
+ * The Modal component class
+ * 
+ * @class Modal
+ * @extends {Component}
+ */
 class Modal extends Component {
 
+  /**
+   * Creates an instance of Modal.
+   * @param {Object} props 
+   * @memberof Modal
+   */
   constructor (props) {
     super(props);
     this.state = {
@@ -15,6 +38,12 @@ class Modal extends Component {
     this.reset = this.reset.bind(this);
   }
 
+  /**
+   * This method updates the state with the new props
+   * 
+   * @param {Object} nextProps the new / updated props
+   * @memberof Modal
+   */
   componentWillReceiveProps(nextProps) {
     const state = {
       description: nextProps.description,
@@ -26,6 +55,13 @@ class Modal extends Component {
     this.setState(state);
   }
 
+  /**
+   * This method maps the content of a form field to the 
+   * state
+   * 
+   * @param {Object} event the event you want to map the state to 
+   * @memberof Modal
+   */
   handleChange(event) {
     event.preventDefault();
     this.setState({
@@ -33,10 +69,22 @@ class Modal extends Component {
     });
   }
     
+  /**
+   * This method resets the value of the `searchName` to an empty
+   * string
+   * 
+   * @memberof Modal
+   */
   reset() {
     this.setState({ searchName : ""});
   }
 
+  /**
+   * The method handles the save event
+   * 
+   * @param {Oobject} event the event you want to save
+   * @memberof Modal
+   */
   onSave(event) {
     event.preventDefault();
     const { index, searchName } = this.state;
@@ -54,6 +102,12 @@ class Modal extends Component {
     }
   }
 
+  /**
+   * This method renders the Modal Component
+   * 
+   * @returns 
+   * @memberof Modal
+   */
   render() {
     return (
             <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -110,6 +164,9 @@ class Modal extends Component {
   }
 }
 
+/**
+ * Proptypes validation for the Modal component
+ */
 Modal.propTypes = {
   description: PropTypes.string,
   index: PropTypes.number,

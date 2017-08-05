@@ -1,3 +1,15 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, { Component, PropTypes } from 'react';
 import shortId from 'shortid';
 import Select from 'react-select';
@@ -9,7 +21,19 @@ const FORMS_API_ENDPOINT = '/form';
 const LOCATIONS_API_ENDPOINT = '/location';
 const ENCOUNTER_TYPES_API_ENDPOINT = '/encountertype';
 
+/**
+ * The EncounterComponent Component class
+ * 
+ * @class EncounterComponent
+ * @extends {Component}
+ */
 class EncounterComponent extends Component {
+
+  /**
+   * Creates an instance of EncounterComponent.
+   * @param {Object} props 
+   * @memberof EncounterComponent
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +68,11 @@ class EncounterComponent extends Component {
     this.handleCountChange = this.handleCountChange.bind(this);
   }
 
+  /**
+   * This method executes before this component is rendered
+   * 
+   * @memberof EncounterComponent
+   */
   componentWillMount() {
     this.props.fetchData(FORMS_API_ENDPOINT)
       .then(response => {
@@ -73,12 +102,26 @@ class EncounterComponent extends Component {
       });
   }
 
+  /**
+   * This method displays selected options
+   * 
+   * @param {Object} data 
+   * @returns 
+   * @memberof EncounterComponent
+   */
   displaySelectOption(data) {
     return (
       <option value={data.id} key={shortId.generate()}>{data.value}</option>
     );
   }
 
+  /**
+   * This method removes empty values from 
+   * 
+   * @param {Object} allParameters 
+   * @returns 
+   * @memberof EncounterComponent
+   */
   removeEmptyValues(allParameters) {
     const newParamArray = [];
     allParameters.encounterSearchAdvanced.forEach(eachParam => {
@@ -92,6 +135,12 @@ class EncounterComponent extends Component {
     return newObject;
   }
 
+  /**
+   * This method searches by encounter
+   * 
+   * @param {Object} event the event 
+   * @memberof EncounterComponent
+   */
   searchByEncounter(event) {
     event.preventDefault();
     const {
@@ -152,6 +201,7 @@ class EncounterComponent extends Component {
   /**
    * Method to handle selection changes from the custom encounter types Select
    * input
+   * 
    * @param {Array} selectedEncounterTypes: Array containing Objects with data
    * about selected encounter types
    * @return {undefined}
@@ -163,6 +213,7 @@ class EncounterComponent extends Component {
   /**
    * getEncounterSearhDescription will compose the right description for every
    * encounter search that is performed using search parameters in state
+   * 
    * @return {string} the encounter search description
    */
   getEncounterSearchDescription() {
@@ -218,15 +269,15 @@ class EncounterComponent extends Component {
     });
     let searchDescription = `Patients in ${selectedLocation.value}`;
     switch (this.state.method) {
-    case 'FIRST':
-      searchDescription += ' (by method EARLIEST_ENCOUNTER).';
-      break;
-    case 'LAST':
-      searchDescription += ' (by method LATEST_ENCOUNTER).';
-      break;
-    default:
-      searchDescription += ' (by method ANY_ENCOUNTER).';
-      break;
+      case 'FIRST':
+        searchDescription += ' (by method EARLIEST_ENCOUNTER).';
+        break;
+      case 'LAST':
+        searchDescription += ' (by method LATEST_ENCOUNTER).';
+        break;
+      default:
+        searchDescription += ' (by method ANY_ENCOUNTER).';
+        break;
     }
     return searchDescription;
   }
@@ -234,6 +285,7 @@ class EncounterComponent extends Component {
   /**
    * Method to handle search by location submit events and search for patients 
    * from the back end using location and method selected
+   * 
    * @param {Object} event - Object containing data about the triggered event
    * @return {undefined}
    */
@@ -265,6 +317,7 @@ class EncounterComponent extends Component {
   /**
    * Method to handle option selection in select fields. It sets the selected option
    * value to the property in state (referred to by the option id)
+   * 
    * @param {Object} event - Object contatining data about the triggered event
    * @return {undefined}
    */
@@ -279,6 +332,7 @@ class EncounterComponent extends Component {
 
   /**
    * Method to get an array of <option> element items from locations in the state
+   * 
    * @return {Array} - An array containing option elements of availaible methods
    */
   getLocationOptions() {
@@ -289,6 +343,7 @@ class EncounterComponent extends Component {
 
   /**
    * Method to get an array of <option> element items from methods in the state
+   * 
    * @return {Array} - An array containing option elements of availaible methods
    */
   getMethodOptions() {
@@ -301,6 +356,7 @@ class EncounterComponent extends Component {
 
   /**
    * Method to update the date key for different date types in the state
+   * 
    * @param {String} stateKey - The key in the component state that should be
    * updated
    * @return {Function} - Call back function to be executed by the date input
@@ -314,6 +370,7 @@ class EncounterComponent extends Component {
 
   /**
    * Method to get the date in the format MM-DD-YY from a date isoString
+   * 
    * @param {String} isoString - Date in isoString format
    * @return {String} MM-DD-YY date formatted string
    */
@@ -323,6 +380,7 @@ class EncounterComponent extends Component {
 
   /**
    * Method to handle setting of the encounter count in this component
+   * 
    * @param {Object} event - Event Object
    * @return {undefined} 
    */
@@ -332,6 +390,7 @@ class EncounterComponent extends Component {
 
   /**
    * Metod to reset all fields in the encounter form of this component
+   * 
    * @return {undefined}
    */
   resetEncounterFields() {
@@ -346,6 +405,11 @@ class EncounterComponent extends Component {
     });
   }
 
+  /**
+   * This method resets the location fields
+   * 
+   * @memberof EncounterComponent
+   */
   resetLocationFields() {
     this.setState({
       location: '',
@@ -354,6 +418,12 @@ class EncounterComponent extends Component {
     });
   }
 
+  /**
+   * This method renders the EncounterComponent component
+   * 
+   * @returns 
+   * @memberof EncounterComponent
+   */
   render() {
     return (
       <div className="encounter-component">
@@ -479,6 +549,9 @@ class EncounterComponent extends Component {
   }
 }
 
+/**
+ * Proptype idation for the EncounterComponent component
+ */
 EncounterComponent.propTypes = {
   fetchData: PropTypes.func.isRequired,
   search: PropTypes.func.isRequired,

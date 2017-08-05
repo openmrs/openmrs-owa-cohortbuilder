@@ -1,8 +1,32 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, { PropTypes, Component } from 'react';
 import shortId from 'shortid';
 import { Navigate } from './navigate';
 
+/**
+ * The cohortTable Component class 
+ * 
+ * @class cohortTable
+ * @extends {Component}
+ */
 class cohortTable  extends Component {
+
+  /**
+   * Creates an instance of cohortTable.
+   * @param {Object} props 
+   * @memberof cohortTable
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -15,8 +39,15 @@ class cohortTable  extends Component {
       index: 0,
     };
     this.navigatePage = this.navigatePage.bind(this);
+    this.getPagePatient = this.getPagePatient.bind(this);
   }
-
+  
+  /**
+   * This method updates the state when a new prop is revieved
+   * 
+   * @param {Object} nextProps 
+   * @memberof cohortTable
+   */
   componentWillReceiveProps(nextProps) {
     const pagePatientInfo = this.getPagePatient(nextProps.toDisplay, 1);
     this.setState({
@@ -28,6 +59,13 @@ class cohortTable  extends Component {
     });
   }
 
+  /**
+   * This method contains logic for the pagination being displayed on
+   * the front end
+   * 
+   * @param {Object} event the event 
+   * @memberof cohortTable
+   */
   navigatePage(event) {
     event.preventDefault();
     let pageToNavigate = 0;
@@ -40,7 +78,14 @@ class cohortTable  extends Component {
     this.setState({ toDisplay: pagePatientInfo, currentPage: pageToNavigate });
   }
 
-
+  /**
+   * This method gets all the patients data for a particular page
+   * 
+   * @param {Array} allPatients 
+   * @param {Integer} currentPage 
+   * @returns 
+   * @memberof cohortTable
+   */
   getPagePatient(allPatients, currentPage) {
     const pagePatientInfo = [];
     for(let index = (currentPage-1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
@@ -51,6 +96,12 @@ class cohortTable  extends Component {
     return pagePatientInfo;
   }
 
+  /**
+   * This method renders the cohortTable component
+   * 
+   * @returns 
+   * @memberof cohortTable
+   */
   render() {
     return (
       <div className="table-window">
@@ -98,7 +149,9 @@ class cohortTable  extends Component {
   }
 }
 
-
+/**
+ * Proptype validation for the cohortTable component
+ */
 cohortTable.propTypes = {
   toDisplay: PropTypes.array.isRequired,
   description: PropTypes.string.isRequired,

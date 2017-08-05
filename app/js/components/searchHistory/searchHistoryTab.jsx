@@ -1,3 +1,15 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, { Component, PropTypes } from 'react';
 import { ApiHelper } from '../../helpers/apiHelper';
 import { JSONHelper } from '../../helpers/jsonHelper'; 
@@ -5,7 +17,19 @@ import { JSONHelper } from '../../helpers/jsonHelper';
 import SearchHistory from './searchHistoryComponent.jsx';
 import SavedHistory from './savedHistory.jsx';
 
-class  SearchHistoryTab  extends Component {
+/**
+ * The SearchHistoryTab Component class
+ * 
+ * @class SearchHistoryTab
+ * @extends {Component}
+ */
+class SearchHistoryTab  extends Component {
+
+  /**
+   * Creates an instance of SearchHistoryTab.
+   * @param {Object} props 
+   * @memberof SearchHistoryTab
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -17,6 +41,12 @@ class  SearchHistoryTab  extends Component {
     this.saveSearch = this.saveSearch.bind(this);
     this.setError = this.setError.bind(this);
   }
+
+  /**
+   * This method fetches the search history and adds it to the state
+   * 
+   * @memberof SearchHistoryTab
+   */
   componentDidMount() {
     const apiHelper = new ApiHelper();
     apiHelper.get('reportingrest/dataSetDefinition?v=full' )
@@ -26,6 +56,13 @@ class  SearchHistoryTab  extends Component {
             });
   }
 
+  /**
+   * Please edit this if you know what this method does 
+   * 
+   * @param {Object} parameter 
+   * @returns 
+   * @memberof SearchHistoryTab
+   */
   parse(parameter) {
     let result = {};
     result.description = parameter.description;
@@ -47,15 +84,35 @@ class  SearchHistoryTab  extends Component {
     return result;
   }
 
+  /**
+   * This method deletes a search history
+   * 
+   * @param {Number} uuid 
+   * @memberof SearchHistoryTab
+   */
   updateHistory(uuid) {
     const history = this.state.history.filter((eachHistory) => eachHistory.uuid != uuid);
     this.setState({ history});
   }
 
+  /**
+   * This method displays an error to the user
+   * 
+   * @param {String} error the eror you want to display
+   * @memberof SearchHistoryTab
+   */
   setError(error) {
     this.setState( {error, loading: false} );
   }
 
+  /**
+   * The method adds a search hstory to the database
+   * 
+   * @param {Integer} index the index of the saved search
+   * @param {String} name the name of the saved search
+   * @returns 
+   * @memberof SearchHistoryTab
+   */
   saveSearch(index, name) {
     return new Promise((resolve, reject) => {
       const composer = new JSONHelper();
@@ -80,6 +137,12 @@ class  SearchHistoryTab  extends Component {
     });      
   }
 
+  /**
+   * This method renders the SearchHistoryTab component
+   * 
+   * @returns 
+   * @memberof SearchHistoryTab
+   */
   render() {
     return (
       <div className="section">
@@ -95,6 +158,9 @@ class  SearchHistoryTab  extends Component {
   }
 }
 
+/**
+ * Proptypes validaion for the SearchHistoryTab component
+ */
 SearchHistoryTab.propTypes = {
   history: PropTypes.array.isRequired,
   deleteHistory: PropTypes.func.isRequired,

@@ -1,3 +1,15 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, {Component, PropTypes} from 'react';
 import shortId from 'shortid';
 
@@ -5,7 +17,19 @@ import { ApiHelper } from '../../helpers/apiHelper';
 import DownloadHelper from '../../helpers/downloadHelper';
 import './cohorts.css';
 
+/**
+ * The Actions Component class
+ * 
+ * @class ActionsComponent
+ * @extends {Component}
+ */
 class ActionsComponent extends Component {
+
+  /**
+   * Creates an instance of ActionsComponent.
+   * @param {Object} props 
+   * @memberof ActionsComponent
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -27,10 +51,23 @@ class ActionsComponent extends Component {
     this.onSave = this.onSave.bind(this);
   }
 
+  /**
+   * This method retrieves all the cohorts before rendering
+   * the component
+   * 
+   * @memberof ActionsComponent
+   */
   componentWillMount() {
     this.getAllCohorts();
   }
 
+  /**
+   * This method updates the state of the component
+   * with the new props
+   * 
+   * @param {nextProps} nextProps The updated props
+   * @memberof ActionsComponent
+   */
   componentWillReceiveProps(nextProps) {
     this.setState({
       query: nextProps.query,
@@ -39,6 +76,11 @@ class ActionsComponent extends Component {
     });
   }
 
+  /**
+   * This method fetches all the cohorts 
+   * 
+   * @memberof ActionsComponent
+   */
   getAllCohorts() {
     const apiHelper = new ApiHelper();
     apiHelper.get('/cohort?v=full')
@@ -49,6 +91,13 @@ class ActionsComponent extends Component {
             });
   }
 
+  /**
+   * This method maps the content of the input fields to 
+   * the state
+   * 
+   * @param {Object} e The event  
+   * @memberof ActionsComponent
+   */
   handleChange(e) {
     e.preventDefault();
     this.setState({
@@ -56,6 +105,12 @@ class ActionsComponent extends Component {
     });
   }
 
+  /**
+   * This methods handles the submit event
+   * 
+   * @param {Object} event The event  
+   * @memberof ActionsComponent
+   */
   handleSubmit(e) {
     e.preventDefault();
     const query = this.state.query;
@@ -78,6 +133,12 @@ class ActionsComponent extends Component {
     }
   }
 
+  /**
+   * This method handles the save event
+   * 
+   * @param {Object} event The event  
+   * @memberof ActionsComponent
+   */
   onSave(event) {
     event.preventDefault();
     const {name, description} = this.state;
@@ -86,6 +147,12 @@ class ActionsComponent extends Component {
       event.target.description.value="";
     }
   }
+
+  /**
+   * This method resets all the fields to its default
+   * 
+   * @memberof ActionsComponent
+   */
   resetError(){
     this.setState({
       error: '',
@@ -94,12 +161,26 @@ class ActionsComponent extends Component {
     });
   }
 
+  /**
+   * This method displays the history
+   * 
+   * @param {Object} history 
+   * @param {Integer} index 
+   * @returns 
+   * @memberof ActionsComponent
+   */
   displayHistory(history, index) {
     return (
 			<option value={index} key={shortId.generate()}>{history.description}</option>
     );
   }
 
+  /**
+   * This method fetches the query data
+   * 
+   * @returns {Object} display, name, description, memberIds
+   * @memberof ActionsComponent
+   */
   getQueryData() {
     return {
       display: this.state.query,
@@ -109,11 +190,25 @@ class ActionsComponent extends Component {
     };
   }
 
-
+  /**
+   * This method gets the cohortId
+   * 
+   * @param {Integer} cohortId 
+   * @returns 
+   * @memberof ActionsComponent
+   */
   getPatientId(cohortId) {
     return this.props.history[cohortId].patients.map((patient) => patient.patientId);
   }
 
+  /**
+   * This method fetches the patients on a page
+   * 
+   * @param {Array} allPatients 
+   * @param {Integer} currentPage 
+   * @returns {Object} pagePatientInfo
+   * @memberof ActionsComponent
+   */
   getPagePatient(allPatients, currentPage) {
     const pagePatientInfo = [];
     for (let index = (currentPage - 1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
@@ -124,6 +219,12 @@ class ActionsComponent extends Component {
     return pagePatientInfo;
   }
 
+  /**
+   * This method handles the navigate page event
+   * 
+   * @param {Object} event The navigation event
+   * @memberof ActionsComponent
+   */
   navigatePage(event) {
     event.preventDefault();
     let pageToNavigate = 0;
@@ -144,6 +245,14 @@ class ActionsComponent extends Component {
     }));
   }
 
+  /**
+   * This method fetches all the patients data
+   * 
+   * @param {Integer} cohortId The cohort identifier
+   * @param {String} description The cohort description
+   * @returns 
+   * @memberof ActionsComponent
+   */
   getPatientsData(cohortId, description) {
     return (e) => {
       this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
@@ -160,14 +269,14 @@ class ActionsComponent extends Component {
     };
   }
 
-    /**
-     * Method to fetch data using the cohort uuid, format the data and download
-     * it on the browser
-     * @param {Number} cohortId - unique cohort id
-     * @param {String} description - Description of the cohort (to be used as
-     * the saved csv file name)
-     * @return {undefined}
-     */
+  /**
+   * Method to fetch data using the cohort uuid, format the data and download
+   * it on the browser
+   * @param {Number} cohortId - unique cohort id
+   * @param {String} description - Description of the cohort (to be used as
+   * the saved csv file name)
+   * @return {undefined}
+   */
   downloadCSV(cohortId, description) {
     return event => {
       event.preventDefault();
@@ -177,17 +286,25 @@ class ActionsComponent extends Component {
       const downloadJobIds = [...this.state.downloadJobIds, cohortId];
       this.setState({ downloadJobIds });
       this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
-				.then(response => {
-  const toSplice = this.state.downloadJobIds;
-  const spliceIndex = toSplice.indexOf(cohortId);
-  toSplice.splice(spliceIndex, 1);
-  const formattedData = this.preFromatForCSV(response.results);
-  DownloadHelper.downloadCSV(formattedData, description);
-  this.setState({ downloadJobIds: toSplice });
-}); 
+        .then((response) => 
+        {
+          const toSplice = this.state.downloadJobIds;
+          const spliceIndex = toSplice.indexOf(cohortId);
+          toSplice.splice(spliceIndex, 1);
+          const formattedData = this.preFromatForCSV(response.results);
+          DownloadHelper.downloadCSV(formattedData, description);
+          this.setState({ downloadJobIds: toSplice });
+        }); 
     };
   }
 
+  /**
+   * This method deletes a cohort by ID
+   * 
+   * @param {Integer} cohortId 
+   * @returns 
+   * @memberof ActionsComponent
+   */
   deleteCohort(cohortId) {
     return (e) => {
       const apiHelper = new ApiHelper();
@@ -198,12 +315,13 @@ class ActionsComponent extends Component {
     };
   }
 
-    /**
-     * Method to help filter and return only required patient attributes from a
-     * cohort item
-     * @return { Array } - Array containing all patients in a cohort
-     * item of the specified index
-     */
+  /**
+   * Method to help filter and return only required patient attributes from a
+   * cohort item
+   * 
+   * @return {Array} - Array containing all patients in a cohort
+   * item of the specified index
+   */
   preFromatForCSV(results) {
     const data = [...results];
     return data.map(item => {
@@ -211,7 +329,12 @@ class ActionsComponent extends Component {
       return { name: person.display, age: person.age, gender: person.gender };
     });
   }
-
+  /**
+   * This method renders the component
+   * 
+   * @returns {Object} The ActionsComponent JSX object
+   * @memberof ActionsComponent
+   */
   render() {
     return(
              <div className="modal fade" id="myCohort" tabIndex="-1" role="dialog" aria-labelledby="myCohortLabel">
@@ -265,6 +388,9 @@ class ActionsComponent extends Component {
   }
 }
 
+/**
+ * Props type validation for ActionsComponent component
+ */
 ActionsComponent.propTypes ={
   history: PropTypes.array.isRequired,
   query: PropTypes.string.isRequired,

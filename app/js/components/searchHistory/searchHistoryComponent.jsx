@@ -1,3 +1,15 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, {Component, PropTypes} from 'react';
 import shortId from 'shortid';
 import { ApiHelper } from '../../helpers/apiHelper';
@@ -8,7 +20,19 @@ import CohortModal from '../cohorts/cohortModal';
 import Modal from './saveModal.jsx';
 import './searchHistory.css';
 
+/**
+ * The SearchHistoryComponent Component class
+ * 
+ * @class SearchHistoryComponent
+ * @extends {Component}
+ */
 class SearchHistoryComponent extends Component {
+
+  /**
+   * Creates an instance of SearchHistoryComponent.
+   * @param {Object} props 
+   * @memberof SearchHistoryComponent
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -27,18 +51,32 @@ class SearchHistoryComponent extends Component {
     this.downloadCSV = this.downloadCSV.bind(this);
   }
 
+  /**
+   * This method handles the navigation direction for the pagination
+   * 
+   * @param {Object} event the pagination event
+   * @memberof SearchHistoryComponent
+   */
   navigatePage(event) {
     event.preventDefault();
     let pageToNavigate = 0;
     switch(event.target.value) {
-    case 'first': pageToNavigate = 1; break;
-    case 'last': pageToNavigate = this.state.totalPage; break;
-    default: pageToNavigate = (event.target.value === 'next') ? this.state.currentPage+1 : this.state.currentPage-1;
+      case 'first': pageToNavigate = 1; break;
+      case 'last': pageToNavigate = this.state.totalPage; break;
+      default: pageToNavigate = (event.target.value === 'next') ? this.state.currentPage+1 : this.state.currentPage-1;
     }
     const pagePatientInfo = this.getPagePatient(this.state.searchResults, pageToNavigate);
     this.setState({ toDisplay: pagePatientInfo, currentPage: pageToNavigate });
   }
 
+  /**
+   * This method displays the result 
+   * 
+   * @param {Index} index the index of the result
+   * @param {String} description the description of the result
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   viewResult(index, description) {
     return (event) => {
       event.preventDefault();
@@ -55,6 +93,14 @@ class SearchHistoryComponent extends Component {
     };
   }
 
+  /**
+   * This method gets all the patients data for a particular page
+   * 
+   * @param {Array} allPatients 
+   * @param {Integer} currentPage 
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   getPagePatient(allPatients, currentPage) {
     const pagePatientInfo = [];
     for(let index = (currentPage-1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
@@ -65,6 +111,13 @@ class SearchHistoryComponent extends Component {
     return pagePatientInfo;
   }
 
+  /**
+   * This method deletes a search history by index
+   * 
+   * @param {Integer} index 
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   delete(index) {
     return (event) => {
       event.preventDefault();
@@ -75,6 +128,13 @@ class SearchHistoryComponent extends Component {
     };
   }
     
+  /**
+   * This method adds the search result to the state
+   * 
+   * @param {Integer} index 
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   setSaveSearch(index) {
     const searchResult =  this.props.history[index];
     return () => {
@@ -85,6 +145,7 @@ class SearchHistoryComponent extends Component {
   /**
    * Method to help filter and return only required patient attributes from a
    * search history item
+   * 
    * @param { Number } index - Index of the history array to pick patients
    * @return { Array } - Array containing all patients in a search history
    * item of the specified index
@@ -101,6 +162,7 @@ class SearchHistoryComponent extends Component {
 
   /**
   * Method to download list of patients in CSV format
+
   * @param { Number } index - Index of the history array to pick patients
   * @param { String} description - Description of the search (to be used as
   * the csv file name)
@@ -114,12 +176,26 @@ class SearchHistoryComponent extends Component {
     };
   }
 
+  /**
+   * This method adds the saved cohort details to the state
+   * 
+   * @param {String} description 
+   * @param {Integer} index 
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   setSaveCohort(description, index) {
     return () => {
       this.setState({queryId : index, description});
     };
   }
 
+  /**
+   * This method displays the SearchHistoryComponent Component
+   * 
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   render(){
     const { history } = this.props;
     return (
@@ -186,6 +262,9 @@ class SearchHistoryComponent extends Component {
   }
 }
 
+/**
+ * Proptype validation for the SearchHistoryComponent component
+ */
 SearchHistoryComponent.propTypes = {
   history: React.PropTypes.array.isRequired,
   deleteHistory: React.PropTypes.func.isRequired,

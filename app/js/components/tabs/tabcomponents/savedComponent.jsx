@@ -1,11 +1,34 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, { PropTypes } from 'react';
 import SavedResultsTable from '../../common/savedResultsTable';
 import { ApiHelper } from '../../../helpers/apiHelper';
 import DownloadHelper from '../../../helpers/downloadHelper';
 import utility from '../../../utility';
 
+/**
+ * The SavedComponent Component class
+ * 
+ * @class SavedComponent
+ * @extends {React.Component}
+ */
 class SavedComponent extends React.Component {
 
+  /**
+   * Creates an instance of SavedComponent.
+   * @param {Object} props 
+   * @memberof SavedComponent
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +67,7 @@ class SavedComponent extends React.Component {
    * Method which utilizes closure to delete a cohort specified by it's uuid.
    * It makes a delete request to the backend to delete the specified cohort and
    * fetches the updated results
+   * 
    * @param {String} uuid - unique identifier for the cohort to be deleted
    * @return {Function} - function that performs the actual deletion process
    */
@@ -70,6 +94,7 @@ class SavedComponent extends React.Component {
 
   /**
    * Mehtod that utilizes closure to download patients in a cohort to CSV format
+   * 
    * @param {String} uuid - Unique identifier of the cohort to be downloaded 
    * @param {String} name - name of the cohort to be used as the name of the
    * CSV file
@@ -107,6 +132,7 @@ class SavedComponent extends React.Component {
 
   /**
    * Method to show the list of patients in a cohort to the user
+   * 
    * @param {String} uuid - selected cohort UUID
    * @return {undefined} 
    */
@@ -160,6 +186,7 @@ class SavedComponent extends React.Component {
 
   /**
    * Mehtod that utilizes closure to download patients in a query to CSV format
+   * 
    * @param {String} uuid - Unique identifier of the query to be downloaded 
    * @param {String} name - name of the query to be used as the name of the
    * CSV file
@@ -195,6 +222,7 @@ class SavedComponent extends React.Component {
 
   /**
    * Method to display a list of all uses in a selected definition query
+   * 
    * @param {String} uuid - Selected definition query uuid
    * @return {undefined}
    */
@@ -210,6 +238,7 @@ class SavedComponent extends React.Component {
 
   /**
    * Method to search for saved cohorts and update the state
+   * 
    * @param {Object} event - Object containing details of this event
    * @return {undefined}
    */
@@ -244,6 +273,7 @@ class SavedComponent extends React.Component {
 
   /**
    * Method to search for saved definition queries and update the state
+   * 
    * @param {Object} event - Object containing details of this event
    * @return {undefined}
    */
@@ -282,6 +312,7 @@ class SavedComponent extends React.Component {
 
   /**
    * Method to handle changes on text input elements in this component
+   * 
    * @param {Object} event  - Object containing details of this event
    * @return {undefined}
    */
@@ -303,6 +334,12 @@ class SavedComponent extends React.Component {
     }
   }
 
+  /**
+   * This method renders the SavedComponent component
+   * 
+   * @returns 
+   * @memberof SavedComponent
+   */
   render() {
     return (
       <div className="saved-component">
@@ -407,6 +444,9 @@ class SavedComponent extends React.Component {
   }
 }
 
+/**
+ * Proptype validation for the SavedComponent component
+ */
 SavedComponent.propTypes = {
   getHistory: PropTypes.func
 };

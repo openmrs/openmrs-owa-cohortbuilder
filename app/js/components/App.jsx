@@ -9,13 +9,26 @@
  * under the License.
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 import React, {Component} from 'react';
 import {Header} from './common/Header';
 import PageComponent from './page/pageComponent';
 import BreadCrumbComponent from './breadCrumb/breadCrumbComponent';
 import CohortTable from '../components/common/table';
 
+/**
+ * The App Component class
+ * 
+ * @class App
+ * @extends {Component}
+ */
 class App extends Component {
+
+  /**
+   * Creates an instance of App.
+   * @param {any} props 
+   * @memberof App
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -28,6 +41,11 @@ class App extends Component {
     this.back = this.back.bind(this);
   }
 
+  /**
+   * This method updates the component main state
+   * 
+   * @memberof App
+   */
   back() {
     this.setState({
       table: 'none',
@@ -35,6 +53,13 @@ class App extends Component {
     });
   }
 
+  /**
+   * This method updates the component main state
+   * 
+   * @param {Object} data 
+   * @param {string} [description=""] 
+   * @memberof App
+   */
   getHistory(data, description = "") {
     this.setState({ 
       history : data.rows || data.patients,
@@ -44,6 +69,12 @@ class App extends Component {
     });
   }
  
+  /**
+   * This method displays the App component
+   * 
+   * @returns 
+   * @memberof App
+   */
   render() {
     const { display, table, history, description , getHistory } = this.state;
     return (

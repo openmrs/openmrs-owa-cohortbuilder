@@ -1,3 +1,15 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import FileSaver from 'file-saver';
 
 /**
@@ -6,6 +18,7 @@ import FileSaver from 'file-saver';
 class DowloadHelper {
   /**
    * Method to download data (patient data) in csv format
+   * 
    * @param {Array} data - An array containing objects (mostlikely patient data
    * objects)
    * @param {String} fileName - Name for the downloaded csv file
@@ -28,6 +41,7 @@ class DowloadHelper {
 
   /**
    * Method to format an Array of data (objects) to CSV format
+   * 
    * @param {Array} data - Array containing the data objects
    * @return {String} - CSV formated string 
    */

@@ -1,9 +1,34 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, {Component} from 'react';
 import DatePicker from "react-bootstrap-date-picker";
 import { JSONHelper } from '../../../helpers/jsonHelper';
 import { ApiHelper } from '../../../helpers/apiHelper';
 import utility from '../../../utility';
+
+/**
+ * The ProgrammeComponent Component class
+ * 
+ * @class ProgrammeComponent
+ * @extends {Component}
+ */
 class ProgrammeComponent extends Component {
+  
+  /**
+   * Creates an instance of ProgrammeComponent.
+   * @param {Object} props 
+   * @memberof ProgrammeComponent
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +55,13 @@ class ProgrammeComponent extends Component {
     this.resetDates = this.resetDates.bind(this);
   }
 
-  // Make a call to the program endpoint to get backend field data when component mounts
+  /**
+   * This method makes a call to the program endpoint to get backend field data when 
+   * component mounts
+   * 
+   * @param {Object} props 
+   * @memberof ProgrammeComponent
+   */
   componentDidMount(props) {
     this.props.fetchData('/program').then(data => {
       this.setState({
@@ -39,11 +70,12 @@ class ProgrammeComponent extends Component {
     });
   }
 
-    /**
-     * Method to handle Search by programs events/actions
-     * @param {Object} event - Object containing data about this event
-     * @return {undefined} - returns undefined
-     */
+  /**
+   * Method to handle Search by programs events/actions
+   * 
+   * @param {Object} event - Object containing data about this event
+   * @return {undefined} - returns undefined
+   */
   searchByProgram(event) {
     event.preventDefault();
     const jsonHelper = new JSONHelper();
@@ -117,6 +149,7 @@ class ProgrammeComponent extends Component {
 
   /**
    * Helper method to get the Name of the selectedState using it's uuid
+   * 
    * @return {String} Name of the selected state
    */
   getSelectedStateName() {
@@ -127,6 +160,7 @@ class ProgrammeComponent extends Component {
 
   /**
    * Helper method to get the name of the selectedProgram using it's uuid
+   * 
    * @return {String} Name of the selected program
    */
   getSelectedProgramName() {
@@ -136,6 +170,7 @@ class ProgrammeComponent extends Component {
 
   /**
    * Helper method to get the name of the selectedWorkflow for it's uuid
+   * 
    * @return {String} Name of the selected program
    */
   getSelectedWorkflowName() {
@@ -147,6 +182,7 @@ class ProgrammeComponent extends Component {
   /**
    * Helper Method to compose a description for any programme enrollment
    * search.
+   * 
    * @return {undefined} - Descriptive label for this search request
    */
   composeLabel() {
@@ -178,6 +214,7 @@ class ProgrammeComponent extends Component {
 
   /**
    * Helper function to compose a repeating part of different searches label
+   * 
    * @param {String} startProperty 
    * @param {String} endProperty 
    * @param {String} inLabel 
@@ -198,6 +235,7 @@ class ProgrammeComponent extends Component {
   /**
    * Method to handle events fired when a program is selected.
    * It passes the selected program to the getWorkflow method
+   * 
    * @param {Object} event - Event Object containing data about this event
    * @return {undefined} - return undefined
    */
@@ -213,6 +251,7 @@ class ProgrammeComponent extends Component {
   /**
    * Method handles what happened when the workflow field is changed.
    * It passes the selected workflow to the states associated with it
+   * 
    * @param {Object} event - Event Object containing data about this event
    * @return {undefined} - return undefined
    */
@@ -225,6 +264,7 @@ class ProgrammeComponent extends Component {
 
   /**
    * Method to handle selected state for the search
+   * 
    * @param {Object} event - Event object containing data about this event
    * @return {undefined} - returns undefined
    */
@@ -237,6 +277,7 @@ class ProgrammeComponent extends Component {
   /**
    * Method to create necessary structured object containing parameters for 
    * a Program based search
+   * 
    * @return {Object} - Object holding necessary parameters for the search
    */
   createSearchByProgramParmeters() {
@@ -260,10 +301,10 @@ class ProgrammeComponent extends Component {
         if (libraryKey === 'patientsWithState') {
                     // patientsWithState uses different parameter names
           switch(fieldName) {
-          case 'enrolledOnOrAfter': fieldName = 'startedOnOrAfter'; break;
-          case 'enrolledOnOrBefore': fieldName = 'startedOnOrBefore'; break;
-          case 'completedOnOrAfter': fieldName = 'endedOnOrAfter'; break;
-          case 'completedOnOrBefore': fieldName = 'endedOnOrBefore'; break;
+            case 'enrolledOnOrAfter': fieldName = 'startedOnOrAfter'; break;
+            case 'enrolledOnOrBefore': fieldName = 'startedOnOrBefore'; break;
+            case 'completedOnOrAfter': fieldName = 'endedOnOrAfter'; break;
+            case 'completedOnOrBefore': fieldName = 'endedOnOrBefore'; break;
           }
         }
         parameters[libraryKey].push({
@@ -275,7 +316,12 @@ class ProgrammeComponent extends Component {
     return parameters;
   }
 
-  // Get program workflows for the program selected
+  /**
+   * This method gets program workflows for the program selected
+   * 
+   * @param {String} program 
+   * @memberof ProgrammeComponent
+   */
   getWorkflow(program) {
     if (program) {
       this.props.fetchData(`/program/${program}`).then(data => {
@@ -287,7 +333,12 @@ class ProgrammeComponent extends Component {
       this.setState({ workflows: [], workflow: '' });
     }
   }
-  // Get the states from the workflow.
+  /**
+   * This method get the states from the workflow.
+   * 
+   * @param {String} workflow 
+   * @memberof ProgrammeComponent
+   */
   getStates(workflow) {
         /** Update state based on the data retrieved from the workflows
          * @TODO: State data does not exist on the local, but exists on refapp,
@@ -306,6 +357,7 @@ class ProgrammeComponent extends Component {
 
   /**
    * Method to get the date in the format MM-DD-YY from a date isoString
+   * 
    * @param {String} isoString - Date in isoString format
    * @return {String} MM-DD-YY date formatted string
    */
@@ -316,6 +368,7 @@ class ProgrammeComponent extends Component {
 
   /**
    * Method to update the date key for different date types in the state
+   * 
    * @param {String} stateKey - The key in the component state that should be
    * updated
    * @return {Function} - Call back function to be executed by the date input
@@ -329,6 +382,7 @@ class ProgrammeComponent extends Component {
 
   /**
    * Method to reset all input fields in this components form
+   * 
    * @return {undefined}
    */
   resetFields() {
@@ -342,6 +396,7 @@ class ProgrammeComponent extends Component {
 
   /**
    * Method to reset all date in this component state
+   * 
    * @return {undefined}
    */
   resetDates() {
@@ -356,6 +411,12 @@ class ProgrammeComponent extends Component {
   }
 
 
+  /**
+   * This method renders the ProgrammeComponent component
+   * 
+   * @returns 
+   * @memberof ProgrammeComponent
+   */
   render() {
     let programs = this.state.programs.map((program) => {
       return (
@@ -530,6 +591,9 @@ class ProgrammeComponent extends Component {
   }
 }
 
+/**
+ * Proptype validation for the ProgrammeComponent component
+ */
 ProgrammeComponent.propTypes = {
   fetchData: React.PropTypes.func.isRequired,
   search: React.PropTypes.func.isRequired,

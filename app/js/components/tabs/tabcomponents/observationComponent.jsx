@@ -1,11 +1,35 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React from 'react';
 import DatePicker from "react-bootstrap-date-picker";
 import shortid from 'shortid';
 import { JSONHelper } from '../../../helpers/jsonHelper';
 import utility from '../../../utility';
 
+/**
+ * The ObsFilter Component class
+ * 
+ * @export
+ * @class ObsFilter
+ * @extends {React.Component}
+ */
 export default class ObsFilter extends React.Component {
 
+  /**
+   * Creates an instance of ObsFilter.
+   * @param {Object} props 
+   * @memberof ObsFilter
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -36,10 +60,22 @@ export default class ObsFilter extends React.Component {
     this.handleReset = this.handleReset.bind(this);
   }
 
+  /**
+   * This method executed after the component has rendered
+   * 
+   * @memberof ObsFilter
+   */
   componentDidUpdate() {
     this.textInput ?  this.textInput.focus() : false;
   }
 
+  /**
+   * This method handles the form event by mapping it's value
+   * to the state
+   * 
+   * @param {Object} event the form event
+   * @memberof ObsFilter
+   */
   handleFormChange(event) {
     event.preventDefault();
     this.setState({
@@ -47,6 +83,12 @@ export default class ObsFilter extends React.Component {
     });
   }
 
+  /**
+   * This method resets all the value of the form field to thier
+   * default
+   * 
+   * @memberof ObsFilter
+   */
   handleReset() {
     this.setState({
       timeModifier: 'ANY',
@@ -58,10 +100,22 @@ export default class ObsFilter extends React.Component {
     });
   }
 
+  /**
+   * This method set's ref input
+   * 
+   * @param {String} input the text input
+   * @memberof ObsFilter
+   */
   setRef(input) {
     this.textInput = input; 
   }
 
+  /**
+   * This method handles the submit event
+   * 
+   * @param {Object} event the event
+   * @memberof ObsFilter
+   */
   handleSubmit(event) {
     event.preventDefault();
     const types = {
@@ -101,6 +155,14 @@ export default class ObsFilter extends React.Component {
             }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
 
   }
+
+  /**
+   * This method handles the date chage
+   * 
+   * @param {String} name 
+   * @returns 
+   * @memberof ObsFilter
+   */
   handleDateChange(name) {
     return (value) => this.setState({ [ name ] :  value });
   }
@@ -277,7 +339,6 @@ export default class ObsFilter extends React.Component {
     );
   }
 
-
   // BIT(Boolean)
   secondFieldBoolean() {
     return (
@@ -318,6 +379,12 @@ export default class ObsFilter extends React.Component {
   }
 
 
+  /**
+   * This method renders the endForm of the ObsFilter component
+   * 
+   * @returns 
+   * @memberof ObsFilter
+   */
   endForm() {
     return (
       <div key={shortid.generate()} className="col-sm-12">
@@ -358,6 +425,12 @@ export default class ObsFilter extends React.Component {
     );
   }
 
+  /**
+   * This method renders the formfield of the ObsFilter component
+   * 
+   * @returns 
+   * @memberof ObsFilter
+   */
   renderForm() {
     let str = [];
     let { hl7Abbrev } = this.props.concept; 
@@ -389,6 +462,12 @@ export default class ObsFilter extends React.Component {
     return str;
   }
 
+  /**
+   * This method renders the ObsFilter component
+   * 
+   * @returns 
+   * @memberof ObsFilter
+   */
   render() {    
     return (
       <form className="form-horizontal col-sm-12" onSubmit={this.handleSubmit}>
@@ -399,6 +478,9 @@ export default class ObsFilter extends React.Component {
 }
 
 
+/**
+ * Proptype validation for the ObsFilter component
+ */
 ObsFilter.propTypes = {
   concept: React.PropTypes.object.isRequired,
   search: React.PropTypes.func.isRequired,

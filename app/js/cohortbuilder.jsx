@@ -9,6 +9,7 @@
  * under the License.
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
+
 import React from 'react';
 import {render} from 'react-dom';
 

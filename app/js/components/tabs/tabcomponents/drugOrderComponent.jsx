@@ -1,10 +1,34 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, { Component, PropTypes } from 'react';
 import DatePicker from "react-bootstrap-date-picker";
 import Error from '../../common/error';
 import Loader from '../../common/loader';
 import shortid from 'shortid';
 
+/**
+ * The DrugOrderComponent Component class
+ * 
+ * @class DrugOrderComponent
+ * @extends {Component}
+ */
 class DrugOrderComponent extends Component {
+
+  /**
+   * Creates an instance of DrugOrderComponent.
+   * @param {Object} props 
+   * @memberof DrugOrderComponent
+   */
   constructor(props) {
     super();
     this.state = {
@@ -15,6 +39,11 @@ class DrugOrderComponent extends Component {
     };
   }
 
+  /**
+   * This method executes before the component has been rendered 
+   * 
+   * @memberof DrugOrderComponent
+   */
   componentWillMount() {
     this.props.fetchData('drug')
             .then((drugs) => {
@@ -48,6 +77,12 @@ class DrugOrderComponent extends Component {
     this.setState({ loading: false });
   }
 
+  /**
+   * This method shows the generics
+   * 
+   * @returns 
+   * @memberof DrugOrderComponent
+   */
   showGenerics() {
     const genericsDisplay = [];
     for(let uuid in this.state.generics) {
@@ -56,12 +91,25 @@ class DrugOrderComponent extends Component {
     return genericsDisplay;
   }
 
+  /**
+   * This method shows the options 
+   * 
+   * @param {Array} selectData 
+   * @returns 
+   * @memberof DrugOrderComponent
+   */
   showOptions(selectData) {
     return selectData.map((eachOption) =>
         <option value={eachOption.uuid} key={shortid.generate()}>{eachOption.display}</option>
     );
   }
 
+  /**
+   * This method renders the DrugOrderComponent component
+   * 
+   * @returns 
+   * @memberof DrugOrderComponent
+   */
   render() {
     if(this.state.loading) {
       return (
@@ -220,6 +268,9 @@ class DrugOrderComponent extends Component {
   }
 }
 
+/**
+ * Proptype validation for the DrugOrderComponent component
+ */
 DrugOrderComponent.propTypes = {
   fetchData: PropTypes.func.isRequired
 };

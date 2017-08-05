@@ -1,9 +1,33 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React, { Component, PropTypes } from 'react';
 import { ApiHelper } from '../../../helpers/apiHelper';
 import { JSONHelper } from '../../../helpers/jsonHelper';
 import utility from '../../../utility';
 
+/**
+ * The CompositionComponent omponent class
+ * 
+ * @class CompositionComponent
+ * @extends {Component}
+ */
 class CompositionComponent extends Component {
+
+  /**
+   * Creates an instance of CompositionComponent.
+   * @param {Object} props 
+   * @memberof CompositionComponent
+   */
   constructor(props) {
     super();
     this.state = {
@@ -17,11 +41,17 @@ class CompositionComponent extends Component {
     this.resetFields = this.resetFields.bind(this);
   }
 
+  /**
+   * The componentDidMount method
+   * 
+   * @memberof CompositionComponent
+   */
   componentDidMount() {/* important for test*/ }
 
     
   /**
    * The function takes the input of the text field and makes a search
+   * 
    * @param {object} event 
    */
   performComposition(event) {
@@ -67,6 +97,12 @@ class CompositionComponent extends Component {
     }
   }
 
+  /**
+   * This method performs the composition search
+   * 
+   * @param {Object} compositionQuery the search query
+   * @memberof CompositionComponent
+   */
   performSearch(compositionQuery) {
     const apiHelper = new ApiHelper(null);
     apiHelper.post('reportingrest/adhocquery?v=full', compositionQuery.query).then(response => {
@@ -84,6 +120,7 @@ class CompositionComponent extends Component {
 
   /**
    * Method to check for validity of the search input field.
+   * 
    * @param {search} - The search String to be validated
    * @return {Boolean} - True if the search string is valid, otherwise False
    */
@@ -94,10 +131,10 @@ class CompositionComponent extends Component {
   }
 
   /**
-   * 
    * This function basically helps in ensuring that the number used in
    * the customRowFilterCombination in the composition query syncs with
    * the index of the rowFilter.
+   * 
    * @param {string} filterText 
    * @param {int} numberOfSearches 
    */
@@ -107,6 +144,7 @@ class CompositionComponent extends Component {
 
   /**
    * Method to reset fields in the composition search forms
+   * 
    * @param {Object} event - Event Object
    * @return {undefined}
    */
@@ -122,6 +160,7 @@ class CompositionComponent extends Component {
 
   /**
    * Method to handle change events from the input fields
+   * 
    * @param{event} - Event object triggered when input fields change
    * @return{undefined} - Returns undefined
    */
@@ -131,15 +170,21 @@ class CompositionComponent extends Component {
     this.setState({ [id]: event.target.value });
     // reset approriate error when a field value is changed
     switch(id) {
-    case 'compositionQuery': {
-      return this.setState({ hasCompositionError: false });
-    }
-    case 'compositionLabel': {
-      return this.setState({ hasDescriptionError: false });
-    }
+      case 'compositionQuery': {
+        return this.setState({ hasCompositionError: false });
+      }
+      case 'compositionLabel': {
+        return this.setState({ hasDescriptionError: false });
+      }
     }
   }
 
+  /**
+   * This method renders the CompositionComponent component
+   * 
+   * @returns 
+   * @memberof CompositionComponent
+   */
   render() {
     return (
       <div id="compositions-wrapper">
@@ -222,6 +267,9 @@ class CompositionComponent extends Component {
   }
 }
 
+/**
+ * Proptypes validation for the CompositionComponent component
+ */
 CompositionComponent.propTypes = {
   addToHistory: PropTypes.func.isRequired,
   getHistory: PropTypes.func.isRequired

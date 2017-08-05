@@ -1,11 +1,34 @@
+/**
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
+ */
+
 import React,{ Component, PropTypes } from 'react';
 import shortId from 'shortid';
 import DownloadHelper from '../../helpers/downloadHelper';
 import SearchHistory from './searchHistoryComponent.jsx';
 import { ApiHelper }  from '../../helpers/apiHelper';
 
-
+/**
+ * The SavedHistory Component class
+ * 
+ * @class SavedHistory
+ * @extends {Component}
+ */
 class  SavedHistory extends Component {
+
+  /**
+   * Creates an instance of SavedHistory.
+   * @param {Object} props 
+   * @memberof SavedHistory
+   */
   constructor(props) {
     super(props);
     this.state =  {
@@ -27,10 +50,24 @@ class  SavedHistory extends Component {
     this.preFromatForCSV = this.preFromatForCSV.bind(this);
   }
 
+  /**
+   * This method performs some string manipulations
+   * 
+   * @param {String} value the string you want to manipulate
+   * @returns 
+   * @memberof SavedHistory
+   */
   removeCharacters(value) {
     return value.substr(value.lastIndexOf(']') +1).trim();
   }
 
+  /**
+   * This method deletes a history by uuid
+   * 
+   * @param {Number} uuid 
+   * @returns 
+   * @memberof SavedHistory
+   */
   delete(uuid) {
     return () => {
       const apiHelper = new ApiHelper();
@@ -41,6 +78,13 @@ class  SavedHistory extends Component {
     };
   }
 
+  /**
+   * This method views a search history by uuid
+   * 
+   * @param {Number} uuid 
+   * @returns 
+   * @memberof SavedHistory
+   */
   viewResult(uuid) {
     return () => {
       this.apiHelper.get(`reportingrest/dataSet/${uuid}`)
@@ -57,6 +101,14 @@ class  SavedHistory extends Component {
     };
   }
 
+  /**
+   * This method gets all the search history for a particular page
+   * 
+   * @param {Array} allHistory 
+   * @param {Integer} currentPage 
+   * @returns 
+   * @memberof SavedHistory
+   */
   getPagePatient(allHistory, currentPage) {
     const pagePatientInfo = [];
     for (let index = (currentPage - 1) * this.state.perPage; index < currentPage * this.state.perPage && index < allHistory.length; index++) {
@@ -67,18 +119,24 @@ class  SavedHistory extends Component {
     return pagePatientInfo;
   }
 
+  /**
+   * This method handles the navigation direction
+   * 
+   * @param {Object} event the navigation event 
+   * @memberof SavedHistory
+   */
   navigatePage(event) {
     event.preventDefault();
     let pageToNavigate = 0;
     switch (event.target.value) {
-    case 'first':
-      pageToNavigate = 1;
-      break;
-    case 'last':
-      pageToNavigate = this.state.totalPage;
-      break;
-    default:
-      pageToNavigate = (event.target.value === 'next') ? this.state.currentPage + 1 : this.state.currentPage - 1;
+      case 'first':
+        pageToNavigate = 1;
+        break;
+      case 'last':
+        pageToNavigate = this.state.totalPage;
+        break;
+      default:
+        pageToNavigate = (event.target.value === 'next') ? this.state.currentPage + 1 : this.state.currentPage - 1;
     }
     const pagePatientInfo = this.getPagePatient(this.state.allHistory, pageToNavigate);
     this.setState(Object.assign({}, this.state, {
@@ -90,6 +148,7 @@ class  SavedHistory extends Component {
   /**
    * Method to help filter and return only required patient attributes from a
    * saved history item
+   * 
    * @param {Array} results - Array of patient objects
    * @return {Array} - Array containing objects containing only necessary
    * data of patients in a saved history
@@ -108,6 +167,7 @@ class  SavedHistory extends Component {
   /**
    * Method to fetch data using the saved patients uuid, format the data and
    *  download it on the browser
+   * 
    * @param {Number} uuid - unique saved patients history id
    * @param {String} description - Description of the patient history item
    * (to be used as the file name)
@@ -134,6 +194,12 @@ class  SavedHistory extends Component {
     };
   }
 
+  /**
+   * This method renders the SavedHistory component
+   * 
+   * @returns 
+   * @memberof SavedHistory
+   */
   render() {
     return (
       <div className="section">
@@ -181,6 +247,9 @@ class  SavedHistory extends Component {
   }
 }
 
+/**
+ * Proptype validation for the SavedHistory Component
+ */
 SavedHistory.propTypes = {
   history: PropTypes.array.isRequired,
   updateHistory: PropTypes.func.isRequired

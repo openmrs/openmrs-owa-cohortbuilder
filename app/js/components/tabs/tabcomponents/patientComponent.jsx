@@ -6,6 +6,7 @@ import utility from '../../../utility';
 import { JSONHelper } from '../../../helpers/jsonHelper';
 
 class PatientComponent extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {

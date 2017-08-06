@@ -4,8 +4,8 @@ import DownloadHelper from '../../helpers/downloadHelper';
 import SearchHistory from './searchHistoryComponent.jsx';
 import { ApiHelper }  from '../../helpers/apiHelper';
 
-
 class  SavedHistory extends Component {
+
   constructor(props) {
     super(props);
     this.state =  {
@@ -27,10 +27,25 @@ class  SavedHistory extends Component {
     this.preFromatForCSV = this.preFromatForCSV.bind(this);
   }
 
+  /**
+   * This method limits the lenght of a string by checking for
+   * the last index of the `]` character in the string
+   * 
+   * @param {String} value the string you want to manipulate
+   * @returns 
+   * @memberof SavedHistory
+   */
   removeCharacters(value) {
     return value.substr(value.lastIndexOf(']') +1).trim();
   }
 
+  /**
+   * This method deletes a saved history by it's uuid
+   * 
+   * @param {Number} uuid the primary key of the saved history
+   * @returns 
+   * @memberof SavedHistory
+   */
   delete(uuid) {
     return () => {
       const apiHelper = new ApiHelper();
@@ -41,6 +56,13 @@ class  SavedHistory extends Component {
     };
   }
 
+  /**
+   * This method shows the content of a search history by it's uuid
+   * 
+   * @param {Number} uuid the primary key of the item to display
+   * @returns 
+   * @memberof SavedHistory
+   */
   viewResult(uuid) {
     return () => {
       this.apiHelper.get(`reportingrest/dataSet/${uuid}`)
@@ -57,6 +79,14 @@ class  SavedHistory extends Component {
     };
   }
 
+  /**
+   * This method gets all the search history for a particular page
+   * 
+   * @param {Array} allHistory an array of all the saved history
+   * @param {Integer} currentPage the pageNumber of the user current page
+   * @returns 
+   * @memberof SavedHistory
+   */
   getPagePatient(allHistory, currentPage) {
     const pagePatientInfo = [];
     for (let index = (currentPage - 1) * this.state.perPage; index < currentPage * this.state.perPage && index < allHistory.length; index++) {
@@ -67,18 +97,25 @@ class  SavedHistory extends Component {
     return pagePatientInfo;
   }
 
+  /**
+   * This method handles the navigation direction that the user wants
+   * to move to
+   * 
+   * @param {Object} event the navigation event 
+   * @memberof SavedHistory
+   */
   navigatePage(event) {
     event.preventDefault();
     let pageToNavigate = 0;
     switch (event.target.value) {
-    case 'first':
-      pageToNavigate = 1;
-      break;
-    case 'last':
-      pageToNavigate = this.state.totalPage;
-      break;
-    default:
-      pageToNavigate = (event.target.value === 'next') ? this.state.currentPage + 1 : this.state.currentPage - 1;
+      case 'first':
+        pageToNavigate = 1;
+        break;
+      case 'last':
+        pageToNavigate = this.state.totalPage;
+        break;
+      default:
+        pageToNavigate = (event.target.value === 'next') ? this.state.currentPage + 1 : this.state.currentPage - 1;
     }
     const pagePatientInfo = this.getPagePatient(this.state.allHistory, pageToNavigate);
     this.setState(Object.assign({}, this.state, {

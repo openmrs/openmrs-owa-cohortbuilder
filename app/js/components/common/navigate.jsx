@@ -1,5 +1,13 @@
 import React, { PropTypes } from 'react';
 
+/**
+ * This method renders the Navigate component that 
+ * displays the pagination
+ * 
+ * @param {Integer} currentPage the pageNumber of the page the user is currently on
+ * @param {Integer} totalPage the total number of pages the user can navigate to
+ * @param {Integer} navigatePage the pageNumber the user wants to navigate to
+ */
 export  const Navigate = ({currentPage, totalPage, navigatePage}) => {
   return(
         <div className="tableNavigation">
@@ -20,7 +28,7 @@ export  const Navigate = ({currentPage, totalPage, navigatePage}) => {
             }
             <span className="page-display-counter">{currentPage + " of " + totalPage}</span>
         </div>
-     );
+  );
 };
 
 Navigate.propTypes = {

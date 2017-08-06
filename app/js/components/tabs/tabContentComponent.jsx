@@ -1,10 +1,7 @@
 import React, { PropTypes } from 'react';
 
-/**
- * This is the tabContent class
- * @param {*} props 
- */
 class TabContentComponent extends React.Component{
+  
   constructor(props){
     super(props);
     this.drawComponent = this.drawComponent.bind(this);
@@ -17,7 +14,7 @@ class TabContentComponent extends React.Component{
    * @param {Function} fetchData
    * @param {Function} search
    * @param {Function} addToHistory
-   * @param {Funcnpption} getHistory
+   * @param {Function} getHistory
    */
   drawComponent(tabs, fetchData, search, addToHistory, getHistory) {
     return tabs.map((tab,index) => {
@@ -28,7 +25,7 @@ class TabContentComponent extends React.Component{
       );
     });
   }
-    
+  
   render(){
     const {tabs, fetchData, search, addToHistory, getHistory } = this.props;
     return (

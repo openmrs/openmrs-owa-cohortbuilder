@@ -5,7 +5,8 @@ import { JSONHelper } from '../../helpers/jsonHelper';
 import SearchHistory from './searchHistoryComponent.jsx';
 import SavedHistory from './savedHistory.jsx';
 
-class  SearchHistoryTab  extends Component {
+class SearchHistoryTab  extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +27,13 @@ class  SearchHistoryTab  extends Component {
             });
   }
 
+  /**
+   * Please edit this if you understand what this method does 
+   * 
+   * @param {Object} parameter 
+   * @returns 
+   * @memberof SearchHistoryTab
+   */
   parse(parameter) {
     let result = {};
     result.description = parameter.description;
@@ -47,15 +55,36 @@ class  SearchHistoryTab  extends Component {
     return result;
   }
 
+  /**
+   * This method deletes a search history from the state
+   * 
+   * @param {Number} uuid the primary key of the search history you want to delete
+   * @memberof SearchHistoryTab
+   */
   updateHistory(uuid) {
     const history = this.state.history.filter((eachHistory) => eachHistory.uuid != uuid);
     this.setState({ history});
   }
 
+  /**
+   * This method is used to displays an error message or warning to the user
+   * on the front-end
+   * 
+   * @param {String} error the error message you want to display
+   * @memberof SearchHistoryTab
+   */
   setError(error) {
     this.setState( {error, loading: false} );
   }
 
+  /**
+   * The method adds a search history to the database
+   * 
+   * @param {Integer} index the index of the saved search
+   * @param {String} name the name of the saved search
+   * @returns 
+   * @memberof SearchHistoryTab
+   */
   saveSearch(index, name) {
     return new Promise((resolve, reject) => {
       const composer = new JSONHelper();

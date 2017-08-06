@@ -6,6 +6,7 @@ import DownloadHelper from '../../helpers/downloadHelper';
 import './cohorts.css';
 
 class ActionsComponent extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -39,6 +40,12 @@ class ActionsComponent extends Component {
     });
   }
 
+  /**
+   * This method fetches all the cohorts from the database
+   * and adds the result to the state
+   * 
+   * @memberof ActionsComponent
+   */
   getAllCohorts() {
     const apiHelper = new ApiHelper();
     apiHelper.get('/cohort?v=full')
@@ -49,6 +56,13 @@ class ActionsComponent extends Component {
             });
   }
 
+  /**
+   * This method maps the content of the values of the form
+   * input fields to the state
+   * 
+   * @param {Object} e the form event  
+   * @memberof ActionsComponent
+   */
   handleChange(e) {
     e.preventDefault();
     this.setState({
@@ -56,6 +70,14 @@ class ActionsComponent extends Component {
     });
   }
 
+  /**
+   * This methods handles the submit form event, it ensures that 
+   * all form fields are populated with valid contents before the form 
+   * can be submitted
+   * 
+   * @param {Object} event The event  
+   * @memberof ActionsComponent
+   */
   handleSubmit(e) {
     e.preventDefault();
     const query = this.state.query;
@@ -86,6 +108,13 @@ class ActionsComponent extends Component {
       event.target.description.value="";
     }
   }
+
+  /**
+   * This method resets all the fields on the form to thier default
+   * values
+   * 
+   * @memberof ActionsComponent
+   */
   resetError(){
     this.setState({
       error: '',
@@ -100,6 +129,13 @@ class ActionsComponent extends Component {
     );
   }
 
+  /**
+   * This method is used to organize all the data that are needed when a 
+   * cohort needs to be created
+   * 
+   * @returns {Object} display, name, description, memberIds
+   * @memberof ActionsComponent
+   */
   getQueryData() {
     return {
       display: this.state.query,
@@ -109,11 +145,19 @@ class ActionsComponent extends Component {
     };
   }
 
-
   getPatientId(cohortId) {
     return this.props.history[cohortId].patients.map((patient) => patient.patientId);
   }
 
+  /**
+   * This method fetches all the patients on 
+   * a page
+   * 
+   * @param {Array} allPatients 
+   * @param {Integer} currentPage 
+   * @returns {Object} pagePatientInfo
+   * @memberof ActionsComponent
+   */
   getPagePatient(allPatients, currentPage) {
     const pagePatientInfo = [];
     for (let index = (currentPage - 1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
@@ -124,6 +168,12 @@ class ActionsComponent extends Component {
     return pagePatientInfo;
   }
 
+  /**
+   * This method handles the page navigation feature
+   * 
+   * @param {Object} event The navigation event
+   * @memberof ActionsComponent
+   */
   navigatePage(event) {
     event.preventDefault();
     let pageToNavigate = 0;
@@ -147,27 +197,29 @@ class ActionsComponent extends Component {
   getPatientsData(cohortId, description) {
     return (e) => {
       this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
-				.then(res => {
-  const toDisplay = this.getPagePatient(res.results, 1);
-  this.setState(Object.assign({}, this.state, {
-    cohortResult: res.results,
-    currentPage: 1,
-    toDisplay,
-    totalPage:  Math.ceil(res.results.length/this.state.perPage),
-    cohortDescription: description
-  }));
-}); 
+        .then(res => 
+        {
+          const toDisplay = this.getPagePatient(res.results, 1);
+          this.setState(Object.assign({}, this.state, {
+            cohortResult: res.results,
+            currentPage: 1,
+            toDisplay,
+            totalPage:  Math.ceil(res.results.length/this.state.perPage),
+            cohortDescription: description
+          }));
+        }); 
     };
   }
 
-    /**
-     * Method to fetch data using the cohort uuid, format the data and download
-     * it on the browser
-     * @param {Number} cohortId - unique cohort id
-     * @param {String} description - Description of the cohort (to be used as
-     * the saved csv file name)
-     * @return {undefined}
-     */
+  /**
+   * Method to fetch data using the cohort uuid, format the data and download
+   * it on the browser
+   * 
+   * @param {Number} cohortId - unique cohort id
+   * @param {String} description - Description of the cohort (to be used as
+   * the saved csv file name)
+   * @return {undefined}
+   */
   downloadCSV(cohortId, description) {
     return event => {
       event.preventDefault();
@@ -188,6 +240,13 @@ class ActionsComponent extends Component {
     };
   }
 
+  /**
+   * This method deletes a cohort from the database by the cohort ID
+   * 
+   * @param {Integer} cohortId 
+   * @returns 
+   * @memberof ActionsComponent
+   */
   deleteCohort(cohortId) {
     return (e) => {
       const apiHelper = new ApiHelper();

@@ -26,6 +26,13 @@ class Modal extends Component {
     this.setState(state);
   }
 
+  /**
+   * This method maps the values of a form field to the 
+   * state
+   * 
+   * @param {Object} event the form field event
+   * @memberof Modal
+   */
   handleChange(event) {
     event.preventDefault();
     this.setState({
@@ -37,6 +44,12 @@ class Modal extends Component {
     this.setState({ searchName : ""});
   }
 
+  /**
+   * This method saves the search history to the database
+   * 
+   * @param {Object} event the search history event
+   * @memberof Modal
+   */
   onSave(event) {
     event.preventDefault();
     const { index, searchName } = this.state;

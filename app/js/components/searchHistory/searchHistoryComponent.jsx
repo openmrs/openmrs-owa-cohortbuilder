@@ -39,6 +39,14 @@ class SearchHistoryComponent extends Component {
     this.setState({ toDisplay: pagePatientInfo, currentPage: pageToNavigate });
   }
 
+  /**
+   * This method displays the result from a search history on a new page
+   * 
+   * @param {Integer} index the index of the result
+   * @param {String} description the description of the result
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   viewResult(index, description) {
     return (event) => {
       event.preventDefault();
@@ -55,6 +63,15 @@ class SearchHistoryComponent extends Component {
     };
   }
 
+  /**
+   * This method gets all the patients data for a particular page
+   * 
+   * @param {Array} allPatients an array of all the patients data
+   * @param {Integer} currentPage the pageNumber of the page the user wants to 
+   * navigate to
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   getPagePatient(allPatients, currentPage) {
     const pagePatientInfo = [];
     for(let index = (currentPage-1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
@@ -65,6 +82,13 @@ class SearchHistoryComponent extends Component {
     return pagePatientInfo;
   }
 
+  /**
+   * This method deletes a search history by index
+   * 
+   * @param {Integer} index the index of the search history you want to delete
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   delete(index) {
     return (event) => {
       event.preventDefault();
@@ -75,6 +99,13 @@ class SearchHistoryComponent extends Component {
     };
   }
     
+  /**
+   * This method adds the search history result to the state
+   * 
+   * @param {Integer} index the index of the search history you want to save
+   * @returns 
+   * @memberof SearchHistoryComponent
+   */
   setSaveSearch(index) {
     const searchResult =  this.props.history[index];
     return () => {

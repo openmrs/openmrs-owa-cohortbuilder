@@ -13,6 +13,15 @@ export class ApiHelper {
     };
   }
 
+  /**
+   * This method builds requests the user wants to make
+   * 
+   * @param {String} requestUrl the request url
+   * @param {String} requestType the type of the request
+   * @param {Object} [requestData={}] the request data
+   * @returns 
+   * @memberof ApiHelper
+   */
   build(requestUrl, requestType, requestData = {}) {
     if (requestType && !this.ALLOWED_TYPES.includes(requestType)) {
       throw new Error('Invalid Request Type');

@@ -1,4 +1,12 @@
 export class JSONHelper {
+
+  /**
+   * This method is used to create the JSON object
+   * 
+   * @param {Array} searchParameters 
+   * @returns 
+   * @memberof JSONHelper
+   */
   composeJson(searchParameters) {
     const query = {};
     query.type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
@@ -28,6 +36,14 @@ export class JSONHelper {
     return {query};
   }
 
+  /**
+   * This method is used to check if the vallue of an array is empty
+   * 
+   * @param {Array} fieldValues a specific field in the searchParameters array, usually gotten
+   * from the composeJson method
+   * @returns 
+   * @memberof JSONHelper
+   */
   isNullValues(fieldValues) {
     if(Array.isArray(fieldValues) && fieldValues.length >= 1) {
       return (!fieldValues[0].value) ? true : false;

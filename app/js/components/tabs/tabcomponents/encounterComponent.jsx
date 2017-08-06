@@ -73,12 +73,26 @@ class EncounterComponent extends Component {
       });
   }
 
+  /**
+   * This method displays a group of options
+   * 
+   * @param {Object} data the options the user wants to display
+   * @returns 
+   * @memberof EncounterComponent
+   */
   displaySelectOption(data) {
     return (
       <option value={data.id} key={shortId.generate()}>{data.value}</option>
     );
   }
 
+  /**
+   * This method removes empty values from the objects
+   * 
+   * @param {Object} allParameters 
+   * @returns 
+   * @memberof EncounterComponent
+   */
   removeEmptyValues(allParameters) {
     const newParamArray = [];
     allParameters.encounterSearchAdvanced.forEach(eachParam => {
@@ -210,6 +224,9 @@ class EncounterComponent extends Component {
 
   /**
    * Method to generate a location search description based on the search values
+   * 
+   * @returns 
+   * @memberof EncounterComponent
    */
   getLocationSearchDescription() {
     // find the location name since we only have it's uuid
@@ -218,15 +235,15 @@ class EncounterComponent extends Component {
     });
     let searchDescription = `Patients in ${selectedLocation.value}`;
     switch (this.state.method) {
-    case 'FIRST':
-      searchDescription += ' (by method EARLIEST_ENCOUNTER).';
-      break;
-    case 'LAST':
-      searchDescription += ' (by method LATEST_ENCOUNTER).';
-      break;
-    default:
-      searchDescription += ' (by method ANY_ENCOUNTER).';
-      break;
+      case 'FIRST':
+        searchDescription += ' (by method EARLIEST_ENCOUNTER).';
+        break;
+      case 'LAST':
+        searchDescription += ' (by method LATEST_ENCOUNTER).';
+        break;
+      default:
+        searchDescription += ' (by method ANY_ENCOUNTER).';
+        break;
     }
     return searchDescription;
   }
@@ -331,7 +348,9 @@ class EncounterComponent extends Component {
   }
 
   /**
-   * Metod to reset all fields in the encounter form of this component
+   * This method resets all fields in the encounter form of this component to 
+   * thier default
+   * 
    * @return {undefined}
    */
   resetEncounterFields() {

@@ -1,5 +1,21 @@
 import React from 'react';
 
+/**
+ * This method renders the SavedResultsTable component
+ * that is being displayed when you search for a saved cohort 
+ * or saved definition
+ * 
+ * @param {Array} results the results to be displayed on the table
+ * @param {Array} tableName the name of the table
+ * @param {Function} downloadJobs the items you want to download
+ * @param {Function} deleteJobs the items you want tot delete
+ * @param {Function} onDelete the function to handle the deleting of a result
+ * @param {Function} onView the function to handle the viewing of a result
+ * @param {Function} onDownload the function to handle the downloading of a result
+ * @param {Boolean} isSearching a boolean to check if you are searching through the results
+ * 
+ * @return {Object} JSX The JSX component
+ */
 const SavedResultsTable = ({
   results, tableName, downloadJobs, deleteJobs,
   onDelete, onView, onDownload, isSearching

@@ -11,6 +11,38 @@ This repository contains the CohortBuilder OpenMRS Open Web App.
 For further documentation about OpenMRS Open Web Apps see
 [the wiki page](https://wiki.openmrs.org/display/docs/Open+Web+Apps+Module).
 
+## Getting Started
+
+### Local Setup Instructions
+
+```
+# Get the project
+git clone https://github.com/openmrs/openmrs-owa-cohortbuilder.git
+
+# Move into the project directory
+cd openmrs-owa-cohortbuilder
+
+# Install the dependencies
+npm install
+
+# Copy the webpack configuration from webpack.config.sample.js to webpack.config.js
+cp webpack.config.sample.js webpack.config.js
+
+# Locate appdata\owa folder and copy the path
+pwd | pbcopy
+
+# Open the webpack.config.js file, locate the getConfig function and update the config object with the following
+{
+  "LOCAL_OWA_FOLDER": "PASTE_THE_PATH_YOU_COPIED_HERE",
+  "APP_ENTRY_POINT": "http://localhost:8081/openmrs-standalone/owa/cohortbuilder/index.html"
+}
+
+Note: Start your cohort builder standalone server locally. Make sure you tomcat port is 8081, if not, change the APP_ENTRY_POINT localhost port to be the same as your tomcat port.
+
+# Run the app
+npm run watch
+```
+
 ## Development
 
 ### Production Build

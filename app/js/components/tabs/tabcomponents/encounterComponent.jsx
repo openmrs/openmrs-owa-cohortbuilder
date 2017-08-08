@@ -228,15 +228,15 @@ class EncounterComponent extends Component {
     });
     let searchDescription = `Patients in ${selectedLocation.value}`;
     switch (this.state.method) {
-    case 'FIRST':
-      searchDescription += ' (by method EARLIEST_ENCOUNTER).';
-      break;
-    case 'LAST':
-      searchDescription += ' (by method LATEST_ENCOUNTER).';
-      break;
-    default:
-      searchDescription += ' (by method ANY_ENCOUNTER).';
-      break;
+      case 'FIRST':
+        searchDescription += ' (by method EARLIEST_ENCOUNTER).';
+        break;
+      case 'LAST':
+        searchDescription += ' (by method LATEST_ENCOUNTER).';
+        break;
+      default:
+        searchDescription += ' (by method ANY_ENCOUNTER).';
+        break;
     }
     return searchDescription;
   }

@@ -13,7 +13,9 @@ import DatePicker from "react-bootstrap-date-picker";
 import { JSONHelper } from '../../../helpers/jsonHelper';
 import { ApiHelper } from '../../../helpers/apiHelper';
 import utility from '../../../utility';
+
 class ProgrammeComponent extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +42,6 @@ class ProgrammeComponent extends Component {
     this.resetDates = this.resetDates.bind(this);
   }
 
-  // Make a call to the program endpoint to get backend field data when component mounts
   componentDidMount(props) {
     this.props.fetchData('/program').then(data => {
       this.setState({
@@ -270,10 +271,10 @@ class ProgrammeComponent extends Component {
         if (libraryKey === 'patientsWithState') {
                     // patientsWithState uses different parameter names
           switch(fieldName) {
-          case 'enrolledOnOrAfter': fieldName = 'startedOnOrAfter'; break;
-          case 'enrolledOnOrBefore': fieldName = 'startedOnOrBefore'; break;
-          case 'completedOnOrAfter': fieldName = 'endedOnOrAfter'; break;
-          case 'completedOnOrBefore': fieldName = 'endedOnOrBefore'; break;
+            case 'enrolledOnOrAfter': fieldName = 'startedOnOrAfter'; break;
+            case 'enrolledOnOrBefore': fieldName = 'startedOnOrBefore'; break;
+            case 'completedOnOrAfter': fieldName = 'endedOnOrAfter'; break;
+            case 'completedOnOrBefore': fieldName = 'endedOnOrBefore'; break;
           }
         }
         parameters[libraryKey].push({
@@ -364,7 +365,6 @@ class ProgrammeComponent extends Component {
       inEndDate: '',
     });
   }
-
 
   render() {
     let programs = this.state.programs.map((program) => {

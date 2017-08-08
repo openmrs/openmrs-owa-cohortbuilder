@@ -11,7 +11,6 @@
 import React, { PropTypes } from 'react'; 
 import shortId from 'shortId';
 
-
 const savedCohorts = ({allCohort = []}) => {
   return (
     <div className="col-md-10 col-md-offset-1 ">

@@ -15,6 +15,7 @@ import BreadCrumbComponent from './breadCrumb/breadCrumbComponent';
 import CohortTable from '../components/common/table';
 
 class App extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,6 +28,12 @@ class App extends Component {
     this.back = this.back.bind(this);
   }
 
+  /**
+   * This method is used to navigate back to the previous page from
+   * the patients table component
+   * 
+   * @memberof App
+   */
   back() {
     this.setState({
       table: 'none',

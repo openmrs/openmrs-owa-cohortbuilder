@@ -32,7 +32,8 @@ class CompositionComponent extends Component {
     
   /**
    * The function takes the input of the text field and makes a search
-   * @param {object} event 
+   * 
+   * @param {Object} event the composition event
    */
   performComposition(event) {
     event.preventDefault();

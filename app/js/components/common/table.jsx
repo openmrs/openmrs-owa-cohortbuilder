@@ -26,7 +26,7 @@ class cohortTable  extends Component {
     };
     this.navigatePage = this.navigatePage.bind(this);
   }
-
+  
   componentWillReceiveProps(nextProps) {
     const pagePatientInfo = this.getPagePatient(nextProps.toDisplay, 1);
     this.setState({
@@ -38,6 +38,13 @@ class cohortTable  extends Component {
     });
   }
 
+  /**
+   * This method contains logic for the pagination being displayed on
+   * the front end
+   * 
+   * @param {Object} event the pagination event 
+   * @memberof cohortTable
+   */
   navigatePage(event) {
     event.preventDefault();
     let pageToNavigate = 0;
@@ -50,7 +57,16 @@ class cohortTable  extends Component {
     this.setState({ toDisplay: pagePatientInfo, currentPage: pageToNavigate });
   }
 
-
+  /**
+   * This method gets all the patients data for a particular page
+   * 
+   * @param {Array} allPatients an array of all the patients to be displayed 
+   * on a particular page
+   * @param {Integer} currentPage the pageNumber of the page you want to
+   * navigate to
+   * @returns 
+   * @memberof cohortTable
+   */
   getPagePatient(allPatients, currentPage) {
     const pagePatientInfo = [];
     for(let index = (currentPage-1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
@@ -85,7 +101,7 @@ class cohortTable  extends Component {
               </thead>
               <tbody>
                 { this.state.toDisplay.map((patient) => {
-                    return (
+                  return (
                       <tr key={shortId.generate()}>
                         <td>{ 
                           patient.hasOwnProperty('firstname') ? 
@@ -94,8 +110,8 @@ class cohortTable  extends Component {
                         <td>{patient.age}</td>
                         <td>{patient.gender}</td>
                       </tr>
-                    );
-                  })
+                  );
+                })
                 } 
               </tbody> 
             </table>
@@ -107,7 +123,6 @@ class cohortTable  extends Component {
     );
   }
 }
-
 
 cohortTable.propTypes = {
   toDisplay: PropTypes.array.isRequired,

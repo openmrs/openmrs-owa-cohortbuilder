@@ -72,6 +72,12 @@ export default class ObsFilter extends React.Component {
     this.textInput = input; 
   }
 
+  /**
+   * This method handles the form submit event
+   * 
+   * @param {Object} event the form event
+   * @memberof ObsFilter
+   */
   handleSubmit(event) {
     event.preventDefault();
     const types = {
@@ -327,7 +333,6 @@ export default class ObsFilter extends React.Component {
     );
   }
 
-
   endForm() {
     return (
       <div key={shortid.generate()} className="col-sm-12">
@@ -368,6 +373,12 @@ export default class ObsFilter extends React.Component {
     );
   }
 
+  /**
+   * This method renders the form field
+   * 
+   * @returns 
+   * @memberof ObsFilter
+   */
   renderForm() {
     let str = [];
     let { hl7Abbrev } = this.props.concept; 
@@ -407,7 +418,6 @@ export default class ObsFilter extends React.Component {
     );
   }
 }
-
 
 ObsFilter.propTypes = {
   concept: React.PropTypes.object.isRequired,

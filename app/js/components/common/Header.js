@@ -35,12 +35,27 @@ export class Header extends Component {
     });
   }
 
+  /**
+   * This method fetches the locations to display on the 
+   * navigation bar
+   * 
+   * @returns {Object} location.display
+   * @memberof Header
+   */
   getLocations() {
     return this.state.locationTags.map((location) => {
       return location.display;
     });
   }
 
+  /**
+   * This method fetches the data from the parameter 
+   * that is passed into it
+   * 
+   * @param {String} url 
+   * @returns {Object} getData 
+   * @memberof Header
+   */
   fetchLocation(url) {
     const apiHelper = new ApiHelper(null);
     const getData = new Promise(function(resolve, reject) {
@@ -53,11 +68,26 @@ export class Header extends Component {
     return getData;
   }
 
+  /**
+   * This method is used to set and change the location being 
+   * displayed on the navigation bar
+   * 
+   * @param {Object} e the dropdown menu event 
+   * @memberof Header
+   */
   handleClick(e) {
     e.preventDefault();
     this.setState({currentLocationTag: e.target.id});
   }
 
+  /**
+   * This method renders and pupulate the dropdown menu being displayed
+   * on the navigation bar
+   * 
+   * @param {Object} locationTags an array of the items to display
+   * @returns 
+   * @memberof Header
+   */
   dropDownMenu(locationTags) {
     const menuDisplay = [];
     const numPerColumn = Math.ceil(locationTags.length / NUMBER_OF_COLUMNS);

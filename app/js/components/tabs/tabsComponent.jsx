@@ -36,12 +36,19 @@ class TabsComponent extends Component {
 
   componentDidMount(){}
 
+  /**
+   * This method renders the tabs headers
+   * 
+   * @param {Object} tab the tab to be displayed
+   * @param {integer} index the primary key of the tab
+   * @returns 
+   * @memberof TabsComponent
+   */
   drawTabHeader(tab,index){
     return (
       <li key={index} className={tab.active ? 'active' : ""}><a data-toggle="tab" href={"#"+tab.divId}>{tab.name}</a></li>
     );
   }
-
 
   search(queryDetails, description = "") {
     const apiHelper = new ApiHelper(null);

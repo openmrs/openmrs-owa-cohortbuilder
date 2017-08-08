@@ -31,8 +31,10 @@ npm install
 # Copy the webpack configuration from webpack.config.sample.js to webpack.config.js
 cp webpack.config.sample.js webpack.config.js
 
-# Locate appdata\owa folder and copy the path
+# Locate the 'appdata/owa' directory and type the following command to get the path to the 'appdata/owa' directory and copy it to the clipboard.
 pwd | pbcopy
+
+An example of the path is: /Users/andeladeveloper/Downloads/referenceapplication-standalone-2.6.0/appdata/owa/
 
 # Open the webpack.config.js file, locate the getConfig function and update the config object with the following
 {

@@ -270,10 +270,10 @@ class ProgrammeComponent extends Component {
         if (libraryKey === 'patientsWithState') {
                     // patientsWithState uses different parameter names
           switch(fieldName) {
-          case 'enrolledOnOrAfter': fieldName = 'startedOnOrAfter'; break;
-          case 'enrolledOnOrBefore': fieldName = 'startedOnOrBefore'; break;
-          case 'completedOnOrAfter': fieldName = 'endedOnOrAfter'; break;
-          case 'completedOnOrBefore': fieldName = 'endedOnOrBefore'; break;
+            case 'enrolledOnOrAfter': fieldName = 'startedOnOrAfter'; break;
+            case 'enrolledOnOrBefore': fieldName = 'startedOnOrBefore'; break;
+            case 'completedOnOrAfter': fieldName = 'endedOnOrAfter'; break;
+            case 'completedOnOrBefore': fieldName = 'endedOnOrBefore'; break;
           }
         }
         parameters[libraryKey].push({

@@ -141,12 +141,12 @@ class CompositionComponent extends Component {
     this.setState({ [id]: event.target.value });
     // reset approriate error when a field value is changed
     switch(id) {
-    case 'compositionQuery': {
-      return this.setState({ hasCompositionError: false });
-    }
-    case 'compositionLabel': {
-      return this.setState({ hasDescriptionError: false });
-    }
+      case 'compositionQuery': {
+        return this.setState({ hasCompositionError: false });
+      }
+      case 'compositionLabel': {
+        return this.setState({ hasDescriptionError: false });
+      }
     }
   }
 

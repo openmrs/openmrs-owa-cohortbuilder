@@ -18,15 +18,15 @@ class ConceptComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        conceptsResults: [],
-        searchResults: [],
-        verbose: false,
-        pages: [],
-        currentPage: 0,
-        currentDisplay: [],
-        selectedConcept: null,
-        conceptObject: {}
-      };
+      conceptsResults: [],
+      searchResults: [],
+      verbose: false,
+      pages: [],
+      currentPage: 0,
+      currentDisplay: [],
+      selectedConcept: null,
+      conceptObject: {}
+    };
     this.resultsPerPage = 10;
     this.allConcepts = [];
     this.setConcept = this.setConcept.bind(this);
@@ -40,10 +40,10 @@ class ConceptComponent extends Component {
    */
   checkVerbose(uuid) {
     return () => {
-        this.setState({
-           verbose: uuid
-         });
-      };
+      this.setState({
+        verbose: uuid
+      });
+    };
   }
     
   /**
@@ -53,30 +53,30 @@ class ConceptComponent extends Component {
    */
   loadConcepts(value) {
     this.setState({
-        selectedConcept: null
-      });
+      selectedConcept: null
+    });
     const conceptName = value.toLowerCase();
     if (conceptName.length > 0) {
-        this.props.fetchData(`/concept?v=full&q=${conceptName}`).then(data => {
-            let allConcepts = [];
-            if (data.results.length > 0 ) {
-                allConcepts = data.results.map(concept => {
-                    const description= concept.descriptions.filter(des => des.locale == 'en' ? des.description: '');
-                    const conceptData = {
-                        uuid: concept.uuid,
-                        units: concept.units || '',
-                        answers: concept.answers,
-                        hl7Abbrev: concept.datatype.hl7Abbreviation,
-                        name: concept.name.name,
-                        description: description.length > 0? description[0].description : 'no description available',
-                        datatype: concept.datatype
-                      };
-                    return conceptData;
-                  }); 
-              }
-            this.setState({conceptsResults: allConcepts });
-          });
-      }   
+      this.props.fetchData(`/concept?v=full&q=${conceptName}`).then(data => {
+        let allConcepts = [];
+        if (data.results.length > 0 ) {
+          allConcepts = data.results.map(concept => {
+            const description= concept.descriptions.filter(des => des.locale == 'en' ? des.description: '');
+            const conceptData = {
+              uuid: concept.uuid,
+              units: concept.units || '',
+              answers: concept.answers,
+              hl7Abbrev: concept.datatype.hl7Abbreviation,
+              name: concept.name.name,
+              description: description.length > 0? description[0].description : 'no description available',
+              datatype: concept.datatype
+            };
+            return conceptData;
+          }); 
+        }
+        this.setState({conceptsResults: allConcepts });
+      });
+    }   
   }
 
   /**

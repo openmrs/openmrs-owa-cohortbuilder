@@ -75,7 +75,7 @@ class cohortTable  extends Component {
         {this.state.toDisplay.length > 0 ?
           <div className="table">
             <h1 className="text-center">{this.state.description}</h1>
-            <table className="table table-striped" >
+            <table className="table table-striped table-bordered" >
               <thead>
                 <tr>
                   <td>NAME</td>
@@ -85,7 +85,7 @@ class cohortTable  extends Component {
               </thead>
               <tbody>
                 { this.state.toDisplay.map((patient) => {
-                    return (
+                  return (
                       <tr key={shortId.generate()}>
                         <td>{ 
                           patient.hasOwnProperty('firstname') ? 
@@ -94,8 +94,8 @@ class cohortTable  extends Component {
                         <td>{patient.age}</td>
                         <td>{patient.gender}</td>
                       </tr>
-                    );
-                  })
+                  );
+                })
                 } 
               </tbody> 
             </table>

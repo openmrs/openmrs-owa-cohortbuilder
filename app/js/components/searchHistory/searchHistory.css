@@ -36,6 +36,11 @@
     max-height: 300px;
     overflow-y: auto;
 }
+
+.sub-heading {
+    padding: 0 10px;
+}
+
 .table-window {
     max-height: none;
 }

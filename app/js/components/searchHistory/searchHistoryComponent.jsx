@@ -41,9 +41,9 @@ class SearchHistoryComponent extends Component {
     event.preventDefault();
     let pageToNavigate = 0;
     switch(event.target.value) {
-    case 'first': pageToNavigate = 1; break;
-    case 'last': pageToNavigate = this.state.totalPage; break;
-    default: pageToNavigate = (event.target.value === 'next') ? this.state.currentPage+1 : this.state.currentPage-1;
+      case 'first': pageToNavigate = 1; break;
+      case 'last': pageToNavigate = this.state.totalPage; break;
+      default: pageToNavigate = (event.target.value === 'next') ? this.state.currentPage+1 : this.state.currentPage-1;
     }
     const pagePatientInfo = this.getPagePatient(this.state.searchResults, pageToNavigate);
     this.setState({ toDisplay: pagePatientInfo, currentPage: pageToNavigate });
@@ -147,13 +147,14 @@ class SearchHistoryComponent extends Component {
           queryId={this.state.queryId}
           history={this.props.history}
         />
-        <div className="col-sm-12 section">
-            <h3>Search History</h3>
+        <div className="sub-section">
+            <div className="sub-heading">
+              <h3>Search History</h3>
+            </div>
             <div className="result-window">
-                
                 {
                     (history.length > 0) ?
-                      <table className="table table-striped">
+                      <table className="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th className="table-header">#</th>

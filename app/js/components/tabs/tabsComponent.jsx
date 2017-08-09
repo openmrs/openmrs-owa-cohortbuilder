@@ -76,7 +76,7 @@ class TabsComponent extends Component {
     const { getHistory } = this.props; 
     
     return (
-      <div className="col-sm-12 section">
+      <div className="main-section">
         <TabBarComponent tabs={this.state.tabs} drawTabHeader={this.drawTabHeader} />
         <TabContentComponent
             tabs={this.state.tabs}

@@ -21,13 +21,17 @@ export class Header extends Component {
       locationTags: [],
       currentLocationTag: "",
       defaultLocation: "",
-      currentUser: ""
+      currentUser: "",
+      currentLogOutUrl: "",
     };
+    this.getUri = this.getUri.bind(this);
   }
+
   componentWillMount() {
     this.fetchLocation('/location').then((response) => {
       this.setState({locationTags: response.results});
       this.setState({defaultLocation: response.results[0].display});
+      this.getUri();
     });
 
     this.fetchLocation('/session').then((response) => {
@@ -38,6 +42,17 @@ export class Header extends Component {
   getLocations() {
     return this.state.locationTags.map((location) => {
       return location.display;
+    });
+  }
+
+  getUri() {
+    this.state.locationTags.map((location) => {
+      let url = location.links[0].uri;
+      let arrUrl = url.split("/");
+      let customUrl = `/${arrUrl[3]}/appui/header/logout.action?successUrl=${arrUrl[3]}`;
+      this.setState({currentLogOutUrl: customUrl});
+      return customUrl;
+        
     });
   }
 
@@ -80,7 +95,6 @@ export class Header extends Component {
 
     return menuDisplay;
   }
-
   render() {
     return (
         <header>
@@ -122,7 +136,7 @@ export class Header extends Component {
 
                 <Link to="" activeClassName="active">
                     <li>
-                        <a href="#">Logout {' '}
+                        <a href={this.state.currentLogOutUrl}>Logout {' '}
                             <span className="glyphicon glyphicon-log-out"/></a>
                     </li>
                 </Link>

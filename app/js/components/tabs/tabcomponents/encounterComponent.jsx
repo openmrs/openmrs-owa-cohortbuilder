@@ -52,6 +52,7 @@ class EncounterComponent extends Component {
     this.resetLocationFields = this.resetLocationFields.bind(this);
     this.handleSelectEncounters = this.handleSelectEncounters.bind(this);
     this.handleCountChange = this.handleCountChange.bind(this);
+    this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
   }
 
   componentWillMount() {
@@ -340,6 +341,25 @@ class EncounterComponent extends Component {
     this.setState({ [event.target.id]: event.target.value });
   }
 
+  handleOnKeyPress(event){
+    if (typeof event.key === 'boolean' || isNaN(event.key)) {
+      event.preventDefault();
+    } 
+  }
+    
+
+  handleValidateCountInput(event) {
+    // validate if the user inputs a number
+    const invalidCharacters = [
+      '-',
+      '+',
+      'e'
+    ];
+
+    (invalidCharacters.includes(event.key)) ? event.preventDefault() : null;
+  }
+
+
   /**
    * Metod to reset all fields in the encounter form of this component
    * @return {undefined}
@@ -411,12 +431,31 @@ class EncounterComponent extends Component {
             <div className="form-group">
               <label htmlFor="atLeast" className="col-sm-2 control-label">Atleast this many: </label>
               <div className="col-sm-3">
-                <input type="number" className="form-control" id="atLeastCount" value={this.state.atLeastCount} onChange={this.handleCountChange} />
+                <input 
+                  min="0" 
+                  type="number" 
+                  pattern="[0-9]*" 
+                  className="form-control" 
+                  id="atLeastCount" 
+                  value={this.atLeastCount} 
+                  onKeyDown={this.handleValidateCountInput} 
+                  onChange={this.handleCountChange} 
+                  onKeyPress={this.handleOnKeyPress}
+                />
               </div>
               <span className="inline-label">(Optional)</span>
               <label htmlFor="atMost" className="col-sm-2 control-label">Upto this many: </label>
               <div className="col-sm-3">
-                <input type="number" className="form-control" id="atMostCount" value={this.state.atMostCount} onChange={this.handleCountChange} />
+                <input 
+                  min="0" 
+                  type="number" 
+                  className="form-control" 
+                  id="atMostCount" 
+                  value={this.atMostCount} 
+                  onKeyDown={this.handleValidateCountInput} 
+                  onChange={this.handleCountChange} 
+                  onKeyPress={this.handleOnKeyPress}
+                />
               </div>
               <span className="inline-label">(Optional)</span>
             </div>

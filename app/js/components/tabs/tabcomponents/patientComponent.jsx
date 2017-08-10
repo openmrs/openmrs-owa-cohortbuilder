@@ -53,6 +53,7 @@ class PatientComponent extends Component {
     this.handleSelectAttribute = this.handleSelectAttribute.bind(this);
     this.handleSelectGender = this.handleSelectGender.bind(this);
     this.handleSelectAge = this.handleSelectAge.bind(this);
+    this.handleValidateAgeInput = this.handleValidateAgeInput.bind(this);
     this.isAgeValid = this.isAgeValid.bind(this);
   }
 
@@ -314,19 +315,15 @@ class PatientComponent extends Component {
   }
 
   /**
-   * This method validates if a user types a number
+   * Extra validation for browsers Safari and other browsers
+   * that did not implement restriction for type number
    * onKeyDown
    * @param {object} event
    */
-  handleValidateAgeInput(event) {
-    // validate if the user inputs a number
-    const invalidCharacters = [
-      '-',
-      '+',
-      'e'
-    ];
-
-    (invalidCharacters.includes(event.key)) ? event.preventDefault() : false;
+  handleValidateAgeInput(event){
+    if (typeof event.key === 'boolean' || isNaN(event.key)) {
+      event.preventDefault();
+    } 
   }
 
   /**
@@ -506,8 +503,8 @@ class PatientComponent extends Component {
                 name="minage"
                 id="minAge"
                 className="form-control"
-                onKeyDown={this.handleValidateAgeInput}
                 onKeyUp={this.handleSelectAge}
+                onKeyPress={this.handleValidateAgeInput}
                 value={this.minAge}
               />
               <span>{ageErrorObject.status && ageErrorObject.minAgeErrorMsg}</span>
@@ -520,8 +517,8 @@ class PatientComponent extends Component {
                 name="maxage"
                 id="maxAge"
                 className="form-control"
-                onKeyDown={this.handleValidateAgeInput}
                 onKeyUp={this.handleSelectAge}
+                onKeyPress={this.handleValidateAgeInput}
                 value={this.maxAge}
               />
               <span>{ageErrorObject.status && ageErrorObject.maxAgeErrorMsg}</span>

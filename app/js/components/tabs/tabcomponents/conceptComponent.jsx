@@ -55,24 +55,36 @@ class ConceptComponent extends Component {
     this.setState({
       selectedConcept: null
     });
+
+    let url = window.location.href;
+    let appUrl = url.split("/");
+    let myAppUrl = `/${appUrl[3]}/owa/cohortbuilder/index.html#/`;
+
     const conceptName = value.toLowerCase();
     if (conceptName.length > 0) {
       this.props.fetchData(`/concept?v=full&q=${conceptName}`).then(data => {
         let allConcepts = [];
-        if (data.results.length > 0 ) {
-          allConcepts = data.results.map(concept => {
-            const description= concept.descriptions.filter(des => des.locale == 'en' ? des.description: '');
-            const conceptData = {
-              uuid: concept.uuid,
-              units: concept.units || '',
-              answers: concept.answers,
-              hl7Abbrev: concept.datatype.hl7Abbreviation,
-              name: concept.name.name,
-              description: description.length > 0? description[0].description : 'no description available',
-              datatype: concept.datatype
-            };
-            return conceptData;
-          }); 
+        try{
+          if (data.results.length) {
+            allConcepts = data.results.map(concept => {
+              const description= concept.descriptions.filter(des => des.locale == 'en' ? des.description: '');
+              const conceptData = {
+                uuid: concept.uuid,
+                units: concept.units || '',
+                answers: concept.answers,
+                hl7Abbrev: concept.datatype.hl7Abbreviation,
+                name: concept.name.name,
+                description: description.length > 0? description[0].description : 'no description available',
+                datatype: concept.datatype
+              };
+              return conceptData;
+            }); 
+          } 
+        }
+        catch(e){
+          if(e instanceof(TypeError)){
+            window.location.href= `/${appUrl[3]}/appui/header/logout.action?successUrl=${appUrl[3]}`;
+          }
         }
         this.setState({conceptsResults: allConcepts });
       });

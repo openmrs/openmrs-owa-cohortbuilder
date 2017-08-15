@@ -18,11 +18,28 @@ class DrugOrderComponent extends Component {
   constructor(props) {
     super();
     this.state = {
+      activeDrugsMonth: '',
+      activeDrugsDays: '',
+      activeDrugsEndDate: '',
+      activeDrugsStartDate: '',
+      stoppedDrugsMonth: '',
+      stoppedDrugsDays: '',
+      stoppedDrugsEndDate: '',
+      stoppedDrugsStartDate: '',
+      drugRegimen: '',
       drugs: [],
       generics: [],
       reasons: [],
       loading: true
     };
+
+    this.resetPatientsTakingSpecificDrugs = this.resetPatientsTakingSpecificDrugs.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnKeyPress = this.handleOnKeyPress.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleValidateCountInput = this.handleValidateCountInput.bind(this);
+    this.getDateString = this.getDateString.bind(this);
+    this.resetPatientsWhoStoppedTakingDrugs = this.resetPatientsWhoStoppedTakingDrugs.bind(this);
   }
 
   componentWillMount() {
@@ -72,6 +89,65 @@ class DrugOrderComponent extends Component {
     );
   }
 
+  handleOnKeyPress(event){
+    if (typeof event.key === 'boolean' || isNaN(event.key)) {
+      event.preventDefault();
+    } 
+  }
+         
+  handleValidateCountInput(event) {
+    // validate if the user inputs a number
+    const invalidCharacters = [
+      '-',
+      '+',
+      'e'
+    ];
+    
+    (invalidCharacters.includes(event.key)) ? event.preventDefault() : null;
+  }
+
+  handleOnChange(event) {
+    event.preventDefault();
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  /**
+   * Method to get the date in the format MM-DD-YY from a date isoString
+   * @param {String} isoString - Date in isoString format
+   * @return {String} MM-DD-YY date formatted string
+   */
+  getDateString(isoString) {    
+    return isoString ? isoString.split('T')[0] : '';
+  }
+
+  handleDateChange(dateType){
+    return value => this.setState({
+      [dateType]: this.getDateString(value)
+    });
+  }
+
+  resetPatientsTakingSpecificDrugs(event) {
+    event.preventDefault();
+    document.getElementById("inlineRadio1").checked = false;
+    document.getElementById("inlineRadio2").checked = false;
+    this.setState({
+      activeDrugsMonth: '',
+      activeDrugsDays: '',
+      activeDrugsEndDate: '',
+      activeDrugsStartDate: '',
+    });
+  }
+
+  resetPatientsWhoStoppedTakingDrugs(event) {
+    event.preventDefault();
+    this.setState({
+      stoppedDrugsMonth: '',
+      stoppedDrugsDays: '',
+      stoppedDrugsEndDate: '',
+      stoppedDrugsStartDate: '',
+    });
+  }
+
   render() {
     if(this.state.loading) {
       return (
@@ -100,10 +176,10 @@ class DrugOrderComponent extends Component {
                     <label className="col-sm-2 control-label">Drug Regimen</label>
                     <div className="col-sm-6">
                         <label className="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"/> Current Drug Regimen
+                            <input type="radio" name="drugRegimen" id="inlineRadio1" value="option1"/> Current Drug Regimen
                         </label>
                         <label className="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"/> Specific Drug Regimen(s)
+                            <input type="radio" name="drugRegimen" id="inlineRadio2" value="option2"/> Specific Drug Regimen(s)
                         </label>
                     </div>
                 </div>
@@ -114,11 +190,29 @@ class DrugOrderComponent extends Component {
                         <span className="inline-label">For the last:</span>
                     </div>
                     <div className="col-sm-2">
-                        <input className="form-control" type="text" name="month" />
+                        <input
+                          className="form-control"
+                          type="number"
+                          name="activeDrugsMonth"
+                          min="0"
+                          pattern="[0-9]*"
+                          value={this.state.activeDrugsMonth}
+                          onKeyDown={this.handleValidateCountInput}
+                          onKeyPress={this.handleOnKeyPress}
+                          onChange={this.handleOnChange} />
                     </div>
                     <span className="inline-label">months and :</span>
                     <div className="col-sm-2">
-                        <input className="form-control" name="days" type="text" />
+                        <input
+                          className="form-control"
+                          name="activeDrugsDays"
+                          type="number"
+                          min="0"
+                          value={this.state.activeDrugsDays}
+                          pattern="[0-9]*"
+                          onKeyDown={this.handleValidateCountInput}
+                          onKeyPress={this.handleOnKeyPress}
+                          onChange={this.handleOnChange} />
                     </div>
                     <span className="inline-label">days    (optional)</span>
                 </div>
@@ -130,17 +224,23 @@ class DrugOrderComponent extends Component {
                     </div>
                     <div className="col-sm-3">
                         <DatePicker
-                            dateFormat="DD-MM-YYYY"
-                            className="form-control"
-                            name="from-date"
+                          dateFormat="DD-MM-YYYY"
+                          className="form-control"
+                          name="from-date"
+                          id="activeDrugsStartDate"
+                          value={this.state.activeDrugsStartDate}
+                          onChange={this.handleDateChange('activeDrugsStartDate')}
                         />
                     </div>
                     <span className="inline-label">To:</span>
                     <div className="col-sm-3">
                         <DatePicker
-                            dateFormat="DD-MM-YYYY"
-                            className="form-control"
-                            name="to-date"
+                          dateFormat="DD-MM-YYYY"
+                          className="form-control"
+                          name="to-date"
+                          id="activeDrugsEndDate"
+                          value={this.state.activeDrugsEndDate}
+                          onChange={this.handleDateChange('activeDrugsEndDate')}
                         />
                     </div>
                     <span className="inline-label">(optional)</span>
@@ -148,8 +248,12 @@ class DrugOrderComponent extends Component {
 
                 <div className="form-group">
                     <div className="col-sm-offset-2 col-sm-6">
-                        <button type="submit" className="btn btn-success">Search</button>
-                        <button type="reset" className="btn btn-default cancelBtn">Reset</button>
+                      <button type="submit" className="btn btn-success">Search</button>
+                      <button 
+                        type="reset"
+                        className="btn btn-default cancelBtn"
+                        onClick={this.resetPatientsTakingSpecificDrugs}
+                      >Reset</button>
                     </div>
                 </div>
             </form>
@@ -162,13 +266,31 @@ class DrugOrderComponent extends Component {
                         <span className="inline-label">Within the last:</span>
                     </div>
                     <div className="col-sm-2">
-                        <input className="form-control" type="text" name="month" />
+                    <input
+                      className="form-control"
+                      type="number"
+                      name="stoppedDrugsMonth"
+                      min="0"
+                      pattern="[0-9]*"
+                      value={this.state.stoppedDrugsMonth}
+                      onKeyDown={this.handleValidateCountInput}
+                      onKeyPress={this.handleOnKeyPress}
+                      onChange={this.handleOnChange} />
                     </div>
                     <span className="inline-label">months and :</span>
                     <div className="col-sm-2">
-                        <input className="form-control" name="days" type="text" />
+                    <input
+                      className="form-control"
+                      type="number"
+                      name="stoppedDrugsDays"
+                      min="0"
+                      pattern="[0-9]*"
+                      value={this.state.stoppedDrugsDays}
+                      onKeyDown={this.handleValidateCountInput}
+                      onKeyPress={this.handleOnKeyPress}
+                      onChange={this.handleOnChange} />
                     </div>
-                    <span className="inline-label">days(optional)</span>
+                    <span className="inline-label">days (optional)</span>
                 </div>
 
                 <div className="form-group">
@@ -178,17 +300,23 @@ class DrugOrderComponent extends Component {
                     </div>
                     <div className="col-sm-3">
                         <DatePicker
-                            dateFormat="DD-MM-YYYY"
-                            className="form-control"
-                            name="from-date"
+                          dateFormat="DD-MM-YYYY"
+                          className="form-control"
+                          name="from-date"
+                          id="stoppedDrugsStartDate"
+                          value={this.state.stoppedDrugsStartDate}
+                          onChange={this.handleDateChange('stoppedDrugsStartDate')}
                         />
                     </div>
                     <span className="inline-label">To:</span>
                     <div className="col-sm-3">
                         <DatePicker
-                            dateFormat="DD-MM-YYYY"
-                            className="form-control"
-                            name="to-date"
+                          dateFormat="DD-MM-YYYY"
+                          className="form-control"
+                          name="to-date"
+                          id="stoppedDrugsEndDate"
+                          value={this.state.stoppedDrugsEndDate}
+                          onChange={this.handleDateChange('stoppedDrugsEndDate')}
                         />
                     </div>
                     <span className="inline-label">(optional)</span>
@@ -219,8 +347,10 @@ class DrugOrderComponent extends Component {
                 <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-6">
                         <button type="submit" className="btn btn-success">Search</button>
-                        <button type="reset" className="btn btn-default cancelBtn">Reset</button>
-
+                        <button
+                          type="reset"
+                          className="btn btn-default cancelBtn"
+                          onClick={this.resetPatientsWhoStoppedTakingDrugs} >Reset</button>
                     </div>
                 </div>
             </form>

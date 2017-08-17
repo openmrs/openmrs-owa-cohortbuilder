@@ -131,6 +131,12 @@ plugins.push(new CopyWebpackPlugin([{
   from: './app/manifest.webapp'
 }]));
 
+plugins.push( new webpack.DefinePlugin({
+  'process.env': {
+    'NODE_ENV': JSON.stringify('production')
+  }
+}));
+
 plugins.push(new CopyWebpackPlugin([{
   from: './app/img/',
   to: 'img'

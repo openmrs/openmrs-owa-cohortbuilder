@@ -107,6 +107,7 @@ class ConceptComponent extends Component {
               options={this.state.conceptsResults}
               placeholder="search concepts"
               onChange={this.setConcept}
+              useCache={false}
               paginate
             />
           </div>

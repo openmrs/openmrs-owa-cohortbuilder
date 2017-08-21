@@ -15,6 +15,7 @@ import TabBarComponent from './tabBarComponent';
 import TabContentComponent from './tabContentComponent';
 import { ApiHelper } from '../../helpers/apiHelper';
 import { JSONHelper } from '../../helpers/jsonHelper';
+import utility from '../../utility';
 
 import './tabs.css';
 
@@ -50,11 +51,23 @@ class TabsComponent extends Component {
     const searchResult = new Promise(function(resolve, reject) {
       apiHelper.post('reportingrest/adhocquery?v=full', queryDetails.query).then(response => {
         response.json().then(data => {
+          if (data.error){
+            if(data.error.message ===  "[null]" ){
+              utility.notifications('error', 'Search error, check the server log for details');
+              return data.error;
+            }
+            else{
+            utility.notifications('error', 'So far we only support ad hoc queries of PatientDataSetDefinition');
+            return data.error;
+            }
+          }
+          else{
           data.searchDescription = description || queryDetails.label;
           data.query = queryDetails.query;
           getHistory(data, data.searchDescription);
           resolve(data);
-        });
+          }
+        }).catch(error => error);
       });
     });
     return searchResult;

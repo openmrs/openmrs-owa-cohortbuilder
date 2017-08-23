@@ -81,15 +81,21 @@ class CompositionComponent extends Component {
     const apiHelper = new ApiHelper(null);
     apiHelper.post('reportingrest/adhocquery?v=full', compositionQuery.query).then(response => {
       response.json().then(data => {
-        if (JSON.stringify(data.rows) === JSON.stringify([])) {
-          utility.notifications('info', 'Search completed successfully but no results found');
-        } else {
-          utility.notifications('success', 'Search completed successfully');
+        if (data.error){
+          utility.notifications('error', 'Search error occured, check the server log for more details');
+          return data.error;
         }
-        this.props.getHistory(data, compositionQuery.label);
-        this.props.addToHistory(compositionQuery.label, data.rows, compositionQuery.query);
+        else{
+          if (JSON.stringify(data.rows) === JSON.stringify([])) {
+            utility.notifications('info', 'Search completed successfully but no results found');
+          } else {
+            utility.notifications('success', 'Search completed successfully');
+          }
+          this.props.getHistory(data, compositionQuery.label);
+          this.props.addToHistory(compositionQuery.label, data.rows, compositionQuery.query);
+        }
       });
-    }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
+    }).catch(error => error);
   }
 
   /**

@@ -28,14 +28,16 @@ class cohortTable  extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const pagePatientInfo = this.getPagePatient(nextProps.toDisplay, 1);
-    this.setState({
-      toDisplay: pagePatientInfo,
-      searchHistory: nextProps.toDisplay,
-      totalPage: Math.ceil(nextProps.toDisplay.length/this.state.perPage),
-      description: nextProps.description,
-      currentPage: 1,
-    });
+    if (nextProps.toDisplay !== undefined){
+      const pagePatientInfo = this.getPagePatient(nextProps.toDisplay, 1);
+      this.setState({
+        toDisplay: pagePatientInfo,
+        searchHistory: nextProps.toDisplay,
+        totalPage: Math.ceil(nextProps.toDisplay.length/this.state.perPage),
+        description: nextProps.description,
+        currentPage: 1,
+      });
+    }
   }
 
   navigatePage(event) {

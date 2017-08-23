@@ -51,9 +51,15 @@ class SearchHistoryComponent extends Component {
 
   viewResult(index, description) {
     return (event) => {
+      let allPatients = [];
       event.preventDefault();
       this.props.getHistory(this.props.history[index], description);
-      const allPatients = this.props.history[index].patients;
+      if(this.props.history[index].patients){
+        allPatients = this.props.history[index].patients;
+      }else{
+        allPatients = [];
+      }
+      
       const pagePatientInfo = this.getPagePatient(allPatients, 1);
       this.setState({
         toDisplay: pagePatientInfo,
@@ -176,7 +182,7 @@ class SearchHistoryComponent extends Component {
                                         <a className="link" title={`Delete ${eachResult.description}`} onClick={this.delete(index)} aria-hidden="true">Delete</a>
                                     </td>
                                     <td>
-                                        <a className="link" onClick={this.viewResult(index, eachResult.description)} title={`View ${eachResult.description}`} aria-hidden="true">{`${eachResult.patients.length} result(s)`}</a>
+                                        <a className="link" onClick={this.viewResult(index, eachResult.description)} title={`View ${eachResult.description}`} aria-hidden="true">{eachResult.patients ? `${eachResult.patients.length} result(s)`: 0}</a>
                                     </td>
                                     <td>
                                         <a className="link" onClick={this.downloadCSV(index, eachResult.description)} title={`Dowload ${eachResult.description}`} aria-hidden="true">Download</a>

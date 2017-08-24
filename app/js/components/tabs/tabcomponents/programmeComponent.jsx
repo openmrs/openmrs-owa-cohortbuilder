@@ -110,19 +110,24 @@ class ProgrammeComponent extends Component {
           parameterValues
         }
             );
-
       jsonQuery.query.customRowFilterCombination = (initialNumberOfFilters === 1) ? '1 and 2' : '1 and 2 and 3';
     }
     new ApiHelper().post('reportingrest/adhocquery?v=full', jsonQuery.query).then(res => {
-      const label = this.composeLabel();
-      if (JSON.stringify(res.rows) === JSON.stringify([])) {
-        utility.notifications('info', 'Search completed successfully but no results found');
-      } else {
-        utility.notifications('success', 'Search completed successfully');
+      if (res.error){
+        utility.notifications('error', 'Search error occured, check the server log for more details');
+        return res.error;
       }
-      this.props.addToHistory(label, res.rows, jsonQuery.query);
-      this.props.getHistory(res, label);
-    }).catch(() => utility.notifications('error', 'Search error, check the server log for details.'));
+      else{
+        const label = this.composeLabel();
+        if (JSON.stringify(res.rows) === JSON.stringify([])) {
+          utility.notifications('info', 'Search completed successfully but no results found');
+        } else {
+          utility.notifications('success', 'Search completed successfully');
+        }
+        this.props.addToHistory(label, res.rows, jsonQuery.query);
+        this.props.getHistory(res, label);
+      }
+    }).catch(error => error);
   }
 
   /**

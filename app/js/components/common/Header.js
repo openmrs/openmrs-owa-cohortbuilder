@@ -25,6 +25,7 @@ export class Header extends Component {
       currentLogOutUrl: "",
     };
     this.getUri = this.getUri.bind(this);
+    this.dropDownMenuClick = this.dropDownMenuClick.bind(this);
   }
 
   componentWillMount() {
@@ -73,6 +74,11 @@ export class Header extends Component {
     this.setState({currentLocationTag: e.target.id});
   }
 
+  dropDownMenuClick(e) {
+    e.preventDefault();
+    this.handleClick(e);
+  }
+
   dropDownMenu(locationTags) {
     const menuDisplay = [];
     const numPerColumn = Math.ceil(locationTags.length / NUMBER_OF_COLUMNS);
@@ -82,10 +88,12 @@ export class Header extends Component {
       let colEnd = (cols + 1) * numPerColumn;
       for (let menuIndex = colStart; menuIndex < colEnd; menuIndex++) {
         menuInColumns.push(
-                    <a href="#" key={menuIndex} id={locationTags[menuIndex]} onClick={(e) => {
-                      e.preventDefault();
-                      this.handleClick(e);
-                    }}>{locationTags[menuIndex]}</a>
+                    <a href="#" 
+                      key={menuIndex} 
+                      id={locationTags[menuIndex]} 
+                      onClick={this.dropDownMenuClick}>
+                      {locationTags[menuIndex]}
+                    </a>
                 );
       }
       menuDisplay.push(

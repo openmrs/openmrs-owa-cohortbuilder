@@ -1,0 +1,15 @@
+{
+    "package": {
+        "name": "openmrs-owa-cohortbuilder",
+        "repo": "owa",
+        "subject": "openmrs"
+    },
+
+    "version": {
+        "name": "1.0.0",
+        "released": "2017-08-28"
+    },
+
+    "files":[{"includePattern": "build/(.*\\.zip)", "uploadPattern": "$1"}],
+    "publish": true
+}

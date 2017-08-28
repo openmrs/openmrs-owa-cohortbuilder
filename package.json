@@ -68,6 +68,7 @@
     "build:dev": "npm run clean && webpack --progress --colors --mode=dev --target=web",
     "build:prod": "npm run test && npm run build",
     "build:deploy": "webpack --progress --colors --mode=deploy --target=web",
+    "build:travis": "npm run build:prod",
     "watch": "webpack --progress --colors --watch --mode=deploy --target=web",
     "test": "node_modules/.bin/mocha tests/*.test.* tests/**/*.test.* --require tests/setUp.js",
     "coverage": "rimraf coverage && istanbul cover _mocha tests/*.test.* tests/**/*.test.* -- --require tests/setUp.js -R spec",

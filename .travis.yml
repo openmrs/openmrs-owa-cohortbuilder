@@ -1,5 +1,20 @@
 language: node_js
 node_js:
-  - "7.8.0"
+  - 7.8.0
 after_success:
   - npm run coveralls
+install:
+  - npm install
+before_script:
+  - chmod +x ./deploy.sh    
+  - ./deploy.sh
+script: npm run build:travis
+deploy:
+  provider: bintray
+  file: bintray.json
+  user: paulupendo
+  key:
+    secure: 3fQBmkrx0OszZvKRBi6EgxaTlDIWfy8q+YAbhxG2DWrF8Z7hmWLi5wCTVq+E2LslAQy9cvXgcKsCE/pb967EnCyZTmMhS0e/rKkNnPTNR06VlbByMCzZQ/c6Fnocp2R77/ACFU2pfy5rAj39LDKWtOQnaO/NI1Jw1ZXR4Qy4KYfjV0HZPfFAVY3jTZKZp4j1we2RCK4fYs5m6wvn3/62xJU8N+8WIXp9BdMkzDvjektOojbRL80qPg1FEQ8klxk2CK/XTfh+5jE7JN2iRdaJ3Q+b2qi5TXwX38eqgiRPSgU1yGkoGXW2+s5gJTZg7xF0G+hg5P4pNKn/u839hX7aEU1Gb+yf5ZHXoFThK4Tw59qmIjFIY+Y9HGsL1LbrquOqQbWzlcLTvdbOuRgRvdxjgVVxR23qv6SnhDUQJyUq2qWhxFhDxURqgtHoonTUPzQxCzxPl9aTUjqNDsaf8u4Ntm9Ufn0deNjDOAa+IzscV9eAIoozzRxvpVR/tb3DEJeicVHNdFxBi6oaHSg1of4/+/5jqTphQA0m+v3CgHnIf+CRfK12YAb5Kb694jSND4Cv+EAgBbM96gcSNr46rbW3aaB+CZZXZqIWLn1QZfp8dO9FHPSWguyrO/BtEFO4w2G9eW9JdFbOdyH8LmENy9GuLcNxSMI9qI4BYRVH2HLyrpU=
+  dry-run: false
+  on:
+    tags: true

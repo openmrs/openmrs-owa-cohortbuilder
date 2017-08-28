@@ -10,5 +10,5 @@
 
  .page-wrapper {
     flex-direction: column;
-    justify-content: unset;
+    justify-content: unset !important;
 }

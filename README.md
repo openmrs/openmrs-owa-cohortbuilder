@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/openmrs/openmrs-owa-cohortbuilder.svg?branch=master)](https://travis-ci.org/openmrs/openmrs-owa-cohortbuilder)
 [![Coverage Status](https://coveralls.io/repos/github/openmrs/openmrs-owa-cohortbuilder/badge.svg?branch=master)](https://coveralls.io/github/openmrs/openmrs-owa-cohortbuilder?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7cb464fb2fdc4fed9c277d3ca690d7ff)](https://www.codacy.com/app/ProberI/openmrs-owa-cohortbuilder?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=paulupendo/openmrs-owa-cohortbuilder&amp;utm_campaign=Badge_Grade)
 <img src="https://cloud.githubusercontent.com/assets/668093/12567089/0ac42774-c372-11e5-97eb-00baf0fccc37.jpg" alt="OpenMRS"/>
 
 # CohortBuilder

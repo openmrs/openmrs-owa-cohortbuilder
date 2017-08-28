@@ -133,7 +133,7 @@ a:hover {
 }
 
 .dropdown-large {
-    position: static !important;
+    position: static;
 }
 
 .dropdown-menu-large {

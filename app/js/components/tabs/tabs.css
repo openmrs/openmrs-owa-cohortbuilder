@@ -135,7 +135,7 @@ ul.nav-tabs>li {
 /* Neccesary to prevent the custom react-select type dropdown to 
 lay above other components*/
 .Select-menu-outer {
-    z-index: 3 !important;
+    z-index: 3;
 }
 
 .Select-control, .Select-menu-outer {

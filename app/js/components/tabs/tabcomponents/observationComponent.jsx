@@ -46,10 +46,6 @@ export default class ObsFilter extends React.Component {
     this.handleReset = this.handleReset.bind(this);
   }
 
-  componentDidUpdate() {
-    this.textInput ?  this.textInput.focus() : false;
-  }
-
   handleFormChange(event) {
     event.preventDefault();
     this.setState({
@@ -118,7 +114,7 @@ export default class ObsFilter extends React.Component {
   // ST(Text) OR CWE(coded)
   inputWithUnit() {
     return (
-      <div key={shortid.generate()} className="form-group">
+      <div className="form-group">
         <label  className="col-sm-3 control-label">What values?</label>
         <div className="col-sm-4">
             <input type="text"
@@ -136,7 +132,7 @@ export default class ObsFilter extends React.Component {
   // NM(numeric) datatype
   firstFieldNumeric(){
     return(
-            <div key={shortid.generate()} className="form-group" >
+            <div className="form-group" >
                 <label className="col-sm-3 control-label">Which observations?</label>
                 <div className="col-sm-6">
                     <select 
@@ -161,7 +157,7 @@ export default class ObsFilter extends React.Component {
   // DT(Date) OR TS(DateTime)
   timeModifierDateOrDateTime() {
     return (
-      <div key={shortid.generate()} className="form-group" >
+      <div className="form-group" >
         <label className="col-sm-4 control-label"> Which observations? </label>
         <div className="col-sm-4">
           <select className="form-control" 
@@ -184,7 +180,7 @@ export default class ObsFilter extends React.Component {
   // ST(Text)  OR CWE(Coded) OR BIT(Boolean)
   timeModifierSCB() {
     return (
-            <div key={shortid.generate()} className="form-group" >
+            <div className="form-group" >
                     <label className="col-sm-4 control-label"> Which observations? </label>
                     <div className="col-sm-4">
                         <select className="form-control" 
@@ -206,7 +202,7 @@ export default class ObsFilter extends React.Component {
   // NM(numeric) datatype
   secondFieldNumeric() {
     return(
-            <div key={shortid.generate()}  className="form-group" >
+            <div  className="form-group" >
                 <label  className="col-sm-3 control-label">What values?</label>
                 <div className="col-sm-2">
                     <select className="form-control" name="operator" 
@@ -235,7 +231,7 @@ export default class ObsFilter extends React.Component {
   // DT(Date) OR TS(DateTime)
   modifierDateOrDateTime() {
     return (
-            <div className="form-group col-sm-12" key={shortid.generate()} >
+            <div className="form-group col-sm-12" >
                 <label  className="col-sm-4 control-label">(optional) (valueDatetime)?</label>
                 <div className="col-sm-4">
                     <select className="form-control" name="operator" id="operator"
@@ -271,7 +267,7 @@ export default class ObsFilter extends React.Component {
         );
     return( 
       answers.length > 0  ?
-      <div className="form-group col-sm-12" key={shortid.generate()} >
+      <div className="form-group col-sm-12" >
           <label className="col-sm-4 control-label" >(optional) What value?</label>
           <div className="col-sm-4">
               <select className="form-control"
@@ -291,7 +287,7 @@ export default class ObsFilter extends React.Component {
   // BIT(Boolean)
   secondFieldBoolean() {
     return (
-      <div className="form-group " key={shortid.generate()}> 
+      <div className="form-group "> 
         <label  className="col-sm-4 control-label">(optional) What values?</label>
         <div className="col-sm-6" name="modifier">
             <select className="form-control" 
@@ -310,7 +306,7 @@ export default class ObsFilter extends React.Component {
   nullDatatype() {
     const { name } = this.props.concept;
     return (
-      <div key={shortid.generate()}>
+      <div>
         <div className="form-group">
           <div className="col-sm-6 col-sm-offset-3">
               <select className="form-control" 
@@ -330,7 +326,7 @@ export default class ObsFilter extends React.Component {
 
   endForm() {
     return (
-      <div key={shortid.generate()} className="col-sm-12">
+      <div className="col-sm-12">
           <div className="form-group col-sm-12">
               <label className="col-sm-3 control-label">Date Range? Since:</label>
               <div className="col-sm-3">

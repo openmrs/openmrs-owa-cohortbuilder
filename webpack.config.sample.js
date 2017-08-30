@@ -30,7 +30,7 @@ const WebpackOnBuildPlugin = require('on-build-webpack');
 
 const nodeModulesDir = path.resolve(__dirname, '../node_modules');
 
-const THIS_APP_ID = 'cohortbuilder';
+const THIS_APP_ID = 'cohortbuilder-1.0.0-beta';
 
 let plugins = [];
 const nodeModules = {};

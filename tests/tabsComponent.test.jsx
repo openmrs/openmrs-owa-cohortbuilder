@@ -34,7 +34,7 @@ describe('<TabsComponent />', () => {
 
     it('should have the correct initial state', ()=>{
         const wrapper = shallow( <TabsComponent getHistory={() => ({})} addToHistory={() => ({})} /> );
-        expect(wrapper.state('tabs')).to.have.length(7);
+        expect(wrapper.state('tabs')).to.have.length(6);
     });
 
     it('should load the Concept/ Observation component', ()=>{
@@ -61,22 +61,22 @@ describe('<TabsComponent />', () => {
         expect(wrapper.state('tabs')[3].divId).to.equal('programme');
     });
 
-    it('should load the Drug Order component', ()=>{
-        const wrapper = shallow( <TabsComponent getHistory={() => ({})} addToHistory={() => ({})} /> );
-        expect(wrapper.state('tabs')[4].name).to.equal('Drug Order');
-        expect(wrapper.state('tabs')[4].divId).to.equal('drug');
-    });
+    // it('should load the Drug Order component', ()=>{
+    //     const wrapper = shallow( <TabsComponent getHistory={() => ({})} addToHistory={() => ({})} /> );
+    //     expect(wrapper.state('tabs')[4].name).to.equal('Drug Order');
+    //     expect(wrapper.state('tabs')[4].divId).to.equal('drug');
+    // });
 
     it('should load the Composition component', ()=>{
         const wrapper = shallow( <TabsComponent getHistory={() => ({})} addToHistory={() => ({})} /> );
-        expect(wrapper.state('tabs')[5].name).to.equal('Composition');
-        expect(wrapper.state('tabs')[5].divId).to.equal('composition');
+        expect(wrapper.state('tabs')[4].name).to.equal('Composition');
+        expect(wrapper.state('tabs')[4].divId).to.equal('composition');
     });
 
     it('should load the Saved component', ()=>{
         const wrapper = shallow( <TabsComponent getHistory={() => ({})} addToHistory={() => ({})} /> );
-        expect(wrapper.state('tabs')[6].name).to.equal('Saved');
-        expect(wrapper.state('tabs')[6].divId).to.equal('saved');
+        expect(wrapper.state('tabs')[5].name).to.equal('Saved');
+        expect(wrapper.state('tabs')[5].divId).to.equal('saved');
     });
 
     it('should set the first tab active', ()=>{

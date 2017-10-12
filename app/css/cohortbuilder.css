@@ -224,3 +224,7 @@ a:hover {
 #concept-verbose {
     text-indent: '20px';
 }
+
+.Select.Select--multi .Select-menu-outer {
+    z-index: 5;
+}

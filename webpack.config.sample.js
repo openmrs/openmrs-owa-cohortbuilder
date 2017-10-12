@@ -27,10 +27,16 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WebpackOnBuildPlugin = require('on-build-webpack');
 
+require.extensions['.webapp'] = function (module, filename) {
+  module.exports = fs.readFileSync(filename, 'utf8');
+};
+const manifest = require('./app/manifest.webapp');
+
 
 const nodeModulesDir = path.resolve(__dirname, '../node_modules');
 
-const THIS_APP_ID = 'cohortbuilder-1.0.0-beta';
+const THIS_APP_ID = 'cohortbuilder';
+const THIS_APP_VERSION = JSON.parse(manifest).version;
 
 let plugins = [];
 const nodeModules = {};
@@ -84,7 +90,8 @@ if (env === 'production') {
   plugins.push(new WebpackOnBuildPlugin(function(stats){
       //create zip file
     const archiver = require('archiver');
-    const output = fs.createWriteStream(THIS_APP_ID+'.zip');
+    const output = THIS_APP_VERSION ? fs.createWriteStream(`${THIS_APP_ID}-${THIS_APP_VERSION}.zip`)
+    : fs.createWriteStream(`${THIS_APP_ID}.zip`) ;
     const archive = archiver('zip');
 
     output.on('close', function () {

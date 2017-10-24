@@ -24,6 +24,7 @@ class App extends Component {
       table: 'none'
     };
     this.getHistory = this.getHistory.bind(this);
+    this.setHistory = this.setHistory.bind(this);
     this.back = this.back.bind(this);
   }
 
@@ -34,36 +35,40 @@ class App extends Component {
     });
   }
 
+  setHistory(data) {
+    this.setState({ 
+      history : data.rows || data.patients
+    });
+  }
+
   getHistory(data, description = "") {
     this.setState({ 
-      history : data.rows || data.patients,
       description: description || data.searchDescription,
-      display: 'none',
-      table: 'block'
+      display: 'block',
+      table: 'none'
     });
   }
  
   render() {
-    const { display, table, history, description , getHistory } = this.state;
+    const { display, table, history, description , getHistory, setHistory } = this.state;
     return (
       <div>
-          <div 
-            id="tabbed-cohort" style={{display}}>
-            <Header/>
-            <BreadCrumbComponent/>
-            <PageComponent getHistory = {this.getHistory} />
+        <div 
+          id="tabbed-cohort" style={{display}}>
+          <Header/>
+          <BreadCrumbComponent/>
+          <PageComponent getHistory = {this.getHistory} setHistory = {this.setHistory} />
+        </div>
+        <div id="body-wrapper" 
+          style={{display :table}}>
+          <div id="displayTable"  className="col-md-12 section">
+              <CohortTable
+                toDisplay = {history}
+                description = {description}
+                back={this.back}
+              />
           </div>
-
-          <div id="body-wrapper" 
-            style={{display :table}}>
-            <div id="displayTable"  className="col-md-12 section">
-                <CohortTable
-                  toDisplay = {history}
-                  description = {description}
-                  back={this.back}
-                />
-            </div>
-          </div>
+        </div>
       </div>
     );
   }

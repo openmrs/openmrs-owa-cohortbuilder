@@ -10,22 +10,13 @@
 
 import React from 'react';
 import {render} from 'react-dom';
-
 import {Router, Route, hashHistory} from 'react-router';
-import {Provider} from 'react-redux';
+import App from './components/App';
 
-import createStore from './redux-store';
-import routes from './routes';
-// css necessary for custom react-select input fields which would be used 
-// all through the app
 import 'react-select/dist/react-select.css';
 
-let store = createStore();
-
 render((
-    <Provider store={store}>
-        <Router history={hashHistory}>
-            {routes(store)}
-        </Router>
-    </Provider>
+    <Router history={hashHistory}>
+        <Route path="/" component={App} />
+    </Router>
 ), document.getElementById('app'));

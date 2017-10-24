@@ -398,7 +398,7 @@ export default class ObsFilter extends React.Component {
   render() {    
     return (
       <form className="form-horizontal col-sm-12" onSubmit={this.handleSubmit}>
-      {  this.renderForm() }
+      { this.renderForm() }
       </form>
     );
   }

@@ -53,7 +53,7 @@ class SearchHistoryComponent extends Component {
     return (event) => {
       let allPatients = [];
       event.preventDefault();
-      this.props.getHistory(this.props.history[index], description);
+      this.props.setHistory(this.props.history[index], description);
       if(this.props.history[index].patients){
         allPatients = this.props.history[index].patients;
       }else{
@@ -154,9 +154,8 @@ class SearchHistoryComponent extends Component {
           history={this.props.history}
         />
         <div className="col-sm-12 section">
-            <h3>Search History</h3>
+            <h4>Search History</h4>
             <div className="result-window">
-                
                 {
                     (history.length > 0) ?
                       <table className="table table-striped">
@@ -208,7 +207,7 @@ SearchHistoryComponent.propTypes = {
   saveSearch: PropTypes.func,
   error: PropTypes.string,
   loading: PropTypes.bool.isRequired,
-  getHistory: PropTypes.func
+  setHistory: PropTypes.func
 };
 
 export default SearchHistoryComponent;

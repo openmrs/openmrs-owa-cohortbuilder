@@ -25,7 +25,7 @@ describe('<SearchHistoryComponent />', () => {
     it('should contain the correct elements', () => {
         const wrapper = shallow(<SearchHistoryComponent history={[]} deleteHistory={() => ({})} loading={false} />);
         expect(wrapper.find("div")).to.have.length(3);
-        expect(wrapper.find("h3")).to.have.length(1);
+        expect(wrapper.find("h4")).to.have.length(1);
     });
 
 });

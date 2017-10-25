@@ -36,7 +36,7 @@ class App extends Component {
   }
 
   setHistory(data) {
-    this.setState({ 
+    this.setState({
       history : data.rows || data.patients
     });
   }
@@ -53,15 +53,16 @@ class App extends Component {
     const { display, table, history, description , getHistory, setHistory } = this.state;
     return (
       <div>
-        <div 
+        <div
           id="tabbed-cohort" style={{display}}>
           <Header/>
           <BreadCrumbComponent/>
           <PageComponent getHistory = {this.getHistory} setHistory = {this.setHistory} />
         </div>
-        <div id="body-wrapper" 
+        <div
+          id="body-wrapper"
           style={{display :table}}>
-          <div id="displayTable"  className="col-md-12 section">
+          <div id="displayTable" className="col-md-12 section">
               <CohortTable
                 toDisplay = {history}
                 description = {description}

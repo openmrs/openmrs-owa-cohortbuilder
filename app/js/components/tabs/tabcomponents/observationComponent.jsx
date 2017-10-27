@@ -81,7 +81,7 @@ export default class ObsFilter extends React.Component {
     };
     const { hl7Abbrev, name } =  this.props.concept;
     const dataType = types[hl7Abbrev];
-    const params = { [ dataType ] : []  };
+    const params = { [dataType]: [] };
     Object.keys(this.state).forEach(key => {
       this.state[key] !== "" ?  params[dataType].push({
         name: key === 'modifier'? ['CWE', 'TS'].includes(hl7Abbrev) ? 'values' : 'value' : key,
@@ -97,33 +97,33 @@ export default class ObsFilter extends React.Component {
       description = `Patients whose observation dose not have value ${name}`;
     }
     this.props.search(searchData, description)
-            .then((data) => {
-              if (JSON.stringify(data.rows) === JSON.stringify([])) {
-                utility.notifications('info', 'Search completed successfully but no results found');
-              } else {
-                utility.notifications('success', 'Search completed successfully');
-              }
-              this.props.addToHistory(description, data.rows, searchData.query);
-            }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
-
+      .then((data) => {
+        if (JSON.stringify(data.rows) === JSON.stringify([])) {
+          utility.notifications('info', 'Search completed successfully but no results found');
+        } else {
+          utility.notifications('success', 'Search completed successfully');
+        }
+        this.props.addToHistory(description, data.rows, searchData.query);
+      }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
   }
   handleDateChange(name) {
-    return (value) => this.setState({ [ name ] :  value });
+    return (value) => this.setState({[name]: value});
   }
-
+  
   // ST(Text) OR CWE(coded)
   inputWithUnit() {
     return (
       <div className="form-group">
         <label  className="col-sm-3 control-label">What values?</label>
         <div className="col-sm-4">
-            <input type="text"
-              className="form-control" 
-              placeholder="Enter a value"
-              onChange={this.handleFormChange}
-              name="modifier"
-              id="modifier"
-              />
+          <input
+            type="text"
+            className="form-control" 
+            placeholder="Enter a value"
+            onChange={this.handleFormChange}
+            name="modifier"
+            id="modifier"
+          />
         </div>
       </div>
     );
@@ -131,36 +131,37 @@ export default class ObsFilter extends React.Component {
     
   // NM(numeric) datatype
   firstFieldNumeric(){
-    return(
-            <div className="form-group" >
-                <label className="col-sm-3 control-label">Which observations?</label>
-                <div className="col-sm-6">
-                    <select 
-                        className="form-control"
-                        value={this.state.timeModifier}
-                        defaultValue="ANY"
-                        name="timeModifier"
-                        onChange={this.handleFormChange}>
-                        <option value="ANY">Any</option>
-                        <option value="NO">None</option>
-                        <option value="FIRST">Earliest</option>
-                        <option value="LAST">Most Recent</option>
-                        <option value="MIN">Lowest</option>
-                        <option value="MAX">Highest</option>
-                        <option value="AVG">Average</option>
-                    </select>
-                </div>
-            </div>
+    return (
+      <div className="form-group" >
+        <label className="col-sm-3 control-label">Which observations?</label>
+        <div className="col-sm-6">
+          <select 
+            className="form-control"
+            value={this.state.timeModifier}
+            defaultValue="ANY"
+            name="timeModifier"
+            onChange={this.handleFormChange}>
+            <option value="ANY">Any</option>
+            <option value="NO">None</option>
+            <option value="FIRST">Earliest</option>
+            <option value="LAST">Most Recent</option>
+            <option value="MIN">Lowest</option>
+            <option value="MAX">Highest</option>
+            <option value="AVG">Average</option>
+          </select>
+        </div>
+      </div>
     );
   }
 
   // DT(Date) OR TS(DateTime)
   timeModifierDateOrDateTime() {
     return (
-      <div className="form-group" >
+      <div className="form-group">
         <label className="col-sm-4 control-label"> Which observations? </label>
         <div className="col-sm-4">
-          <select className="form-control" 
+          <select
+            className="form-control"
             name="timeModifier"
             value={this.state.timeModifier}
             defaultValue="ANY"
@@ -180,82 +181,88 @@ export default class ObsFilter extends React.Component {
   // ST(Text)  OR CWE(Coded) OR BIT(Boolean)
   timeModifierSCB() {
     return (
-            <div className="form-group" >
-                    <label className="col-sm-4 control-label"> Which observations? </label>
-                    <div className="col-sm-4">
-                        <select className="form-control" 
-                            name="timeModifier"
-                            defaultValue="ANY"
-                            onChange={this.handleFormChange}
-                            value={this.state.timeModifier}>
-                            <option value="">select an observation</option>
-                            <option value="ANY">Any</option>
-                            <option value="NO">None</option>
-                            <option value="FIRST">Earliest</option>
-                            <option value="LAST">Most Recent</option>
-                        </select>
-                    </div>
-            </div>
+      <div className="form-group">
+        <label className="col-sm-4 control-label"> Which observations? </label>
+        <div className="col-sm-4">
+          <select
+            className="form-control"
+            name="timeModifier"
+            defaultValue="ANY"
+            onChange={this.handleFormChange}
+            value={this.state.timeModifier}>
+            <option value="">select an observation</option>
+            <option value="ANY">Any</option>
+            <option value="NO">None</option>
+            <option value="FIRST">Earliest</option>
+            <option value="LAST">Most Recent</option>
+          </select>
+        </div>
+      </div>
     );
   }
 
   // NM(numeric) datatype
   secondFieldNumeric() {
     return(
-            <div  className="form-group" >
-                <label  className="col-sm-3 control-label">What values?</label>
-                <div className="col-sm-2">
-                    <select className="form-control" name="operator" 
-                        onChange={this.handleFormChange}
-                        value={this.state.operator}>
-                        <option value="LESS_THAN">&lt;</option>
-                        <option value="LESS_EQUAL">&lt;=</option>
-                        <option value="EQUAL">=</option>
-                        <option value="GREATER_EQUAL">&gt;=</option>
-                        <option value="GREATER_THAN">&gt;</option>
-                    </select>
-                </div>
-                <div className="col-sm-4">
-                    <input type="number"
-                        className="form-control" 
-                        placeholder={`Enter a value ${this.props.concept.units}`}
-                        value={this.state.modifier}
-                        name="modifier"
-                        ref={this.setRef}
-                        onChange={this.handleFormChange} />
-                </div>
-            </div>
+      <div  className="form-group">
+        <label  className="col-sm-3 control-label">What values?</label>
+        <div className="col-sm-2">
+          <select
+            className="form-control"
+            name="operator"
+            onChange={this.handleFormChange}
+            value={this.state.operator}>
+            <option value="LESS_THAN">&lt;</option>
+            <option value="LESS_EQUAL">&lt;=</option>
+            <option value="EQUAL">=</option>
+            <option value="GREATER_EQUAL">&gt;=</option>
+            <option value="GREATER_THAN">&gt;</option>
+          </select>
+        </div>
+        <div className="col-sm-4">
+          <input type="number"
+            className="form-control" 
+            placeholder={`Enter a value ${this.props.concept.units}`}
+            value={this.state.modifier}
+            name="modifier"
+            ref={this.setRef}
+            onChange={this.handleFormChange} />
+        </div>
+      </div>
     );
   }
 
   // DT(Date) OR TS(DateTime)
   modifierDateOrDateTime() {
     return (
-            <div className="form-group col-sm-12" >
-                <label  className="col-sm-4 control-label">(optional) (valueDatetime)?</label>
-                <div className="col-sm-4">
-                    <select className="form-control" name="operator" id="operator"
-                        value={this.state.operator} 
-                        onChange={this.handleFormChange}>
-                        <option value="">select a range</option>
-                        <option value="LESS_THAN">before</option>
-                        <option value="LESS_EQUAL">on or before</option>
-                        <option value="EQUAL">on</option>
-                        <option value="GREATER_EQUAL">on or after</option>
-                        <option value="GREATER_THAN">after</option>
-                    </select>
-                </div>
-                <div className="col-sm-4">
-                    <DatePicker
-                            className="form-control"
-                            id="modifier"
-                            dateFormat="DD-MM-YYYY"
-                            value={this.state.modifier}
-                            name="modifier"
-                            onChange={this.handleDateChange('modifier')}
-                        />
-                </div>
-            </div>
+      <div className="form-group col-sm-12">
+        <label  className="col-sm-4 control-label">(optional) (valueDatetime)?</label>
+        <div className="col-sm-4">
+          <select
+            className="form-control"
+            name="operator"
+            id="operator"
+            value={this.state.operator} 
+            onChange={this.handleFormChange}>
+            <option value="">select a range</option>
+            <option value="LESS_THAN">before</option>
+            <option value="LESS_EQUAL">on or before</option>
+            <option value="EQUAL">on</option>
+            <option value="GREATER_EQUAL">on or after</option>
+            <option value="GREATER_THAN">after</option>
+          </select>
+        </div>
+        <div className="col-sm-4">
+          <DatePicker
+            className="form-control"
+            id="modifier"
+            dateFormat="DD-MM-YYYY"
+            value={this.state.modifier}
+            name="modifier"
+            onChange={this.handleDateChange('modifier')}
+          />
+        </div>
+      </div>
     );
   }
 
@@ -263,41 +270,40 @@ export default class ObsFilter extends React.Component {
   whatValue() { 
     const { answers } = this.props.concept;
     const option = (answer) => (
-            <option key={answer.uuid} value={answer.uuid} > {answer.display} </option >
-        );
+      <option key={answer.uuid} value={answer.uuid} > {answer.display} </option >
+    );
     return( 
       answers.length > 0  ?
-      <div className="form-group col-sm-12" >
+        <div className="form-group col-sm-12">
           <label className="col-sm-4 control-label" >(optional) What value?</label>
           <div className="col-sm-4">
-              <select className="form-control"
-                id="modifier" 
-                value={this.state.modifier}
-                onChange={this.handleFormChange}
-                name="modifier">
-                <option value="">select a value</option>
-                {answers.map(option)}
-              </select>
+            <select className="form-control"
+              id="modifier" 
+              value={this.state.modifier}
+              onChange={this.handleFormChange}
+              name="modifier">
+              <option value="">select a value</option>
+              {answers.map(option)}
+            </select>
           </div>
-      </div> : ""
+        </div> : ""
     );
   }
-
 
   // BIT(Boolean)
   secondFieldBoolean() {
     return (
-      <div className="form-group "> 
+      <div className="form-group"> 
         <label  className="col-sm-4 control-label">(optional) What values?</label>
         <div className="col-sm-6" name="modifier">
-            <select className="form-control" 
-                name="modifier"
-                value={this.state.modifier}
-                onChange={this.handleFormChange}>
-                <option value="">select a value</option>
-                <option value="true"> true</option>
-                <option value="false">false</option>
-            </select> 
+          <select className="form-control" 
+            name="modifier"
+            value={this.state.modifier}
+            onChange={this.handleFormChange}>
+            <option value="">select a value</option>
+            <option value="true"> true</option>
+            <option value="false">false</option>
+          </select> 
         </div>
       </div>
     );
@@ -309,57 +315,63 @@ export default class ObsFilter extends React.Component {
       <div>
         <div className="form-group">
           <div className="col-sm-6 col-sm-offset-3">
-              <select className="form-control" 
-                id="timeModifier"
-                name="timeModifier"
-                value={this.state.timeModifier}
-                onChange={this.handleFormChange}>
-                <option value="ANY">Patients whose observation has value {name } </option>
-                <option value="NO">Patients whose observation dose not have value { name } </option>
-              </select>
+            <select className="form-control" 
+              id="timeModifier"
+              name="timeModifier"
+              value={this.state.timeModifier}
+              onChange={this.handleFormChange}>
+              <option value="ANY">Patients whose observation has value { name } </option>
+              <option value="NO">Patients whose observation dose not have value { name } </option>
+            </select>
           </div>
         </div>
       </div>
     );
   }
 
-
   endForm() {
     return (
       <div className="col-sm-12">
-          <div className="form-group col-sm-12">
-              <label className="col-sm-3 control-label">Date Range? Since:</label>
-              <div className="col-sm-3">
-                  <DatePicker
-                      className="form-control"
-                      id="onOrBefore"
-                      dateFormat="DD-MM-YYYY"
-                      value={this.state.onOrBefore}
-                      onChange={this.handleDateChange('onOrBefore')}
-                  />
-              </div>
-              <label className="col-sm-2 control-label">and/or Until:</label>
-              <div className="col-sm-3">
-                  <DatePicker
-                      className="form-control"
-                      id="onOrAfter"
-                      dateFormat="DD-MM-YYYY"
-                      value={this.state.onOrAfter}
-                      onChange={this.handleDateChange('onOrAfter')}
-                  />
-              </div>
-              <h5 className="col-sm-1">Optional</h5>
+        <div className="form-group col-sm-12">
+          <label className="col-sm-3 control-label">Date Range? Since:</label>
+          <div className="col-sm-3">
+            <DatePicker
+              className="form-control"
+              id="onOrBefore"
+              dateFormat="DD-MM-YYYY"
+              value={this.state.onOrBefore}
+              onChange={this.handleDateChange('onOrBefore')}
+            />
           </div>
-          <div className="form-group">
-              <div className="col-sm-offset-3 col-sm-6">
-                  <button type="submit" className="btn btn-success" >Search</button>
-                  <button
-                    type="reset"
-                    className="btn btn-default cancelBtn"
-                    onClick={this.handleReset}
-                  >Reset</button>
-              </div>
+          <label className="col-sm-2 control-label">and/or Until:</label>
+          <div className="col-sm-3">
+            <DatePicker
+              className="form-control"
+              id="onOrAfter"
+              dateFormat="DD-MM-YYYY"
+              value={this.state.onOrAfter}
+              onChange={this.handleDateChange('onOrAfter')}
+            />
           </div>
+          <h5 className="col-sm-1">Optional</h5>
+        </div>
+        <div className="form-group">
+          <div className="col-sm-offset-3 col-sm-6">
+            <button
+              type="submit"
+              className="btn btn-success"
+            >
+            Search
+            </button>
+            <button
+              type="reset"
+              className="btn btn-default cancelBtn"
+              onClick={this.handleReset}
+            >
+            Reset
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -404,10 +416,8 @@ export default class ObsFilter extends React.Component {
   }
 }
 
-
 ObsFilter.propTypes = {
   concept: React.PropTypes.object.isRequired,
   search: React.PropTypes.func.isRequired,
   addToHistory: React.PropTypes.func
-
 };

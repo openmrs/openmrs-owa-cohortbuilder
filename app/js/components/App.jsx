@@ -62,11 +62,11 @@ class App extends Component {
         <div id="body-wrapper" 
           style={{display :table}}>
           <div id="displayTable"  className="col-md-12 section">
-              <CohortTable
-                toDisplay = {history}
-                description = {description}
-                back={this.back}
-              />
+            <CohortTable
+              toDisplay = {history}
+              description = {description}
+              back={this.back}
+            />
           </div>
         </div>
       </div>

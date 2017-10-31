@@ -355,21 +355,20 @@ export default class ObsFilter extends React.Component {
           </div>
           <h5 className="col-sm-1">Optional</h5>
         </div>
+         <div className="form-group">
         <div className="form-group">
           <div className="col-sm-offset-3 col-sm-6">
             <button
-              type="submit"
+              type="submit" 
               className="btn btn-success"
-            >
-            Search
+              onClick={this.handleSubmit && this.handleReset}
+            >Search
             </button>
             <button
               type="reset"
               className="btn btn-default cancelBtn"
               onClick={this.handleReset}
-            >
-            Reset
-            </button>
+            >Reset</button>
           </div>
         </div>
       </div>

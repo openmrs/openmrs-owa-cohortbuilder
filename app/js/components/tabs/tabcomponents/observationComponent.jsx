@@ -356,6 +356,7 @@ export default class ObsFilter extends React.Component {
           <h5 className="col-sm-1">Optional</h5>
         </div>
          <div className="form-group">
+        <div className="form-group">
           <div className="col-sm-offset-3 col-sm-6">
             <button
               type="submit" 

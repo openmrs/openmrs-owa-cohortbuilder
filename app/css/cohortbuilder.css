@@ -228,3 +228,7 @@ a:hover {
 .Select.Select--multi .Select-menu-outer {
     z-index: 5;
 }
+
+.no-border-radius {
+    border-radius: 0px;
+}

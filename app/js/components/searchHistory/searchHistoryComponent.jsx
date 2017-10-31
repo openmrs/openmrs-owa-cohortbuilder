@@ -35,6 +35,7 @@ class SearchHistoryComponent extends Component {
     this.navigatePage = this.navigatePage.bind(this);
     this.historyItemData = this.historyItemData.bind(this);
     this.downloadCSV = this.downloadCSV.bind(this);
+    this.displayClearSearchButton = this.displayClearSearchButton.bind(this);
   }
 
   navigatePage(event) {
@@ -136,6 +137,24 @@ class SearchHistoryComponent extends Component {
     };
   }
 
+  /**
+   * checks if there is a saved search history and displays the clear 
+   * search button
+   * @return {void} a button element
+   * @memberof SearchHistoryComponent
+   */
+  displayClearSearchButton() {
+    if(window.sessionStorage.getItem('openmrsHistory')) {
+      return (
+        <button
+          className="btn btn-sm btn-success pull-right no-border-radius"
+          onClick={this.props.clearSearchHistory} >
+          Clear Search History
+        </button>
+      );
+    }
+  }
+
   render(){
     const { history } = this.props;
     return (
@@ -154,47 +173,50 @@ class SearchHistoryComponent extends Component {
           history={this.props.history}
         />
         <div className="col-sm-12 section">
-            <h4>Search History</h4>
-            <div className="result-window">
-                {
-                    (history.length > 0) ?
-                      <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th className="table-header">#</th>
-                                <th>Query</th>
-                                <th>Query Definition Options</th>
-                                <th>Results</th>
-                                <th>Cohort Definition Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                history.map((eachResult, index) => 
-                                (<tr key={shortId.generate()}>
-                                    <th scope="row">{this.props.history.length - index}</th>
-                                    <td>
-                                        {eachResult.description}
-                                    </td>
-                                    <td> 
-                                        <a className="link" title="Save Query Definition" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}>Save</a>
-                                        <a className="link" title={`Delete ${eachResult.description}`} onClick={this.delete(index)} aria-hidden="true">Delete</a>
-                                    </td>
-                                    <td>
-                                        <a className="link" onClick={this.viewResult(index, eachResult.description)} title={`View ${eachResult.description}`} aria-hidden="true">{eachResult.patients ? `${eachResult.patients.length} result(s)`: 0}</a>
-                                    </td>
-                                    <td>
-                                        <a className="link" onClick={this.downloadCSV(index, eachResult.description)} title={`Dowload ${eachResult.description}`} aria-hidden="true">Download</a>
-                                        <a className="link" title="Save Cohorts" aria-hidden="true"  data-toggle="modal" data-target="#myCohort" onClick={this.setSaveCohort(eachResult.description, index)}>Save</a>
-                                    </td>
-                                </tr>)
-                                )
-                            }
-                        </tbody>
-                    </table>
-                        : ""
-                }
-            </div>
+          <div className="clearfix">
+            <h4 className="pull-left">Search History</h4>
+            { this.displayClearSearchButton() }
+          </div>
+          <div className="result-window">
+            {
+              (history.length > 0) ?
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th className="table-header">#</th>
+                      <th>Query</th>
+                      <th>Query Definition Options</th>
+                      <th>Results</th>
+                      <th>Cohort Definition Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      history.map((eachResult, index) => 
+                        (<tr key={shortId.generate()}>
+                          <th scope="row">{this.props.history.length - index}</th>
+                          <td>
+                            {eachResult.description}
+                          </td>
+                          <td> 
+                            <a className="link" title="Save Query Definition" aria-hidden="true"  data-toggle="modal" data-target="#myModal" onClick={this.setSaveSearch(index)}>Save</a>
+                            <a className="link" title={`Delete ${eachResult.description}`} onClick={this.delete(index)} aria-hidden="true">Delete</a>
+                          </td>
+                          <td>
+                            <a className="link" onClick={this.viewResult(index, eachResult.description)} title={`View ${eachResult.description}`} aria-hidden="true">{eachResult.patients ? `${eachResult.patients.length} result(s)`: 0}</a>
+                          </td>
+                          <td>
+                            <a className="link" onClick={this.downloadCSV(index, eachResult.description)} title={`Dowload ${eachResult.description}`} aria-hidden="true">Download</a>
+                            <a className="link" title="Save Cohorts" aria-hidden="true"  data-toggle="modal" data-target="#myCohort" onClick={this.setSaveCohort(eachResult.description, index)}>Save</a>
+                          </td>
+                        </tr>)
+                      )
+                    }
+                  </tbody>
+                </table>
+                : ""
+            }
+          </div>
         </div>
       </div>
     );
@@ -207,7 +229,8 @@ SearchHistoryComponent.propTypes = {
   saveSearch: PropTypes.func,
   error: PropTypes.string,
   loading: PropTypes.bool.isRequired,
-  setHistory: PropTypes.func
+  setHistory: PropTypes.func,
+  clearSearchHistory: PropTypes.func,
 };
 
 export default SearchHistoryComponent;

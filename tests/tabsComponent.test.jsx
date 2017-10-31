@@ -18,6 +18,17 @@ import TabContentComponent from '../app/js/components/tabs/tabContentComponent';
 
 import Components from '../app/js/components/tabs/tabcomponents';
 
+// Mock Session Storage
+const sessionStorageStub = () => {
+  return {
+    getItem: sinon.stub(),
+    removeItem: sinon.stub(),
+  };
+};
+
+// replace window.sessionStorage with our mock
+window.sessionStorage = sessionStorageStub();
+
 const tabs = [
     {active: true, name: 'Concept / Observation', divId: 'concept', component: Components.ConceptComponent,  },
     {active: false, name: 'Patient Attributes', divId: 'patient', component: Components.PatientComponent },

@@ -21,7 +21,7 @@ export default class ObsFilter extends React.Component {
     this.state = {
       timeModifier: 'ANY',
       question: props.concept.uuid,
-      operator: '',
+      operator1: 'LESS_THAN',
       modifier: '',
       onOrBefore: '',
       onOrAfter: '',
@@ -56,7 +56,7 @@ export default class ObsFilter extends React.Component {
   handleReset() {
     this.setState({
       timeModifier: 'ANY',
-      operator: '',
+      operator1: 'LESS_THAN',
       modifier: '',
       onOrBefore: '',
       onOrAfter: '',
@@ -84,7 +84,7 @@ export default class ObsFilter extends React.Component {
     const params = { [dataType]: [] };
     Object.keys(this.state).forEach(key => {
       this.state[key] !== "" ?  params[dataType].push({
-        name: key === 'modifier'? ['CWE', 'TS'].includes(hl7Abbrev) ? 'values' : 'value' : key,
+        name: key === 'modifier'? ['CWE', 'TS'].includes(hl7Abbrev) ? 'values' : 'value1' : key,
         value: key === 'modifier' && ['CWE', 'TS'].includes(hl7Abbrev)?  [ this.state[key] ] : this.state[key]
       }) : '';
     });
@@ -209,9 +209,9 @@ export default class ObsFilter extends React.Component {
         <div className="col-sm-2">
           <select
             className="form-control"
-            name="operator"
+            name="operator1"
             onChange={this.handleFormChange}
-            value={this.state.operator}>
+            value={this.state.operator1}>
             <option value="LESS_THAN">&lt;</option>
             <option value="LESS_EQUAL">&lt;=</option>
             <option value="EQUAL">=</option>
@@ -240,9 +240,9 @@ export default class ObsFilter extends React.Component {
         <div className="col-sm-4">
           <select
             className="form-control"
-            name="operator"
-            id="operator"
-            value={this.state.operator} 
+            name="operator1"
+            id="operator1"
+            value={this.state.operator1} 
             onChange={this.handleFormChange}>
             <option value="">select a range</option>
             <option value="LESS_THAN">before</option>

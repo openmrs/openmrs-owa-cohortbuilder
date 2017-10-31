@@ -21,6 +21,7 @@ class PageComponent extends Component{
     };
     this.addToHistory = this.addToHistory.bind(this);
     this.deleteHistory = this.deleteHistory.bind(this);
+    this.clearSearchHistory = this.clearSearchHistory.bind(this);
   }
 
   componentDidMount() {
@@ -54,6 +55,19 @@ class PageComponent extends Component{
   }
 
   /**
+   * Clear all saved searches by deleting them from session storage
+   * @return {void} void
+   * @memberof SearchHistoryComponent
+   */
+  clearSearchHistory() {
+    const confirmDelete = confirm('Are you sure you want to delete your saved Search History?');
+    if(confirmDelete) {
+      window.sessionStorage.removeItem('openmrsHistory');
+      this.updateStateHistory([]);
+    }
+  }
+
+  /**
    * Function to update history property in the component state
    * @param {Array} history - new array containing history to be set in the component state
    * @return {undefined} - returns undefined
@@ -65,13 +79,14 @@ class PageComponent extends Component{
   render(){
     return(
       <div id="body-wrapper" className="page-wrapper">
-          <TabsComponent 
-              addToHistory={this.addToHistory} 
-              getHistory = {this.props.getHistory} />
-          <SearchHistoryTab 
-              history={this.state.history} 
-              deleteHistory={this.deleteHistory} 
-              getHistory = {this.props.getHistory} />
+        <TabsComponent 
+          addToHistory={this.addToHistory} 
+          getHistory = {this.props.getHistory} />
+        <SearchHistoryTab 
+          history={this.state.history} 
+          deleteHistory={this.deleteHistory} 
+          getHistory = {this.props.getHistory} 
+          clearSearchHistory={this.clearSearchHistory} />
       </div>
     );
   }

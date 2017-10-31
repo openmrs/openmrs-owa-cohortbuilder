@@ -93,13 +93,14 @@ class  SearchHistoryTab  extends Component {
   render() {
     return (
       <div className="section">
-          <SearchHistory 
-            history={this.props.history} 
-            deleteHistory={this.props.deleteHistory} 
-            saveSearch={this.saveSearch}
-            error={this.state.error}
-            loading={this.state.loading}
-            getHistory = {this.props.getHistory} />
+        <SearchHistory 
+          history={this.props.history} 
+          deleteHistory={this.props.deleteHistory} 
+          saveSearch={this.saveSearch}
+          error={this.state.error}
+          loading={this.state.loading}
+          getHistory = {this.props.getHistory}
+          clearSearchHistory={this.props.clearSearchHistory} />
       </div>
     );
   }
@@ -108,7 +109,8 @@ class  SearchHistoryTab  extends Component {
 SearchHistoryTab.propTypes = {
   history: PropTypes.array.isRequired,
   deleteHistory: PropTypes.func.isRequired,
-  getHistory: PropTypes.func
+  getHistory: PropTypes.func,
+  clearSearchHistory: PropTypes.func,
 };
 
 export default SearchHistoryTab;

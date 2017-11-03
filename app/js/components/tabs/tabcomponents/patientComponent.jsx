@@ -131,6 +131,7 @@ class PatientComponent extends Component {
         searchParameters, this.getSearchByDemographicsDescription()
       );
     }
+    this.resetSearchByDemographics();
   }
 
   /**
@@ -248,6 +249,7 @@ class PatientComponent extends Component {
     this.performSearch(
       searchParameters, this.getSearchByAttributesDescription()
     );
+    this.resetSearchByAttributes();
   }
 
   navigatePage(event) {
@@ -368,7 +370,6 @@ class PatientComponent extends Component {
    * @return {undefined}
    */
   resetSearchByDemographics(event) {
-    event.preventDefault();
     this.setState({
       startDate: '',
       endDate: '',

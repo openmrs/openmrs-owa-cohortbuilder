@@ -337,20 +337,20 @@ export default class ObsFilter extends React.Component {
           <div className="col-sm-3">
             <DatePicker
               className="form-control"
-              id="onOrBefore"
+              id="onOrAfter"
               dateFormat="DD-MM-YYYY"
-              value={this.state.onOrBefore}
-              onChange={this.handleDateChange('onOrBefore')}
+              value={this.state.onOrAfter}
+              onChange={this.handleDateChange('onOrAfter')}
             />
           </div>
           <label className="col-sm-2 control-label">and/or Until:</label>
           <div className="col-sm-3">
             <DatePicker
               className="form-control"
-              id="onOrAfter"
+              id="onOrBefore"
               dateFormat="DD-MM-YYYY"
-              value={this.state.onOrAfter}
-              onChange={this.handleDateChange('onOrAfter')}
+              value={this.state.onOrBefore}
+              onChange={this.handleDateChange('onOrBefore')}
             />
           </div>
           <h5 className="col-sm-1">Optional</h5>

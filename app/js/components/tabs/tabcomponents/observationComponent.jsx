@@ -13,6 +13,7 @@ import DatePicker from "react-bootstrap-date-picker";
 import shortid from 'shortid';
 import { JSONHelper } from '../../../helpers/jsonHelper';
 import utility from '../../../utility';
+import { formatDate, queryDescriptionBuilder } from '../../../helpers/helpers';
 
 export default class ObsFilter extends React.Component {
 
@@ -88,14 +89,11 @@ export default class ObsFilter extends React.Component {
         value: key === 'modifier' && ['CWE', 'TS'].includes(hl7Abbrev)?  [ this.state[key] ] : this.state[key]
       }) : '';
     });
+
     const searchData = this.jsonHelper.composeJson(params);
-    let description = `Patients with observations whose question is ${name}`;
-    if (hl7Abbrev === 'ZZ' && this.state.timeModifier === 'ANY') {
-      description = `Patients whose observation has value ${name}`;
-    }
-    if (hl7Abbrev === 'ZZ' && this.state.timeModifier === 'NO') {
-      description = `Patients whose observation dose not have value ${name}`;
-    }
+
+    const description = queryDescriptionBuilder(this.state, name);
+
     this.props.search(searchData, description)
       .then((data) => {
         if (JSON.stringify(data.rows) === JSON.stringify([])) {
@@ -210,6 +208,7 @@ export default class ObsFilter extends React.Component {
           <select
             className="form-control"
             name="operator1"
+            id="operator1"
             onChange={this.handleFormChange}
             value={this.state.operator1}>
             <option value="LESS_THAN">&lt;</option>
@@ -270,7 +269,7 @@ export default class ObsFilter extends React.Component {
   whatValue() { 
     const { answers } = this.props.concept;
     const option = (answer) => (
-      <option key={answer.uuid} value={answer.uuid} > {answer.display} </option >
+      <option key={answer.uuid} value={answer.uuid} > {answer.display} </option>
     );
     return( 
       answers.length > 0  ?
@@ -407,7 +406,7 @@ export default class ObsFilter extends React.Component {
     return str;
   }
 
-  render() {    
+  render() {
     return (
       <form className="form-horizontal col-sm-12" onSubmit={this.handleSubmit}>
       { this.renderForm() }

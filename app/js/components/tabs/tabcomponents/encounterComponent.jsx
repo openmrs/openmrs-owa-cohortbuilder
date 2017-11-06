@@ -158,6 +158,7 @@ class EncounterComponent extends Component {
       }
       this.props.addToHistory(label, allEncounterTypes, results.query);
     }).catch((error) => utility.notifications('error', 'Search error, check the server log for details'));
+    this.resetEncounterFields();
   }
 
   /**
@@ -270,6 +271,7 @@ class EncounterComponent extends Component {
         utility.notifications('success', 'Search completed successfully');
       }
       this.props.addToHistory(this.getLocationSearchDescription(), allEncounterTypes, results.query);
+      this.resetLocationFields();
     }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
   }
 
@@ -494,7 +496,7 @@ class EncounterComponent extends Component {
           </form>
           <hr />
           <h3>Search By Location</h3>
-          <form className="form-horizontal" onSubmit={this.searchByLocation}>
+          <form className="form-horizontal">
             <div className={`form-group ${this.state.locationError ? "has-error" : ""}`}>
               <label htmlFor="location" className="col-sm-2 control-label">Patients belonging to?:</label>
               <div className="col-sm-6">
@@ -517,7 +519,7 @@ class EncounterComponent extends Component {
 
             <div className="form-group">
               <div className="col-sm-offset-2 col-sm-6">
-                <button type="submit" className="btn btn-success">Search</button>
+                <button type="submit" className="btn btn-success" onClick={this.searchByLocation}>Search</button>
                 <button type="reset" onClick={this.resetLocationFields} className="btn btn-default cancelBtn">Reset</button>
               </div>
             </div>

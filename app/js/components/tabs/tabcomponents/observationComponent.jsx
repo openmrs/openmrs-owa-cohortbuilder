@@ -105,7 +105,9 @@ export default class ObsFilter extends React.Component {
         }
         this.props.addToHistory(description, data.rows, searchData.query);
       }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
+    this.handleReset();
   }
+
   handleDateChange(name) {
     return (value) => this.setState({[name]: value});
   }
@@ -360,6 +362,7 @@ export default class ObsFilter extends React.Component {
             <button
               type="submit"
               className="btn btn-success"
+              onClick={this.handleSubmit}
             >
             Search
             </button>
@@ -409,7 +412,7 @@ export default class ObsFilter extends React.Component {
 
   render() {    
     return (
-      <form className="form-horizontal col-sm-12" onSubmit={this.handleSubmit}>
+      <form className="form-horizontal col-sm-12">
       { this.renderForm() }
       </form>
     );

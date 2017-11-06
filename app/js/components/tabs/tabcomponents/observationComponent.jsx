@@ -105,7 +105,9 @@ export default class ObsFilter extends React.Component {
         }
         this.props.addToHistory(description, data.rows, searchData.query);
       }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
+    this.handleReset();
   }
+
   handleDateChange(name) {
     return (value) => this.setState({[name]: value});
   }
@@ -337,20 +339,20 @@ export default class ObsFilter extends React.Component {
           <div className="col-sm-3">
             <DatePicker
               className="form-control"
-              id="onOrBefore"
+              id="onOrAfter"
               dateFormat="DD-MM-YYYY"
-              value={this.state.onOrBefore}
-              onChange={this.handleDateChange('onOrBefore')}
+              value={this.state.onOrAfter}
+              onChange={this.handleDateChange('onOrAfter')}
             />
           </div>
           <label className="col-sm-2 control-label">and/or Until:</label>
           <div className="col-sm-3">
             <DatePicker
               className="form-control"
-              id="onOrAfter"
+              id="onOrBefore"
               dateFormat="DD-MM-YYYY"
-              value={this.state.onOrAfter}
-              onChange={this.handleDateChange('onOrAfter')}
+              value={this.state.onOrBefore}
+              onChange={this.handleDateChange('onOrBefore')}
             />
           </div>
           <h5 className="col-sm-1">Optional</h5>
@@ -360,6 +362,7 @@ export default class ObsFilter extends React.Component {
             <button
               type="submit"
               className="btn btn-success"
+              onClick={this.handleSubmit}
             >
             Search
             </button>
@@ -409,7 +412,7 @@ export default class ObsFilter extends React.Component {
 
   render() {    
     return (
-      <form className="form-horizontal col-sm-12" onSubmit={this.handleSubmit}>
+      <form className="form-horizontal col-sm-12">
       { this.renderForm() }
       </form>
     );

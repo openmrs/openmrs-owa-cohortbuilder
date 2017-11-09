@@ -19,14 +19,12 @@ class SavedComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // cohort related variables
       cohortsQuery: '',
       cohortResults: [],
       searchingCohorts: false,
       inSearchCohortMode: false,
       cohortDownloadJobs: [],
       cohortDeleteJobs: [],
-      // definition related variables
       definitionsQuery: '',
       definitionResults: [],
       searchingDefinitions: false,
@@ -36,18 +34,17 @@ class SavedComponent extends React.Component {
       isDeleteDefinition: false,
       isDeleteCohort: false,
     };
-    // cohort related methods
+
     this.searchSavedCohorts = this.searchSavedCohorts.bind(this);
     this.deleteCohort = this.deleteCohort.bind(this);
     this.downloadCohort = this.downloadCohort.bind(this);
     this.viewCohort = this.viewCohort.bind(this);
-    // definition related methods
     this.searchSavedDefinitions = this.searchSavedDefinitions.bind(this);
     this.deleteDefinition = this.deleteDefinition.bind(this);
     this.viewDefinition = this.viewDefinition.bind(this);
     this.downloadDefinition = this.downloadDefinition.bind(this);
-    // method to handle text input changes for cohorts and definitions
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   /**
@@ -249,6 +246,7 @@ class SavedComponent extends React.Component {
           })
         });
       }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
+      this.handleReset();
     }
   }
 
@@ -287,6 +285,7 @@ class SavedComponent extends React.Component {
           })
         });
       }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
+      this.handleReset();
     }
   }
 
@@ -312,6 +311,30 @@ class SavedComponent extends React.Component {
       }
     }
   }
+
+  /**
+   * Resets the form
+   * @return {undefined}
+   */
+  handleReset() {
+    this.setState({
+      cohortsQuery: '',
+      cohortResults: [],
+      searchingCohorts: false,
+      inSearchCohortMode: false,
+      cohortDownloadJobs: [],
+      cohortDeleteJobs: [],
+      definitionsQuery: '',
+      definitionResults: [],
+      searchingDefinitions: false,
+      inSearchDefinitionMode: false,
+      definitionDownloadJobs: [],
+      definitionDeleteJobs: [],
+      isDeleteDefinition: false,
+      isDeleteCohort: false,
+    });
+  }
+
 
   render() {
     return (

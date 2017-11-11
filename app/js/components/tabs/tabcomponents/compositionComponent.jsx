@@ -25,10 +25,8 @@ class CompositionComponent extends Component {
     this.performComposition = this.performComposition.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.resetFields = this.resetFields.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
-
-  componentDidMount() {/* important for test*/ }
-
     
   /**
    * The function takes the input of the text field and makes a search
@@ -48,7 +46,7 @@ class CompositionComponent extends Component {
         return this.setState({ hasDescriptionError: true });
       }
       const jsonHelper = new JSONHelper();
-      let compositionQuery = {};
+      const compositionQuery = {};
       compositionQuery.type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
       compositionQuery.columns = jsonHelper.addColumnsToDisplay();
       compositionQuery.customRowFilterCombination = '';
@@ -75,6 +73,7 @@ class CompositionComponent extends Component {
     } catch (error) {
       this.setState({ hasCompositionError: error ? true : false });
     }
+    this.handleReset();
   }
 
   performSearch(compositionQuery) {
@@ -145,7 +144,6 @@ class CompositionComponent extends Component {
     event.preventDefault();
     const id = event.target.id;
     this.setState({ [id]: event.target.value });
-    // reset approriate error when a field value is changed
     switch(id) {
       case 'compositionQuery': {
         return this.setState({ hasCompositionError: false });
@@ -154,6 +152,15 @@ class CompositionComponent extends Component {
         return this.setState({ hasDescriptionError: false });
       }
     }
+  }
+
+  handleReset() {
+    this.setState ({
+      hasCompositionError: false,
+      hasDescriptionError: false,
+      compositionQuery: '',
+      compositionLabel: ''
+    });
   }
 
   render() {

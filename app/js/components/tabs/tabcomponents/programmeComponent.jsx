@@ -126,6 +126,7 @@ class ProgrammeComponent extends Component {
         }
         this.props.addToHistory(label, res.rows, jsonQuery.query);
         this.props.getHistory(res, label);
+        this.resetFields();
       }
     }).catch(error => error);
   }
@@ -399,7 +400,7 @@ class ProgrammeComponent extends Component {
     return (
         <div className="programme-component">
           <h3>Search By Program Enrollement and Status</h3>
-          <form className="form-horizontal" onSubmit={this.searchByProgram}>
+          <form className="form-horizontal">
               <div className="form-group">
                   <label htmlFor="gender" className="col-sm-2 control-label">Program:</label>
                   <div className="col-sm-6">
@@ -535,7 +536,7 @@ class ProgrammeComponent extends Component {
               
               <div className="form-group">
                   <div className="col-sm-offset-2 col-sm-6">
-                      <button type="submit" className="btn btn-success">Search</button>
+                      <button type="submit" className="btn btn-success" onClick={this.searchByProgram}>Search</button>
                       <button type="reset" onClick={this.resetFields} className="btn btn-default cancelBtn">Reset</button>
                   </div>
               </div>

@@ -57,7 +57,6 @@ class TabsComponent extends Component {
           else{
             data.searchDescription = description || queryDetails.label;
             data.query = queryDetails.query;
-            getHistory(data, data.searchDescription);
             resolve(data);
           }
         }).catch(error => error);

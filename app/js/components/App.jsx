@@ -24,7 +24,6 @@ class App extends Component {
       table: 'none'
     };
     this.getHistory = this.getHistory.bind(this);
-    this.setHistory = this.setHistory.bind(this);
     this.back = this.back.bind(this);
   }
 
@@ -35,17 +34,12 @@ class App extends Component {
     });
   }
 
-  setHistory(data) {
-    this.setState({ 
-      history : data.rows || data.patients
-    });
-  }
-
   getHistory(data, description = "") {
     this.setState({ 
       description: description || data.searchDescription,
-      display: 'block',
-      table: 'none'
+      history : data.rows || data.patients,
+      display: 'none',
+      table: 'block'
     });
   }
  

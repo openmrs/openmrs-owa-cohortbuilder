@@ -90,7 +90,6 @@ class CompositionComponent extends Component {
           } else {
             utility.notifications('success', 'Search completed successfully');
           }
-          this.props.getHistory(data, compositionQuery.label);
           this.props.addToHistory(compositionQuery.label, data.rows, compositionQuery.query);
         }
       });
@@ -247,7 +246,6 @@ class CompositionComponent extends Component {
 
 CompositionComponent.propTypes = {
   addToHistory: PropTypes.func.isRequired,
-  getHistory: PropTypes.func.isRequired
 };
 
 export default CompositionComponent;

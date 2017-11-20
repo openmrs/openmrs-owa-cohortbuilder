@@ -125,7 +125,6 @@ class ProgrammeComponent extends Component {
           utility.notifications('success', 'Search completed successfully');
         }
         this.props.addToHistory(label, res.rows, jsonQuery.query);
-        this.props.getHistory(res, label);
         this.resetFields();
       }
     }).catch(error => error);
@@ -550,7 +549,6 @@ ProgrammeComponent.propTypes = {
   fetchData: React.PropTypes.func.isRequired,
   search: React.PropTypes.func.isRequired,
   addToHistory: React.PropTypes.func.isRequired,
-  getHistory: React.PropTypes.func.isRequired
 };
 
 export default ProgrammeComponent;

@@ -19,7 +19,11 @@ export const formatDate = (dateString) => {
  */
 export const queryDescriptionBuilder = (state, conceptName) => {
   const { modifier, timeModifier, onOrAfter, onOrBefore } = state;
-  const operatorSelectInput = document.querySelector("#operator1");
+
+  const operatorSelectInput = document.querySelector("#operator1")
+    ? document.querySelector("#operator1")
+    : document.querySelector("#timeModifier");
+
   const operatorText = operatorSelectInput.options[operatorSelectInput.selectedIndex].text;
 
   const modifierDescription = modifier ? `${operatorText} ${modifier}` : '';

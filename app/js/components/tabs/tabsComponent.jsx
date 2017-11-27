@@ -35,14 +35,11 @@ class TabsComponent extends Component {
     this.search  = this.search.bind(this);
   }
 
-  componentDidMount(){}
-
   drawTabHeader(tab,index){
     return (
       <li key={index} className={tab.active ? 'active' : ""}><a data-toggle="tab" href={"#"+tab.divId}>{tab.name}</a></li>
     );
   }
-
 
   search(queryDetails, description = "") {
     const apiHelper = new ApiHelper(null);
@@ -71,7 +68,6 @@ class TabsComponent extends Component {
       apiHelper.get(url).then(response => {
         response.json().then(data => {
           resolve(data);
-          //TODO: This errors need to be handled
         }).catch((error) => error);
       }).catch(error => error);
     });

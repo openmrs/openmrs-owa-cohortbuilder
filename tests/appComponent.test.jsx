@@ -19,19 +19,19 @@ import BreadCrumbComponent from '../app/js/components/breadCrumb/breadCrumbCompo
 
 describe('<App />', () => {
 
-    it('should mount the BreadCrumbComponent in itself', () => {
-        const wrapper = shallow( <App/> )
-        expect(wrapper.contains( <BreadCrumbComponent/> )).to.equal(true);
-    });
+  it('should mount the BreadCrumbComponent in itself', () => {
+    const wrapper = shallow( <App/> )
+    expect(wrapper.contains( <BreadCrumbComponent/> )).to.equal(true);
+  });
 
-    it('should mount the PageComponent in itself', () => {
-        const wrapper = shallow( <App/> )
-        expect(wrapper.find('PageComponent')).to.have.length(1)
-    });
+  it('should mount the PageComponent in itself', () => {
+    const wrapper = shallow( <App/> )
+    expect(wrapper.find('PageComponent')).to.have.length(1)
+  });
 
-    it('should mount the Header in itself', () => {
-        const wrapper = shallow( <App/> )
-        expect(wrapper.contains( <Header/> )).to.equal(true);
-    });
+  it('should mount the Header in itself', () => {
+    const wrapper = shallow( <App/> )
+    expect(wrapper.contains( <Header/> )).to.equal(true);
+  });
 
 });

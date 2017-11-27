@@ -8,9 +8,9 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-import React, {Component} from 'react';
-import {Link, IndexLink} from 'react-router';
-import {ApiHelper} from '../../helpers/apiHelper';
+import React, { Component } from "react";
+import { Link, IndexLink } from "react-router";
+import { ApiHelper } from "../../helpers/apiHelper";
 
 const NUMBER_OF_COLUMNS = 3;
 
@@ -22,38 +22,39 @@ export class Header extends Component {
       currentLocationTag: "",
       defaultLocation: "",
       currentUser: "",
-      currentLogOutUrl: "",
+      currentLogOutUrl: ""
     };
     this.getUri = this.getUri.bind(this);
     this.dropDownMenuClick = this.dropDownMenuClick.bind(this);
   }
 
   componentWillMount() {
-    this.fetchLocation('/location').then((response) => {
-      this.setState({locationTags: response.results});
-      this.setState({defaultLocation: response.results[0].display});
+    this.fetchLocation("/location").then(response => {
+      this.setState({ locationTags: response.results });
+      this.setState({ defaultLocation: response.results[0].display });
       this.getUri();
     });
 
-    this.fetchLocation('/session').then((response) => {
-      this.setState({currentUser: response.user.display});
+    this.fetchLocation("/session").then(response => {
+      this.setState({ currentUser: response.user.display });
     });
   }
 
   getLocations() {
-    return this.state.locationTags.map((location) => {
+    return this.state.locationTags.map(location => {
       return location.display;
     });
   }
 
   getUri() {
-    this.state.locationTags.map((location) => {
+    this.state.locationTags.map(location => {
       let url = location.links[0].uri;
       let arrUrl = url.split("/");
-      let customUrl = `/${arrUrl[3]}/appui/header/logout.action?successUrl=${arrUrl[3]}`;
-      this.setState({currentLogOutUrl: customUrl});
+      let customUrl = `/${arrUrl[3]}/appui/header/logout.action?successUrl=${
+        arrUrl[3]
+      }`;
+      this.setState({ currentLogOutUrl: customUrl });
       return customUrl;
-        
     });
   }
 
@@ -71,7 +72,7 @@ export class Header extends Component {
 
   handleClick(e) {
     e.preventDefault();
-    this.setState({currentLocationTag: e.target.id});
+    this.setState({ currentLocationTag: e.target.id });
   }
 
   dropDownMenuClick(e) {
@@ -88,68 +89,88 @@ export class Header extends Component {
       let colEnd = (cols + 1) * numPerColumn;
       for (let menuIndex = colStart; menuIndex < colEnd; menuIndex++) {
         menuInColumns.push(
-                    <a href="#" 
-                      key={menuIndex} 
-                      id={locationTags[menuIndex]} 
-                      onClick={this.dropDownMenuClick}>
-                      {locationTags[menuIndex]}
-                    </a>
-                );
+          <a
+            href="#"
+            key={menuIndex}
+            id={locationTags[menuIndex]}
+            onClick={this.dropDownMenuClick}
+          >
+            {locationTags[menuIndex]}
+          </a>
+        );
       }
       menuDisplay.push(
-                <li className="col-sm-4" key={cols}>{menuInColumns}</li>
-            );
+        <li className="col-sm-4" key={cols}>
+          {menuInColumns}
+        </li>
+      );
     }
 
     return menuDisplay;
   }
   render() {
     return (
-        <header>
-            <div className="logo" id="logoId">
-                <a href="../../">
-                    <img src="img/openmrs-with-title-small.png"/>
-                </a>
-            </div>
+      <header>
+        <div className="logo" id="logoId">
+          <a href="../../">
+            <img src="img/openmrs-with-title-small.png" />
+          </a>
+        </div>
 
-            <ul className="navbar-right nav-header">
-                <Link to="" activeClassName="active">
-                    <li className="dropdown">
-                        <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span className="glyphicon glyphicon-user"/> {' ' + this.state.currentUser}
-                            <span className="caret"/>
-                        </a>
-                        <ul className="dropdown-menu user">
-                            <li>
-                                <a href="#">My Account</a>
-                            </li>
-                        </ul>
-                    </li>
-                </Link>
+        <ul className="navbar-right nav-header">
+          <Link to="" activeClassName="active">
+            <li className="dropdown">
+              <a
+                className="dropdown-toggle"
+                data-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <span className="glyphicon glyphicon-user" />{" "}
+                {" " + this.state.currentUser}
+                <span className="caret" />
+              </a>
+              <ul className="dropdown-menu user">
+                <li>
+                  <a href="#">My Account</a>
+                </li>
+              </ul>
+            </li>
+          </Link>
 
-                <Link to="" activeClassName="active">
-                    <li className="dropdown dropdown-large">
-                        <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span className="glyphicon glyphicon glyphicon-map-marker"/> {(this.state.currentLocationTag != "")
-                                ? this.state.currentLocationTag
-                                : this.state.defaultLocation}
-                            <span className="caret"/>
-                        </a>
-                        <ul className="dropdown-menu dropdown-menu-large row">
-                            {/*Execute the function*/}
-                            {this.dropDownMenu(this.getLocations())}
-                        </ul>
-                    </li>
-                </Link>
+          <Link to="" activeClassName="active">
+            <li className="dropdown dropdown-large">
+              <a
+                className="dropdown-toggle"
+                data-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <span className="glyphicon glyphicon glyphicon-map-marker" />{" "}
+                {this.state.currentLocationTag != ""
+                  ? this.state.currentLocationTag
+                  : this.state.defaultLocation}
+                <span className="caret" />
+              </a>
+              <ul className="dropdown-menu dropdown-menu-large row">
+                {this.dropDownMenu(this.getLocations())}
+              </ul>
+            </li>
+          </Link>
 
-                <Link to="" activeClassName="active">
-                    <li>
-                        <a href={this.state.currentLogOutUrl}>Logout {' '}
-                            <span className="glyphicon glyphicon-log-out"/></a>
-                    </li>
-                </Link>
-            </ul>
-        </header>
+          <Link to="" activeClassName="active">
+            <li>
+              <a href={this.state.currentLogOutUrl}>
+                Logout <span className="glyphicon glyphicon-log-out" />
+              </a>
+            </li>
+          </Link>
+        </ul>
+      </header>
     );
   }
 }

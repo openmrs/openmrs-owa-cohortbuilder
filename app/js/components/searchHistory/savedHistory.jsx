@@ -45,25 +45,25 @@ class  SavedHistory extends Component {
     return () => {
       const apiHelper = new ApiHelper();
       apiHelper.delete(`reportingrest/adhocdataset/${uuid}?purge=true`)
-            .then(() => {
-              this.props.updateHistory(uuid);
-            });
+        .then(() => {
+          this.props.updateHistory(uuid);
+        });
     };
   }
 
   viewResult(uuid) {
     return () => {
       this.apiHelper.get(`reportingrest/dataSet/${uuid}`)
-                .then((res) => {
-                  const toDisplay = this.getPagePatient(res.rows, 1);
-                  this.setState(Object.assign({}, this.state, {
-                    allHistory: res.rows,
-                    currentPage: 1,
-                    toDisplay,
-                    totalPage:  Math.ceil(res.rows.length/this.state.perPage),
-                    description: res.definition.description
-                  }));
-                });
+        .then((res) => {
+          const toDisplay = this.getPagePatient(res.rows, 1);
+          this.setState(Object.assign({}, this.state, {
+            allHistory: res.rows,
+            currentPage: 1,
+            toDisplay,
+            totalPage:  Math.ceil(res.rows.length/this.state.perPage),
+            description: res.definition.description
+          }));
+        });
     };
   }
 
@@ -147,45 +147,45 @@ class  SavedHistory extends Component {
   render() {
     return (
       <div className="section">
-          <div className="result-window">
-              {
-                (this.props.history.length > 0) ?
-                  <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>S/N</th>
-                            <th>Display</th>
-                            <th>Description</th>
-                            <th className="row-icon">Download</th>
-                            <th className="row-icon">Delete</th>
-                            <th className="row-icon">View</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            this.props.history.map((eachResult, index) =>
-                                (<tr key={shortId.generate()}>
-                                    <td>{index + 1}</td>
-                                    <td>{this.removeCharacters(eachResult.name)}</td>
-                                    <td>{eachResult.description +' result(s)'}</td>
-                                    <td className="row-icon">
-                                        <span
-                                            className={`glyphicon ${this.state.downloadJobIds.includes(eachResult.uuid) ? 'glyphicon-refresh glyphicon-spin' : 'glyphicon-download download'}`}
-                                            title="Download"
-                                            aria-hidden="true"
-                                            onClick={this.downloadCSV(eachResult.uuid, eachResult.description)}
-                                        />
-                                    </td>
-                                    <td className="row-icon"><span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(eachResult.uuid)} aria-hidden="true"/></td>
-                                    <td className="row-icon"><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(eachResult.uuid)} title="View" aria-hidden="true"/></td>
-                                </tr>)
-                            )
-                        }
-                    </tbody>
-                  </table>
-                : <p className="text-center">No search History</p>
-              }
-          </div>
+        <div className="result-window">
+          {
+            (this.props.history.length > 0) ?
+              <table className="table table-hover">
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Display</th>
+                    <th>Description</th>
+                    <th className="row-icon">Download</th>
+                    <th className="row-icon">Delete</th>
+                    <th className="row-icon">View</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    this.props.history.map((eachResult, index) =>
+                      (<tr key={shortId.generate()}>
+                        <td>{index + 1}</td>
+                        <td>{this.removeCharacters(eachResult.name)}</td>
+                        <td>{eachResult.description +' result(s)'}</td>
+                        <td className="row-icon">
+                          <span
+                            className={`glyphicon ${this.state.downloadJobIds.includes(eachResult.uuid) ? 'glyphicon-refresh glyphicon-spin' : 'glyphicon-download download'}`}
+                            title="Download"
+                            aria-hidden="true"
+                            onClick={this.downloadCSV(eachResult.uuid, eachResult.description)}
+                          />
+                        </td>
+                        <td className="row-icon"><span className="glyphicon glyphicon glyphicon-remove remove" title="Remove" onClick={this.delete(eachResult.uuid)} aria-hidden="true"/></td>
+                        <td className="row-icon"><span className="glyphicon glyphicon-eye-open view" onClick={this.viewResult(eachResult.uuid)} title="View" aria-hidden="true"/></td>
+                      </tr>)
+                    )
+                  }
+                </tbody>
+              </table>
+              : <p className="text-center">No search History</p>
+          }
+        </div>
       </div>
     );
   }

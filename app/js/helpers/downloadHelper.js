@@ -8,7 +8,7 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-import FileSaver from 'file-saver';
+import FileSaver from "file-saver";
 
 /**
  * Helper class for downloading files on the browser
@@ -24,11 +24,17 @@ class DowloadHelper {
    * is supplied.
    * @return {undefined}
    */
-  static downloadCSV(data, fileName, header = {
-    c1: 'Full Name', c2: "Age", c3: "Gender"
-  }) {
-    if (!(data instanceof Array) && typeof data[0] !== 'object') {
-      throw new Error('Expected an Array of objects');
+  static downloadCSV(
+    data,
+    fileName,
+    header = {
+      c1: "Full Name",
+      c2: "Age",
+      c3: "Gender"
+    }
+  ) {
+    if (!(data instanceof Array) && typeof data[0] !== "object") {
+      throw new Error("Expected an Array of objects");
     }
     const toProcess = data.unshift(header);
     const csv = DowloadHelper.formatToCSV(data);
@@ -39,14 +45,18 @@ class DowloadHelper {
   /**
    * Method to format an Array of data (objects) to CSV format
    * @param {Array} data - Array containing the data objects
-   * @return {String} - CSV formated string 
+   * @return {String} - CSV formated string
    */
   static formatToCSV(data) {
-    const csv = data.map(item => {
-      return Object.keys(item).map(key => {
-        return `"${item[key]}"`;
-      }).join(',');
-    }).join('\n');
+    const csv = data
+      .map(item => {
+        return Object.keys(item)
+          .map(key => {
+            return `"${item[key]}"`;
+          })
+          .join(",");
+      })
+      .join("\n");
     return csv;
   }
 }

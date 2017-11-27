@@ -30,10 +30,10 @@ class  SearchHistoryTab  extends Component {
   componentDidMount() {
     const apiHelper = new ApiHelper();
     apiHelper.get('reportingrest/dataSetDefinition?v=full' )
-            .then((res) => {
-              this.setState({history: res.results});
-              $('#myTab a[href="#cached"]').tab('show');
-            });
+      .then((res) => {
+        this.setState({history: res.results});
+        $('#myTab a[href="#cached"]').tab('show');
+      });
   }
 
   parse(parameter) {
@@ -74,19 +74,19 @@ class  SearchHistoryTab  extends Component {
       query.name = name;
       this.setState({loading: true});
       apiHelper.post('reportingrest/adhocdataset',  query )
-                .then((res) => {
-                  this.setState({
-                    history : [...this.state.history , res]
-                  });
-                  this.setState({loading: false});
-                  $('#myModal').modal('hide');
-                  $('#myTab a[href="#saved"]').tab('show');
-                  resolve(true);
-                })
-                .catch((error) => {
-                  this.setError("An error occur, ensure you entered a valid name");
-                  resolve(false);
-                });
+        .then((res) => {
+          this.setState({
+            history : [...this.state.history , res]
+          });
+          this.setState({loading: false});
+          $('#myModal').modal('hide');
+          $('#myTab a[href="#saved"]').tab('show');
+          resolve(true);
+        })
+        .catch((error) => {
+          this.setError("An error occur, ensure you entered a valid name");
+          resolve(false);
+        });
     });      
   }
 
@@ -100,7 +100,8 @@ class  SearchHistoryTab  extends Component {
           error={this.state.error}
           loading={this.state.loading}
           getHistory = {this.props.getHistory}
-          clearSearchHistory={this.props.clearSearchHistory} />
+          clearSearchHistory={this.props.clearSearchHistory}
+        />
       </div>
     );
   }

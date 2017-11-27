@@ -396,7 +396,7 @@ class EncounterComponent extends Component {
             <div className="form-group">
               <label htmlFor="type" className="col-sm-2 control-label">
                 Of Type
-                    </label>
+              </label>
               <div className="col-sm-6">
                 <Select
                   multi

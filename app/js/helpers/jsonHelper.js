@@ -11,44 +11,56 @@
 export class JSONHelper {
   composeJson(searchParameters) {
     const query = {};
-    query.type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
+    query.type =
+      "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
     query.columns = this.addColumnsToDisplay();
     let counter = 0;
     query.rowFilters = [];
-    for(let field in searchParameters) {
-      if(this.isNullValues(searchParameters[field])) {
+    for (let field in searchParameters) {
+      if (this.isNullValues(searchParameters[field])) {
         delete searchParameters[field];
         continue;
       }
-      if(searchParameters[field] != 'all' && searchParameters != '') {
+      if (searchParameters[field] != "all" && searchParameters != "") {
         query.rowFilters[counter] = {};
-        query.rowFilters[counter].key = this.getDefinitionLibraryKey(field, searchParameters[field]);
+        query.rowFilters[counter].key = this.getDefinitionLibraryKey(
+          field,
+          searchParameters[field]
+        );
       }
-      if(Array.isArray(searchParameters[field])) {
-        query.rowFilters[counter].parameterValues = this.getParameterValues(searchParameters[field]);
+      if (Array.isArray(searchParameters[field])) {
+        query.rowFilters[counter].parameterValues = this.getParameterValues(
+          searchParameters[field]
+        );
       }
       // add living status property so we can append a NOT to the filter combination
-      if (searchParameters[field].length >= 1 && searchParameters[field][0].livingStatus === 'alive') {
-        query.rowFilters[counter].livingStatus = 'alive';
+      if (
+        searchParameters[field].length >= 1 &&
+        searchParameters[field][0].livingStatus === "alive"
+      ) {
+        query.rowFilters[counter].livingStatus = "alive";
       }
-      query.rowFilters[counter].type = "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
+      query.rowFilters[counter].type =
+        "org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition";
       counter += 1;
     }
-    query.customRowFilterCombination = this.composeFilterCombination(query.rowFilters);
-    return {query};
+    query.customRowFilterCombination = this.composeFilterCombination(
+      query.rowFilters
+    );
+    return { query };
   }
 
   isNullValues(fieldValues) {
-    if(Array.isArray(fieldValues) && fieldValues.length >= 1) {
-      return (!fieldValues[0].value) ? true : false;
+    if (Array.isArray(fieldValues) && fieldValues.length >= 1) {
+      return !fieldValues[0].value ? true : false;
     }
-    return (fieldValues === 'all' || !fieldValues) ? true : false;
+    return fieldValues === "all" || !fieldValues ? true : false;
   }
 
   getDefinitionLibraryKey(field, value) {
-    let definitionLibraryKey = 'reporting.library.cohortDefinition.builtIn';
+    let definitionLibraryKey = "reporting.library.cohortDefinition.builtIn";
     switch (field) {
-      case 'gender':
+      case "gender":
         definitionLibraryKey += `.${value}`;
         break;
       default:
@@ -66,17 +78,16 @@ export class JSONHelper {
   }
 
   composeFilterCombination(filterColumns) {
-    let compositionTitle = '';
+    let compositionTitle = "";
     const totalNumber = filterColumns.length;
     for (let index = 1; index <= totalNumber; index++) {
-      if (filterColumns[index - 1].livingStatus === 'alive') {
+      if (filterColumns[index - 1].livingStatus === "alive") {
         compositionTitle += `NOT ${index}`;
-        // delete helper living status property
         delete filterColumns[index - 1].livingStatus;
       } else {
         compositionTitle += `${index}`;
       }
-      compositionTitle += (index < totalNumber) ? ' AND ' : '';
+      compositionTitle += index < totalNumber ? " AND " : "";
     }
     return compositionTitle;
   }
@@ -104,12 +115,15 @@ export class JSONHelper {
       {
         name: "patientId",
         key: "patientId"
-      }		        
+      }
     ];
 
-    const colValues = columns.map((aColumn) => {
-      aColumn.type = "org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition";
-      aColumn.key = `reporting.library.patientDataDefinition.builtIn.${aColumn.key}`;
+    const colValues = columns.map(aColumn => {
+      aColumn.type =
+        "org.openmrs.module.reporting.data.patient.definition.PatientDataDefinition";
+      aColumn.key = `reporting.library.patientDataDefinition.builtIn.${
+        aColumn.key
+      }`;
       return aColumn;
     });
     return colValues;

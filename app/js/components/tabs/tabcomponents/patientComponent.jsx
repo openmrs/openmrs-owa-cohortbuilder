@@ -637,12 +637,16 @@ class PatientComponent extends Component {
                 type="submit"
                 onClick={this.searchByAttributes}
                 className="btn btn-success"
-              >Search</button>
+              >
+                Search
+              </button>
               <button
                 onClick={this.resetSearchByAttributes}
                 type="reset"
                 className="btn btn-default cancelBtn"
-              >Reset</button>
+              >
+                Reset
+              </button>
             </div>
           </div>
         </form>

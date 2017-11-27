@@ -8,7 +8,7 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-import notifications from '../utility/notificationHandler';
+import notifications from "../utility/notificationHandler";
 
 export default {
   notifications

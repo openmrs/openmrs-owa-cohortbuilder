@@ -8,88 +8,94 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-import React from 'react';
+import React from "react";
 
 const SavedResultsTable = ({
-  results, tableName, downloadJobs, deleteJobs,
-  onDelete, onView, onDownload, isSearching
+  results,
+  tableName,
+  downloadJobs,
+  deleteJobs,
+  onDelete,
+  onView,
+  onDownload,
+  isSearching
 }) => {
-  return isSearching ? 
-    (<div>
+  return isSearching ? (
+    <div>
       <h4 className="text-center">{tableName}</h4>
       <p>Loading... </p>
-    </div>) : 
-    (<div className="table-responsive">     
+    </div>
+  ) : (
+    <div className="table-responsive">
       <h4 className="text-center">{tableName}</h4>
-      {results.length <= 0 && !isSearching ?
-      null :
-      <div className="saved-results-view col-sm-10 col-sm-offset-1">
-        {results.length <= 0 ?
-        <p> No Results</p> : 
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              <th className="table-header">S/N</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Number of Patients</th>
-              <th>Options</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              results.map((result, index) => {
-                const { uuid, description } = result;
-                return (
-                  <tr key={uuid}>
-                    <td>{index + 1}</td>
-                    <td>{result.name}</td>
-                    <td>
-                      {result.description}
-                    </td>
-                    <td>
-                      {result.totalResults !== undefined ? 
+      {results.length <= 0 && !isSearching ? null : (
+        <div className="saved-results-view col-sm-10 col-sm-offset-1">
+          {results.length <= 0 ? (
+            <p> No Results</p>
+          ) : (
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th className="table-header">S/N</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Number of Patients</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map((result, index) => {
+                  const { uuid, description } = result;
+                  return (
+                    <tr key={uuid}>
+                      <td>{index + 1}</td>
+                      <td>{result.name}</td>
+                      <td>{result.description}</td>
+                      <td>
+                        {result.totalResults !== undefined ? (
+                          <a
+                            onClick={onView(uuid, description)}
+                            className="link"
+                            title="View Patients"
+                          >
+                            {result.totalResults} Patients
+                          </a>
+                        ) : (
+                          <a
+                            onClick={onView(uuid, description)}
+                            className="link"
+                            title="View Patients"
+                          >
+                            View
+                          </a>
+                        )}
+                      </td>
+                      <td>
                         <a
-                          onClick={onView(uuid, description)}
+                          onClick={onDownload(uuid, result.name)}
                           className="link"
-                          title="View Patients"
+                          title="Dowload Patients"
                         >
-                          {result.totalResults} Patients
-                        </a> : 
-                        <a
-                          onClick={onView(uuid, description)}
-                          className="link"
-                          title="View Patients"
-                        >
-                          View
+                          {downloadJobs.includes(uuid)
+                            ? "Downloading..."
+                            : "Download"}
                         </a>
-                      }
-                    </td>
-                    <td>
-                      <a
-                        onClick={onDownload(uuid, result.name)}
-                        className="link"
-                        title="Dowload Patients"
-                      >
-                        {downloadJobs.includes(uuid) ?
-                          'Downloading...': 'Download'}
-                      </a>
-                      <a
-                        onClick={onDelete(uuid, result.name)}
-                        className="link"
-                        title={`Delete ${result.name}`}
-                      >
-                        {deleteJobs.includes(uuid) ?
-                        'Deleting...' : 'Delete'}
-                      </a>
-                    </td>
-                  </tr>
-                );
-              })
-            }
-          </tbody>
-        </table>}
-      </div>}
+                        <a
+                          onClick={onDelete(uuid, result.name)}
+                          className="link"
+                          title={`Delete ${result.name}`}
+                        >
+                          {deleteJobs.includes(uuid) ? "Deleting..." : "Delete"}
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
     </div>
   );
 };

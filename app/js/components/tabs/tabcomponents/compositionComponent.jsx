@@ -55,7 +55,6 @@ class CompositionComponent extends Component {
       const allHistory = JSON.parse(window.sessionStorage.getItem('openmrsHistory'));
       searchTokens.forEach(eachToken => {
         if(eachToken.match(/\d/)) {
-          // if it is an operand, then fetch the parameters of the operand from sessionStorage
           const operandQuery = allHistory[allHistory.length - eachToken];
           const jsonRequestObject = operandQuery.parameters;
           jsonRequestObject.customRowFilterCombination = this

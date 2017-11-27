@@ -16,7 +16,7 @@ import App from './components/App';
 import 'react-select/dist/react-select.css';
 
 render((
-    <Router history={hashHistory}>
-        <Route path="/" component={App} />
-    </Router>
+  <Router history={hashHistory}>
+    <Route path="/" component={App} />
+  </Router>
 ), document.getElementById('app'));

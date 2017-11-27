@@ -64,6 +64,7 @@ class cohortTable  extends Component {
   }
 
   render() {
+    const resultsLength = this.state.searchHistory.length;
     return (
       <div className="table-window">
         <button
@@ -77,6 +78,7 @@ class cohortTable  extends Component {
         {this.state.toDisplay.length > 0 ?
           <div className="table">
             <h1 className="text-center">{this.state.description}</h1>
+            <h5 className="text-center">This search has {resultsLength} result(s)</h5>
             <table className="table table-striped" >
               <thead>
                 <tr>

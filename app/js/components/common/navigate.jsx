@@ -28,7 +28,7 @@ export  const Navigate = ({currentPage, totalPage, navigatePage}) => {
           </span> :
           null
       }
-      <span className="page-display-counter">{currentPage + " of " + totalPage}</span>
+      <span className="page-display-counter">{"Page " +currentPage + " of " + totalPage}</span>
     </div>
   );
 };

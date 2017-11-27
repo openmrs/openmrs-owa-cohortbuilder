@@ -8,11 +8,11 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-import React, {Component, PropTypes} from 'react';
-import shortId from 'shortid';
+import React, { Component, PropTypes } from "react";
+import shortId from "shortid";
 
-import { ApiHelper } from '../../helpers/apiHelper';
-import DownloadHelper from '../../helpers/downloadHelper';
+import { ApiHelper } from "../../helpers/apiHelper";
+import DownloadHelper from "../../helpers/downloadHelper";
 import './cohorts.css';
 
 class ActionsComponent extends Component {
@@ -45,18 +45,19 @@ class ActionsComponent extends Component {
     this.setState({
       query: nextProps.query,
       queryId: nextProps.queryId,
-      description: nextProps.query,
+      description: nextProps.query
     });
   }
 
   getAllCohorts() {
     const apiHelper = new ApiHelper();
-    apiHelper.get('/cohort?v=full')
-            .then(res => {
-              this.setState(Object.assign({}, this.state, {
-                allCohort: res.results
-              }));
-            });
+    apiHelper.get("/cohort?v=full").then(res => {
+      this.setState(
+        Object.assign({}, this.state, {
+          allCohort: res.results
+        })
+      );
+    });
   }
 
   handleChange(e) {
@@ -69,20 +70,27 @@ class ActionsComponent extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const query = this.state.query;
-    if (query && !isNaN(this.state.queryId) && e.target.name.value.length > 0 &&
-            e.target.description.value.length > 0 && e.target.name.value.trim() && e.target.description.value.trim()) {
+    if (
+      query &&
+      !isNaN(this.state.queryId) &&
+      e.target.name.value.length > 0 &&
+      e.target.description.value.length > 0 &&
+      e.target.name.value.trim() &&
+      e.target.description.value.trim()
+    ) {
       const apiHelper = new ApiHelper();
-      apiHelper.post('/cohort', this.getQueryData())
-                .then((res) => {
-                  this.setState(Object.assign({}, this.state, {
-                    allCohort: [res, ...this.state.allCohort],
-                    error: null,
-                    name :'', 
-                    description: ''
-                  }));
-                    
-                  $('#myCohort').modal('hide');          
-                });
+      apiHelper.post("/cohort", this.getQueryData()).then(res => {
+        this.setState(
+          Object.assign({}, this.state, {
+            allCohort: [res, ...this.state.allCohort],
+            error: null,
+            name: "",
+            description: ""
+          })
+        );
+
+        $("#myCohort").modal("hide");
+      });
     } else {
       this.setState({ error: "all fields are required" });
     }
@@ -90,23 +98,25 @@ class ActionsComponent extends Component {
 
   onSave(event) {
     event.preventDefault();
-    const {name, description} = this.state;
-    if(name && description && name.trim() && description.trim()) {
-      event.target.name.value= "";
-      event.target.description.value="";
+    const { name, description } = this.state;
+    if (name && description && name.trim() && description.trim()) {
+      event.target.name.value = "";
+      event.target.description.value = "";
     }
   }
-  resetError(){
+  resetError() {
     this.setState({
-      error: '',
-      name :'', 
-      description: ''
+      error: "",
+      name: "",
+      description: ""
     });
   }
 
   displayHistory(history, index) {
     return (
-			<option value={index} key={shortId.generate()}>{history.description}</option>
+      <option value={index} key={shortId.generate()}>
+        {history.description}
+      </option>
     );
   }
 
@@ -119,17 +129,20 @@ class ActionsComponent extends Component {
     };
   }
 
-
   getPatientId(cohortId) {
-    return this.props.history[cohortId].patients.map((patient) => patient.patientId);
+    return this.props.history[cohortId].patients.map(
+      patient => patient.patientId
+    );
   }
 
   getPagePatient(allPatients, currentPage) {
     const pagePatientInfo = [];
-    for (let index = (currentPage - 1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
-      pagePatientInfo.push(
-				allPatients[index]
-			);
+    for (
+      let index = (currentPage - 1) * this.state.perPage;
+      index < currentPage * this.state.perPage && index < allPatients.length;
+      index++
+    ) {
+      pagePatientInfo.push(allPatients[index]);
     }
     return pagePatientInfo;
   }
@@ -138,46 +151,55 @@ class ActionsComponent extends Component {
     event.preventDefault();
     let pageToNavigate = 0;
     switch (event.target.value) {
-      case 'first':
+      case "first":
         pageToNavigate = 1;
         break;
-      case 'last':
+      case "last":
         pageToNavigate = this.state.totalPage;
         break;
       default:
-        pageToNavigate = (event.target.value === 'next') ? this.state.currentPage + 1 : this.state.currentPage - 1;
+        pageToNavigate =
+          event.target.value === "next"
+            ? this.state.currentPage + 1
+            : this.state.currentPage - 1;
     }
-    const pagePatientInfo = this.getPagePatient(this.state.cohortResult, pageToNavigate);
-    this.setState(Object.assign({}, this.state, {
-      toDisplay: pagePatientInfo,
-      currentPage: pageToNavigate
-    }));
+    const pagePatientInfo = this.getPagePatient(
+      this.state.cohortResult,
+      pageToNavigate
+    );
+    this.setState(
+      Object.assign({}, this.state, {
+        toDisplay: pagePatientInfo,
+        currentPage: pageToNavigate
+      })
+    );
   }
 
   getPatientsData(cohortId, description) {
-    return (e) => {
-      this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
-				.then(res => {
-  const toDisplay = this.getPagePatient(res.results, 1);
-  this.setState(Object.assign({}, this.state, {
-    cohortResult: res.results,
-    currentPage: 1,
-    toDisplay,
-    totalPage:  Math.ceil(res.results.length/this.state.perPage),
-    cohortDescription: description
-  }));
-}); 
+    return e => {
+      this.apiHelper.get(`/cohort/${cohortId}/member?v=full`).then(res => {
+        const toDisplay = this.getPagePatient(res.results, 1);
+        this.setState(
+          Object.assign({}, this.state, {
+            cohortResult: res.results,
+            currentPage: 1,
+            toDisplay,
+            totalPage: Math.ceil(res.results.length / this.state.perPage),
+            cohortDescription: description
+          })
+        );
+      });
     };
   }
 
-    /**
-     * Method to fetch data using the cohort uuid, format the data and download
-     * it on the browser
-     * @param {Number} cohortId - unique cohort id
-     * @param {String} description - Description of the cohort (to be used as
-     * the saved csv file name)
-     * @return {undefined}
-     */
+  /**
+   * Method to fetch data using the cohort uuid, format the data and download
+   * it on the browser
+   * @param {Number} cohortId - unique cohort id
+   * @param {String} description - Description of the cohort (to be used as
+   * the saved csv file name)
+   * @return {undefined}
+   */
   downloadCSV(cohortId, description) {
     return event => {
       event.preventDefault();
@@ -186,34 +208,32 @@ class ActionsComponent extends Component {
       }
       const downloadJobIds = [...this.state.downloadJobIds, cohortId];
       this.setState({ downloadJobIds });
-      this.apiHelper.get(`/cohort/${cohortId}/member?v=full`)
-				.then(response => {
-  const toSplice = this.state.downloadJobIds;
-  const spliceIndex = toSplice.indexOf(cohortId);
-  toSplice.splice(spliceIndex, 1);
-  const formattedData = this.preFromatForCSV(response.results);
-  DownloadHelper.downloadCSV(formattedData, description);
-  this.setState({ downloadJobIds: toSplice });
-}); 
+      this.apiHelper.get(`/cohort/${cohortId}/member?v=full`).then(response => {
+        const toSplice = this.state.downloadJobIds;
+        const spliceIndex = toSplice.indexOf(cohortId);
+        toSplice.splice(spliceIndex, 1);
+        const formattedData = this.preFromatForCSV(response.results);
+        DownloadHelper.downloadCSV(formattedData, description);
+        this.setState({ downloadJobIds: toSplice });
+      });
     };
   }
 
   deleteCohort(cohortId) {
-    return (e) => {
+    return e => {
       const apiHelper = new ApiHelper();
-      apiHelper.delete(`/cohort/${cohortId}`)
-                .then(() => {
-                  this.getAllCohorts();
-                });
+      apiHelper.delete(`/cohort/${cohortId}`).then(() => {
+        this.getAllCohorts();
+      });
     };
   }
 
-    /**
-     * Method to help filter and return only required patient attributes from a
-     * cohort item
-     * @return { Array } - Array containing all patients in a cohort
-     * item of the specified index
-     */
+  /**
+   * Method to help filter and return only required patient attributes from a
+   * cohort item
+   * @return { Array } - Array containing all patients in a cohort
+   * item of the specified index
+   */
   preFromatForCSV(results) {
     const data = [...results];
     return data.map(item => {
@@ -223,59 +243,115 @@ class ActionsComponent extends Component {
   }
 
   render() {
-    return(
-             <div className="modal fade" id="myCohort" tabIndex="-1" role="dialog" aria-labelledby="myCohortLabel">
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                    <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.resetError}><span aria-hidden="true">&times;</span></button>
-                        <h4 className="modal-title" id="myCohortLabel">Save Cohorts</h4>
-                    </div>
-                    <div className="modal-body" onSubmit={this.onSave}>  
-                        <form className="form-horizontal" id="cohort" onSubmit={this.handleSubmit}>
-                            { this.state.error ?
-                            <div className="alert alert-danger text-center">{this.state.error}</div> : ""}
-                            <div className="form-group">
-                                <label className="control-label col-sm-2">Query:</label>
-                                <div className="col-sm-8">
-                                    <input type="text" className="form-control" name="query" 
-                                        value={this.state.query}
-                                    placeholder="Enter name" onChange={this.handleChange} />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label col-sm-2">Name:</label>
-                                <div className="col-sm-8">
-                                    <input type="text" className="form-control" name="name" placeholder="Enter name" onChange={this.handleChange} />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label col-sm-2">Description:</label>
-                                <div className="col-sm-8">
-                                    <input type="text" className="form-control" name="description" placeholder="Enter description" onChange={this.handleChange}
-                                        value={this.state.description} />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <div className="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" className="btn btn-success">Save</button>
-                                    <button type="reset" className="btn btn-default cancelBtn" onClick={this.resetError}>Reset</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-default" data-dismiss="modal" onClick={this.resetError}>Close</button>
-                    </div>
-                    </div>
-                </div>
+    return (
+      <div
+        className="modal fade"
+        id="myCohort"
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="myCohortLabel"
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                onClick={this.resetError}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 className="modal-title" id="myCohortLabel">
+                Save Cohorts
+              </h4>
             </div>
-            
+            <div className="modal-body" onSubmit={this.onSave}>
+              <form
+                className="form-horizontal"
+                id="cohort"
+                onSubmit={this.handleSubmit}
+              >
+                {this.state.error ? (
+                  <div className="alert alert-danger text-center">
+                    {this.state.error}
+                  </div>
+                ) : (
+                  ""
+                )}
+                <div className="form-group">
+                  <label className="control-label col-sm-2">Query:</label>
+                  <div className="col-sm-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="query"
+                      value={this.state.query}
+                      placeholder="Enter name"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="control-label col-sm-2">Name:</label>
+                  <div className="col-sm-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="name"
+                      placeholder="Enter name"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="control-label col-sm-2">Description:</label>
+                  <div className="col-sm-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="description"
+                      placeholder="Enter description"
+                      onChange={this.handleChange}
+                      value={this.state.description}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <div className="col-sm-offset-2 col-sm-10">
+                    <button type="submit" className="btn btn-success">
+                      Save
+                    </button>
+                    <button
+                      type="reset"
+                      className="btn btn-default cancelBtn"
+                      onClick={this.resetError}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-default"
+                data-dismiss="modal"
+                onClick={this.resetError}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
 
-ActionsComponent.propTypes ={
+ActionsComponent.propTypes = {
   history: PropTypes.array.isRequired,
   query: PropTypes.string.isRequired,
   queryId: PropTypes.number.isRequired

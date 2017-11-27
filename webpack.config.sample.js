@@ -156,8 +156,8 @@ const webpackConfig = {
     app : `${__dirname}/app/js/cohortbuilder`,
     css: `${__dirname}/app/css/cohortbuilder.css`,
     vendor : [
-      'react', 'react-router'
-                        , 'redux', 'redux-promise-middleware', 'redux-thunk', 'react-redux'
+      'react',
+      'react-router'
     ]
   },
   devtool: devtool,

@@ -19,7 +19,7 @@ class TabContentComponent extends React.Component{
     super(props);
     this.drawComponent = this.drawComponent.bind(this);
   }
-
+  
   /**
    * This method designs the tab component content
    *
@@ -33,7 +33,7 @@ class TabContentComponent extends React.Component{
     return tabs.map((tab,index) => {
       return(
         <div id={tab.divId} key={index} className={'tab-pane ' + (tab.active ? 'active' : '')}>
-            <tab.component fetchData={fetchData} search={search} addToHistory={addToHistory} getHistory={getHistory} />
+          <tab.component fetchData={fetchData} search={search} addToHistory={addToHistory} getHistory={getHistory} />
         </div>
       );
     });
@@ -43,7 +43,7 @@ class TabContentComponent extends React.Component{
     const {tabs, fetchData, search, addToHistory, getHistory } = this.props;
     return (
       <div className="tab-content">
-          {this.drawComponent(tabs, fetchData, search, addToHistory, getHistory)}
+        {this.drawComponent(tabs, fetchData, search, addToHistory, getHistory)}
       </div>
     );
   }

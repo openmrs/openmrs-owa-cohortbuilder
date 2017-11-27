@@ -86,10 +86,10 @@ class ConceptComponent extends Component {
   setConcept(concepts) {
     const concept = concepts[0];
     concept ? 
-        this.setState({
-          selectedConcept: concept.name,
-          conceptObject: concept
-        }) : null;
+      this.setState({
+        selectedConcept: concept.name,
+        conceptObject: concept
+      }) : null;
   }
 
   setLabelKey(option) {
@@ -100,21 +100,21 @@ class ConceptComponent extends Component {
     return (
       // display search results based on the value of selectedConcept
       <div>                   
-          <div className="col-sm-6 col-sm-offset-3 custom-typehead">  
-            <AsyncTypeahead
-              labelKey={this.setLabelKey}
-              onSearch= {this.loadConcepts}
-              options={this.state.conceptsResults}
-              placeholder="search concepts"
-              onChange={this.setConcept}
-              useCache={false}
-              paginate
-            />
-          </div>
-          {(this.state.selectedConcept)
-            ? <ObservationComponent search={this.props.search} addToHistory={this.props.addToHistory} concept={this.state.conceptObject} />
-            : null
-          }
+        <div className="col-sm-6 col-sm-offset-3 custom-typehead">  
+          <AsyncTypeahead
+            labelKey={this.setLabelKey}
+            onSearch= {this.loadConcepts}
+            options={this.state.conceptsResults}
+            placeholder="search concepts"
+            onChange={this.setConcept}
+            useCache={false}
+            paginate
+          />
+        </div>
+        {(this.state.selectedConcept)
+          ? <ObservationComponent search={this.props.search} addToHistory={this.props.addToHistory} concept={this.state.conceptObject} />
+          : null
+        }
       </div>
     );
   }

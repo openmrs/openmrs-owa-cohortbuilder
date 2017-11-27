@@ -121,16 +121,16 @@ class SavedComponent extends React.Component {
     const apiHelper = new ApiHelper();
     return () => {
       apiHelper.get(`/cohort/${uuid}/member?v=full`)
-              .then((res) => {
-                res.rows = res.results.map(data => {
-                  return {
-                    name:  data.patient.person.display,
-                    gender: data.patient.person.gender,
-                    age: data.patient.person.age
-                  };
-                });
-                this.props.getHistory(res, description);
-              });
+        .then((res) => {
+          res.rows = res.results.map(data => {
+            return {
+              name:  data.patient.person.display,
+              gender: data.patient.person.gender,
+              age: data.patient.person.age
+            };
+          });
+          this.props.getHistory(res, description);
+        });
     };
   }
 
@@ -341,39 +341,36 @@ class SavedComponent extends React.Component {
       <div className="saved-component">
         <form className="form-horizontal"
           id="search-saved-cohort"
-          onSubmit={this.searchSavedDefinitions}
         >
-            <div className={'form-group'}>
-                <label
-                  className="control-label col-sm-3"
-                  htmlFor="saved-cohort-query"
+          <div className={'form-group'}>
+            <label
+              className="control-label col-sm-3"
+              htmlFor="saved-cohort-query"
+            >
+              Search Saved Definitions:
+            </label>
+            <div className="col-sm-6 input-group">
+              <input
+                id="definitionsQuery"
+                type="text"
+                onChange={this.handleInputChange}
+                value={this.state.definitionsQuery}
+                disabled={this.state.searchingDefinitions ? 'disabled' : null}
+                className="form-control"
+                placeholder="Enter Query Name . . ."
+              />
+              <span
+                className="input-group-btn">
+                <button
+                  className="btn btn-success"
+                  disabled={this.state.searchingDefinitions ? 'disabled' : null}
+                  onClick={this.searchSavedDefinitions}
                 >
-                  Search Saved Definitions:
-                </label>
-                <div className="col-sm-6 input-group">
-                    <input
-                      id="definitionsQuery"
-                      type="text"
-                      onChange={this.handleInputChange}
-                      value={this.state.definitionsQuery}
-                      disabled={this.state.searchingDefinitions ?
-                        'disabled': null}
-                      className="form-control"
-                      placeholder="Enter Query Name . . ."
-                    />
-                    <span
-                      className="input-group-btn">
-                      <button
-                        className="btn btn-success"
-                        disabled={this.state.searchingDefinitions ? 
-                          'disabled': null}
-                        onClick={this.searchSavedDefinitions}
-                      >
-                        Search
-                      </button>
-                    </span>
-                </div>
+                  Search
+                </button>
+              </span>
             </div>
+          </div>
         </form>
         <SavedResultsTable
           onDelete={this.deleteDefinition}
@@ -383,8 +380,7 @@ class SavedComponent extends React.Component {
           downloadJobs={this.state.definitionDownloadJobs}
           results={this.state.definitionResults}
           isSearching={this.state.searchingDefinitions}
-          tableName={this.state.inSearchDefinitionMode ?
-            'Definition Search Results': ''}
+          tableName={this.state.inSearchDefinitionMode ? 'Definition Search Results' : ''}
         />
         <hr/>
         <form 
@@ -392,36 +388,35 @@ class SavedComponent extends React.Component {
           id="search-saved-cohort"
           onSubmit={this.searchSavedCohorts}
         >
-            <div className="form-group">
-                <label
-                  className="control-label col-sm-3"
-                  htmlFor="saved-cohort-query"
+          <div className="form-group">
+            <label
+              className="control-label col-sm-3"
+              htmlFor="saved-cohort-query"
+            >
+              Search Saved Cohorts:
+            </label>
+            <div className="col-sm-6 input-group">
+              <input
+                id="cohortsQuery"
+                type="text"
+                value={this.state.cohortsQuery}
+                disabled={this.state.searchingCohorts ? 'disabled' : null}
+                className="form-control"
+                placeholder="Enter Cohort Name . . ." 
+                onChange={this.handleInputChange}
+              />
+              <span
+                className="input-group-btn">
+                <button
+                  className="btn btn-success"
+                  disabled={this.state.searchingCohorts ? 'disabled' : null}
+                  onClick={this.searchSavedCohorts}
                 >
-                  Search Saved Cohorts:
-                </label>
-                <div className="col-sm-6 input-group">
-                    <input
-                      id="cohortsQuery"
-                      type="text"
-                      value={this.state.cohortsQuery}
-                      disabled={this.state.searchingCohorts ? 'disabled': null}
-                      className="form-control"
-                      placeholder="Enter Cohort Name . . ." 
-                      onChange={this.handleInputChange}
-                    />
-                    <span
-                      className="input-group-btn">
-                      <button
-                        className="btn btn-success"
-                        disabled={this.state.searchingCohorts ?
-                          'disabled': null}
-                        onClick={this.searchSavedCohorts}
-                      >
-                        Search
-                      </button>
-                    </span>
-                </div>
+                  Search
+                </button>
+              </span>
             </div>
+          </div>
         </form>
         <SavedResultsTable
           onDelete={this.deleteCohort}
@@ -431,9 +426,7 @@ class SavedComponent extends React.Component {
           downloadJobs={this.state.cohortDownloadJobs}
           results={this.state.cohortResults}
           isSearching={this.state.searchingCohorts}
-          tableName={this.state.inSearchCohortMode ?
-            'Cohort Search Results':
-            ''}
+          tableName={this.state.inSearchCohortMode ? 'Cohort Search Results' : ''}
         />
       </div>
     );

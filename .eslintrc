@@ -4,9 +4,7 @@
     "plugin:import/errors",
     "plugin:import/warnings"
   ],
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",

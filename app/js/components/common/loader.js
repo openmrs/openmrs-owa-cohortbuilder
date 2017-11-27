@@ -8,15 +8,15 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-import React from 'react';
+import React from "react";
 
 const Loader = () => {
   const style = {
-    width: '128',
-    height: '128',
-    margin: 'auto'
+    width: "128",
+    height: "128",
+    margin: "auto"
   };
-  return(
+  return (
     <div style={style}>
       <img src="./img/loader.gif" />
     </div>

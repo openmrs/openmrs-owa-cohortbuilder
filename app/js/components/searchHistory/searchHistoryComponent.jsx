@@ -76,8 +76,8 @@ class SearchHistoryComponent extends Component {
     const pagePatientInfo = [];
     for(let index = (currentPage-1) * this.state.perPage; index < currentPage * this.state.perPage && index < allPatients.length; index++) {
       pagePatientInfo.push(
-                allPatients[index]
-            );
+        allPatients[index]
+      );
     }
     return pagePatientInfo;
   }

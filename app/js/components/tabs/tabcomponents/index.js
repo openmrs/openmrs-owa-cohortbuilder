@@ -8,13 +8,13 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-import ConceptComponent from './conceptComponent';
-import PatientComponent from './patientComponent';
-import EncounterComponent from './encounterComponent';
-import ProgrammeComponent from './programmeComponent';
-import DrugOrderComponent from './drugOrderComponent';
-import CompositionComponent from './compositionComponent';
-import SavedComponent from './savedComponent';
+import ConceptComponent from "./conceptComponent";
+import PatientComponent from "./patientComponent";
+import EncounterComponent from "./encounterComponent";
+import ProgrammeComponent from "./programmeComponent";
+import DrugOrderComponent from "./drugOrderComponent";
+import CompositionComponent from "./compositionComponent";
+import SavedComponent from "./savedComponent";
 
 export default {
   ConceptComponent,

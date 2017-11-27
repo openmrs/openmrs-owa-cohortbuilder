@@ -8,10 +8,10 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 
-import React, { PropTypes } from 'react';
+import React, { PropTypes } from "react";
 
-const Loader = ({message}) => {
-  return(
+const Loader = ({ message }) => {
+  return (
     <div>
       <p className="text-center text-danger">{message}</p>
     </div>

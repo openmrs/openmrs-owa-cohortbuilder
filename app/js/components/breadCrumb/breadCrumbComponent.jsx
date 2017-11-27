@@ -21,8 +21,10 @@ class BreadCrumbComponent extends Component{
         <a href="/openmrs" className="breadcrumb-item">
           <span className="glyphicon glyphicon-home breadcrumb-item" aria-hidden="true" />
         </a>
-        <span className="glyphicon glyphicon-chevron-right breadcrumb-item separator"
-              aria-hidden="true" />
+        <span 
+          className="glyphicon glyphicon-chevron-right breadcrumb-item separator"
+          aria-hidden="true"
+        />
         <span className="title breadcrumb-item">Cohort Builder</span>
       </div>
     );

@@ -136,8 +136,8 @@ class ProgrammeComponent extends Component {
    */
   getSelectedStateName() {
     return this.state.states
-            .find(state => state.uuid === this.state.state)
-            .concept.display;
+      .find(state => state.uuid === this.state.state)
+      .concept.display;
   }
 
   /**
@@ -146,7 +146,7 @@ class ProgrammeComponent extends Component {
    */
   getSelectedProgramName() {
     return this.state.programs
-            .find(element => element.uuid === this.state.program).name;
+      .find(element => element.uuid === this.state.program).name;
   }
 
   /**
@@ -155,8 +155,8 @@ class ProgrammeComponent extends Component {
    */
   getSelectedWorkflowName() {
     return this.state.workflows
-            .find(workflow => workflow.uuid === this.state.workflow)
-            .concept.display;
+      .find(workflow => workflow.uuid === this.state.workflow)
+      .concept.display;
   }
 
   /**
@@ -167,8 +167,8 @@ class ProgrammeComponent extends Component {
   composeLabel() {
     let program = this.state.program;
     program =  !program ? 
-            'all programs' : 
-            this.getSelectedProgramName();
+      'all programs' : 
+      this.getSelectedProgramName();
         
     let label = `Patients in ${program}`;
     if (this.state.workflow && this.state.state) {
@@ -273,7 +273,6 @@ class ProgrammeComponent extends Component {
         let fieldName = (aField === 'state') ? 'states' : aField;
         let theFieldValue = (aField === 'state') ? [this.state[aField]] : this.state[aField];
         if (libraryKey === 'patientsWithState') {
-                    // patientsWithState uses different parameter names
           switch(fieldName) {
             case 'enrolledOnOrAfter': fieldName = 'startedOnOrAfter'; break;
             case 'enrolledOnOrBefore': fieldName = 'startedOnOrBefore'; break;
@@ -375,14 +374,14 @@ class ProgrammeComponent extends Component {
     let programs = this.state.programs.map((program) => {
       return (
         <option key={program.uuid} value={program.uuid} id={program.uuid}>
-            {program.name}
+          {program.name}
         </option>
       );
     });
     let workflows = this.state.workflows.map((workflow) => {
       return (
         <option key={workflow.uuid} value={workflow.uuid}>
-            {workflow.concept.display}
+          {workflow.concept.display}
         </option>
       );  
     });
@@ -391,156 +390,156 @@ class ProgrammeComponent extends Component {
     let states = this.state.states.map((theState) => {
       return (
         <option key={theState.uuid} value={theState.uuid} id={theState.uuid}>
-            {theState.concept.display}
+          {theState.concept.display}
         </option>
       );  
     });
 
     return (
-        <div className="programme-component">
-          <h3>Search By Program Enrollement and Status</h3>
-          <form className="form-horizontal">
-              <div className="form-group">
-                  <label htmlFor="gender" className="col-sm-2 control-label">Program:</label>
-                  <div className="col-sm-6">
-                      <select
-                          onChange={this.handleSelectProgram}
-                          value={this.state.program}
-                          className="form-control"
-                          id="program"
-                          name="program"
-                      >
-                          <option value="">All</option>
-                          { programs }
-                      </select>
-                  </div>
-              </div>
+      <div className="programme-component">
+        <h3>Search By Program Enrollement and Status</h3>
+        <form className="form-horizontal">
+          <div className="form-group">
+            <label htmlFor="gender" className="col-sm-2 control-label">Program:</label>
+            <div className="col-sm-6">
+              <select
+                onChange={this.handleSelectProgram}
+                value={this.state.program}
+                className="form-control"
+                id="program"
+                name="program"
+              >
+                <option value="">All</option>
+                { programs }
+              </select>
+            </div>
+          </div>
 
-              <div className="form-group">
-                  <label htmlFor="gender" className="col-sm-2 control-label">Workflow:</label>
-                  <div className="col-sm-6">
-                      <select
-                          className="form-control" 
-                          id="workflow"
-                          onChange={this.handleWorkflowChange}
-                          value={this.state.workflow}
-                      >
-                          <option value="">All</option>
-                          { workflows }
-                      </select>
-                  </div>
-              </div>
+          <div className="form-group">
+            <label htmlFor="gender" className="col-sm-2 control-label">Workflow:</label>
+            <div className="col-sm-6">
+              <select
+                className="form-control" 
+                id="workflow"
+                onChange={this.handleWorkflowChange}
+                value={this.state.workflow}
+              >
+                <option value="">All</option>
+                { workflows }
+              </select>
+            </div>
+          </div>
 
-              <div className="form-group">
-                  <label htmlFor="gender" className="col-sm-2 control-label">State:</label>
-                  <div className="col-sm-6">
-                      <select
-                          className="form-control"
-                          id="state"
-                          onChange={this.handleSelectState}
-                          value={this.state.state}
-                      >
-                          <option value="">All</option>
-                          { states }
-                      </select>
-                  </div>
-              </div>
+          <div className="form-group">
+            <label htmlFor="gender" className="col-sm-2 control-label">State:</label>
+            <div className="col-sm-6">
+              <select
+                className="form-control"
+                id="state"
+                onChange={this.handleSelectState}
+                value={this.state.state}
+              >
+                <option value="">All</option>
+                { states }
+              </select>
+            </div>
+          </div>
 
-              <div className="form-group">
-                  <label className="col-sm-2 control-label">In the programme</label>
-                  
-                  <div className="col-sm-1">
-                        <span className="inline-label">On or after:</span>
-                  </div>
-                  <div className="col-sm-3">
-                      <DatePicker
-                          className="form-control"
-                          name="from-date"
-                          id="inStartDate"
-                          dateFormat="DD-MM-YYYY"
-                          value={this.state.inStartDate}
-                          onChange={this.handleDateChange('inStartDate')}
-                      />
-                  </div>
-                  <span className="inline-label">On or before:</span>
-                  <div className="col-sm-3">
-                      <DatePicker
-                          className="form-control"
-                          name="to-date"
-                          id="inEndDate"
-                          dateFormat="DD-MM-YYYY"
-                          value={this.state.inEndDate}
-                          onChange={this.handleDateChange('inEndDate')}
-                      />
-                  </div>
-              </div>
+          <div className="form-group">
+            <label className="col-sm-2 control-label">In the programme</label>
+            
+            <div className="col-sm-1">
+              <span className="inline-label">On or after:</span>
+            </div>
+            <div className="col-sm-3">
+              <DatePicker
+                className="form-control"
+                name="from-date"
+                id="inStartDate"
+                dateFormat="DD-MM-YYYY"
+                value={this.state.inStartDate}
+                onChange={this.handleDateChange('inStartDate')}
+              />
+            </div>
+            <span className="inline-label">On or before:</span>
+            <div className="col-sm-3">
+              <DatePicker
+                className="form-control"
+                name="to-date"
+                id="inEndDate"
+                dateFormat="DD-MM-YYYY"
+                value={this.state.inEndDate}
+                onChange={this.handleDateChange('inEndDate')}
+              />
+            </div>
+          </div>
 
-              <div className="form-group">
-                  <label className="col-sm-2 control-label">Enrolled in the programme</label>
-                  
-                  <div className="col-sm-1">
-                        <span className="inline-label">On or after:</span>
-                  </div>
-                  <div className="col-sm-3">
-                      <DatePicker
-                          id="enrolledOnOrAfter"
-                          className="form-control"
-                          name="from-date"
-                          dateFormat="DD-MM-YYYY"
-                          value={this.state.enrolledOnOrAfter}
-                          onChange={this.handleDateChange('enrolledOnOrAfter')}
-                      />
-                  </div>
-                  <span className="inline-label">On or before:</span>
-                  <div className="col-sm-3">
-                      <DatePicker
-                          id="enrolledOnOrBefore"
-                          className="form-control"
-                          name="to-date"
-                          dateFormat="DD-MM-YYYY"
-                          value={this.state.enrolledOnOrBefore}
-                          onChange={this.handleDateChange('enrolledOnOrBefore')}
-                      />
-                  </div>
-              </div>
+          <div className="form-group">
+            <label className="col-sm-2 control-label">Enrolled in the programme</label>
+            
+            <div className="col-sm-1">
+              <span className="inline-label">On or after:</span>
+            </div>
+            <div className="col-sm-3">
+              <DatePicker
+                id="enrolledOnOrAfter"
+                className="form-control"
+                name="from-date"
+                dateFormat="DD-MM-YYYY"
+                value={this.state.enrolledOnOrAfter}
+                onChange={this.handleDateChange('enrolledOnOrAfter')}
+              />
+            </div>
+            <span className="inline-label">On or before:</span>
+            <div className="col-sm-3">
+              <DatePicker
+                id="enrolledOnOrBefore"
+                className="form-control"
+                name="to-date"
+                dateFormat="DD-MM-YYYY"
+                value={this.state.enrolledOnOrBefore}
+                onChange={this.handleDateChange('enrolledOnOrBefore')}
+              />
+            </div>
+          </div>
 
-              <div className="form-group">
-                  <label className="col-sm-2 control-label">Completed the programme</label>
-                  
-                  <div className="col-sm-1">
-                        <span className="inline-label">On or after:</span>
-                  </div>
-                  <div className="col-sm-3">
-                      <DatePicker
-                          id="completedOnOrAfter"
-                          className="form-control"
-                          name="from-date"
-                          dateFormat="DD-MM-YYYY"
-                          value={this.state.completedOnOrAfter}
-                          onChange={this.handleDateChange('completedOnOrAfter')}
-                      />
-                  </div>
-                  <span className="inline-label">On or before:</span>
-                  <div className="col-sm-3">
-                      <DatePicker
-                          id="completedOnOrBefore"
-                          className="form-control"
-                          name="to-date"
-                          dateFormat="DD-MM-YYYY"
-                          value={this.state.completedOnOrBefore}
-                          onChange={this.handleDateChange('completedOnOrBefore')}
-                      />
-                  </div>
-              </div>
-              
-              <div className="form-group">
-                  <div className="col-sm-offset-2 col-sm-6">
-                      <button type="submit" className="btn btn-success" onClick={this.searchByProgram}>Search</button>
-                      <button type="reset" onClick={this.resetFields} className="btn btn-default cancelBtn">Reset</button>
-                  </div>
-              </div>
-          </form>
-        </div>
+          <div className="form-group">
+            <label className="col-sm-2 control-label">Completed the programme</label>
+            
+            <div className="col-sm-1">
+              <span className="inline-label">On or after:</span>
+            </div>
+            <div className="col-sm-3">
+              <DatePicker
+                id="completedOnOrAfter"
+                className="form-control"
+                name="from-date"
+                dateFormat="DD-MM-YYYY"
+                value={this.state.completedOnOrAfter}
+                onChange={this.handleDateChange('completedOnOrAfter')}
+              />
+            </div>
+            <span className="inline-label">On or before:</span>
+            <div className="col-sm-3">
+              <DatePicker
+                id="completedOnOrBefore"
+                className="form-control"
+                name="to-date"
+                dateFormat="DD-MM-YYYY"
+                value={this.state.completedOnOrBefore}
+                onChange={this.handleDateChange('completedOnOrBefore')}
+              />
+            </div>
+          </div>
+          
+          <div className="form-group">
+            <div className="col-sm-offset-2 col-sm-6">
+              <button type="submit" className="btn btn-success" onClick={this.searchByProgram}>Search</button>
+              <button type="reset" onClick={this.resetFields} className="btn btn-default cancelBtn">Reset</button>
+            </div>
+          </div>
+        </form>
+      </div>
     );
   }
 }

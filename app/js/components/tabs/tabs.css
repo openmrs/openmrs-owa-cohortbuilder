@@ -38,12 +38,7 @@ ul.nav-tabs>li {
     -ms-border-radius: 3px;
     -khtml-border-radius: 3px;
     border-radius: 3px;
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dddddd));
-    background: -webkit-linear-gradient(top, #ffffff, #dddddd);
-    background: -moz-linear-gradient(top, #ffffff, #dddddd);
-    background: -o-linear-gradient(top, #ffffff, #dddddd);
-    background: -ms-linear-gradient(top, #ffffff, #dddddd);
-    background: linear-gradient(top, #ffffff, #dddddd);
+    background: linear-gradient(#ffffff, #dddddd);
     background-color: #dddddd;
     border: #dddddd 1px solid;
     font-size: 15px;

@@ -229,6 +229,14 @@ a:hover {
     z-index: 5;
 }
 
-.no-border-radius {
-    border-radius: 0px;
+.search-history-title {
+    padding: 20px 0 10px 0;
+}
+
+.no-border {
+    border: 0px;
+}
+
+.btn-danger {
+    background: linear-gradient(#ff6666, #ff3d3d)
 }

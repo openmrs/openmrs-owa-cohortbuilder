@@ -1,0 +1,13 @@
+div.tableNavigation button.btn.btn-primary {
+  margin-right: 3px;
+  -webkit-margin-before: 10px;
+}
+
+div.tableNavigation button#first.btn.btn-primary {
+  margin-right: 3px;
+  -webkit-margin-before: 10px;
+}
+
+.page-display-counter {
+  -webkit-margin-before: 10px;
+}

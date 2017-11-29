@@ -10,10 +10,12 @@
 
 import React, { PropTypes } from 'react';
 
+import './navigateStyle';
+
 export  const Navigate = ({currentPage, totalPage, navigatePage}) => {
   return(
     <div className="tableNavigation">
-      <button className="btn btn-primary" onClick={navigatePage} value="first">FIRST</button>
+      <button className="btn btn-primary" onClick={navigatePage} id="first" value="first">FIRST</button>
       {
         (currentPage > 1) ?
           <button className="btn btn-primary" onClick={navigatePage} value="previous">PREVIOUS</button> :

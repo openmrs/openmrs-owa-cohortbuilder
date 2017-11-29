@@ -16,7 +16,7 @@ import TabContentComponent from '../app/js/components/tabs/tabContentComponent';
 
 import Components from '../app/js/components/tabs/tabcomponents';
 
-describe('ProgrammeComponent', () => {
+describe('tabContentComponent', () => {
   let renderedComponent;
   const tabs = [
     {active: true, name: 'Concept / Observation', divId: 'concept', component: Components.ConceptComponent,  },

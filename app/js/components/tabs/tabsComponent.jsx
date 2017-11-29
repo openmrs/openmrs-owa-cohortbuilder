@@ -27,7 +27,6 @@ class TabsComponent extends Component {
         {active: true, name: 'Concept / Observation', divId: 'concept', component: Components.ConceptComponent },
         {active: false, name: 'Patient Attributes', divId: 'patient', component: Components.PatientComponent },
         {active: false, name: 'Encounter', divId: 'encounter', component: Components.EncounterComponent},
-        {active: false, name: 'Programmme Enrollment', divId: 'programme', component: Components.ProgrammeComponent},
         {active: false, name: 'Composition', divId: 'composition', component:  Components.CompositionComponent },
         {active: false, name: 'Saved', divId: 'saved', component:  Components.SavedComponent }
       ]

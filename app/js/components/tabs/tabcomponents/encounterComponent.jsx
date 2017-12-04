@@ -439,7 +439,7 @@ class EncounterComponent extends Component {
                   pattern="[0-9]*" 
                   className="form-control" 
                   id="atLeastCount" 
-                  value={this.atLeastCount} 
+                  value={this.state.atLeastCount} 
                   onKeyDown={this.handleValidateCountInput} 
                   onChange={this.handleCountChange} 
                   onKeyPress={this.handleOnKeyPress}
@@ -453,7 +453,7 @@ class EncounterComponent extends Component {
                   type="number" 
                   className="form-control" 
                   id="atMostCount" 
-                  value={this.atMostCount} 
+                  value={this.state.atMostCount} 
                   onKeyDown={this.handleValidateCountInput} 
                   onChange={this.handleCountChange} 
                   onKeyPress={this.handleOnKeyPress}

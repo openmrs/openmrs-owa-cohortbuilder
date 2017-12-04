@@ -149,6 +149,7 @@ class EncounterComponent extends Component {
 
     const label = this.getEncounterSearchDescription();
     const queryDetails = this.jsonHelper.composeJson(searchParams);
+    utility.notifications('info', 'Loading...', {showDuration: 0, timeOut: 10});
     this.props.search(queryDetails, label).then(results => {
       const allEncounterTypes = results.rows || [];
       if (JSON.stringify(allEncounterTypes) === JSON.stringify([])) {
@@ -263,6 +264,7 @@ class EncounterComponent extends Component {
       ]
     };
     const queryDetails = this.jsonHelper.composeJson(searchParameter);
+    utility.notifications('info', 'Loading...', {showDuration: 0, timeOut: 10});
     this.props.search(queryDetails, this.getLocationSearchDescription()).then(results => {
       const allEncounterTypes = results.rows || [];
       if (JSON.stringify(allEncounterTypes) === JSON.stringify([])) {

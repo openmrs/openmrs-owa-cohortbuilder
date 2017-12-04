@@ -232,3 +232,10 @@ a:hover {
 .no-border-radius {
     border-radius: 0px;
 }
+
+.toast-top-center {
+    top: 310px;
+    margin: 0 auto;
+    right: 0px;
+    width: 70%;
+}

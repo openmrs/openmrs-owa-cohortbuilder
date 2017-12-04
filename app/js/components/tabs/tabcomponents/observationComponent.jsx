@@ -93,7 +93,7 @@ export default class ObsFilter extends React.Component {
     const searchData = this.jsonHelper.composeJson(params);
 
     const description = queryDescriptionBuilder(this.state, name);
-
+    utility.notifications('info', 'Loading...', {showDuration: 0, timeOut: 10});
     this.props.search(searchData, description)
       .then((data) => {
         if (JSON.stringify(data.rows) === JSON.stringify([])) {

@@ -147,7 +147,7 @@ class SearchHistoryComponent extends Component {
     if(window.sessionStorage.getItem('openmrsHistory')) {
       return (
         <button
-          className="btn btn-sm btn-success pull-right no-border-radius"
+          className="btn btn-danger pull-right no-border"
           onClick={this.props.clearSearchHistory} >
           Clear Search History
         </button>
@@ -173,7 +173,7 @@ class SearchHistoryComponent extends Component {
           history={this.props.history}
         />
         <div className="col-sm-12 section">
-          <div className="clearfix">
+          <div className="search-history-title clearfix">
             <h4 className="pull-left">Search History</h4>
             { this.displayClearSearchButton() }
           </div>

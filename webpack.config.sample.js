@@ -15,6 +15,7 @@ const path = require('path');
 const fs = require('fs');
 const env = require('yargs').argv.mode;
 const target = require('yargs').argv.target;
+const autoprefixer = require('autoprefixer');
 
 const UglifyPlugin = webpack.optimize.UglifyJsPlugin;
 
@@ -160,6 +161,20 @@ const webpackConfig = {
       'react-router'
     ]
   },
+  postcss: [autoprefixer(
+    {
+      browsers: [
+        'Android 2.3',
+        'Android >= 4',
+        'Chrome >= 20',
+        'Firefox >= 24',
+        'Explorer >= 8',
+        'iOS >= 6',
+        'Opera >= 12',
+        'Safari >= 6'
+      ]
+    }
+  )],
   devtool: devtool,
   target,
   output: {
@@ -177,7 +192,7 @@ const webpackConfig = {
       }
     },{
       test: /\.css$/,
-      loader: 'style-loader!css-loader'
+      loader: 'style-loader!postcss-loader',
     }, {
       test: /\.(png|jpg|jpeg|gif|svg)$/,
       loader: 'url'
@@ -187,8 +202,8 @@ const webpackConfig = {
     }]
   },
   resolve: {
-    root: path.resolve('./src'),
-    extensions: ['', '.js', '.jsx']
+    root: path.resolve('./app'),
+    extensions: ['', '.js', '.jsx', '.css']
   },
   plugins,
   externals: nodeModules

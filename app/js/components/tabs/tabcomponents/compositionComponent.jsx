@@ -77,6 +77,7 @@ class CompositionComponent extends Component {
 
   performSearch(compositionQuery) {
     const apiHelper = new ApiHelper(null);
+    utility.notifications('info', 'Loading...', {showDuration: 0, timeOut: 10});
     apiHelper.post('reportingrest/adhocquery?v=full', compositionQuery.query).then(response => {
       response.json().then(data => {
         if (data.error){

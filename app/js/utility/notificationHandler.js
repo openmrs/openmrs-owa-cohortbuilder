@@ -18,16 +18,16 @@
  */
 export default function handleNotification(type, message) {
   toastr.options = {
-    closeButton: false,
+    closeButton: true,
     debug: false,
     newestOnTop: false,
     progressBar: false,
-    positionClass: "toast-top-right",
+    positionClass: "toast-top-center",
     preventDuplicates: false,
     onclick: null,
-    showDuration: "300",
+    showDuration: "5000",
     hideDuration: "2000",
-    timeOut: "1000",
+    timeOut: "2000",
     extendedTimeOut: "1000",
     showEasing: "swing",
     hideEasing: "linear",

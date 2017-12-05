@@ -224,6 +224,7 @@ class SavedComponent extends React.Component {
     event ? event.preventDefault() : null;
     if(!this.state.searchingCohorts && this.state.cohortsQuery.trim()) {
       this.setState({ searchingCohorts: true, inSearchCohortMode: true });
+      utility.notifications('info', 'Loading...', {showDuration: 0, timeOut: 10});
       new ApiHelper().get(`/cohort?v=full&q=${this.state.cohortsQuery}`)
       .then(response => {
         if (JSON.stringify(response.results) === JSON.stringify([]) && !this.state.isDeleteCohort) {
@@ -247,6 +248,8 @@ class SavedComponent extends React.Component {
         });
       }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
       this.handleReset();
+    } else {
+      utility.notifications('warning', 'Please enter a value to search!', {showDuration: 0, timeOut: 10});
     }
   }
 
@@ -261,6 +264,7 @@ class SavedComponent extends React.Component {
       this.setState({
         searchingDefinitions: true, inSearchDefinitionMode: true
       });
+      utility.notifications('info', 'Loading...', {showDuration: 0, timeOut: 10});
       new ApiHelper()
       .get(
         `reportingrest/dataSetDefinition?v=full&q=${this.state.definitionsQuery}`
@@ -286,6 +290,8 @@ class SavedComponent extends React.Component {
         });
       }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
       this.handleReset();
+    } else {
+      utility.notifications('warning', 'Please enter a value to search', {showDuration: 0, timeOut: 10});
     }
   }
 

@@ -215,6 +215,7 @@ class PatientComponent extends Component {
         `(${filters.length - 2} OR ${filters.length - 1} OR ${filters.length}) AND ${filterCombination}`
         : '(1 OR 2 OR 3)';
     }
+    utility.notifications('info', 'Loading...', {showDuration: 0, timeOut: 10});
     this.props.search(queryDetails, description).then(results => {
       const allPatients = results.rows || [];
       if (JSON.stringify(allPatients) === JSON.stringify([])) {

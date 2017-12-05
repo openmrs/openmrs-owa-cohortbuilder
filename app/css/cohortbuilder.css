@@ -240,3 +240,10 @@ a:hover {
 .btn-danger {
     background: linear-gradient(#ff6666, #ff3d3d)
 }
+
+.toast-top-center {
+    top: 310px;
+    margin: 0 auto;
+    right: 0px;
+    width: 70%;
+}

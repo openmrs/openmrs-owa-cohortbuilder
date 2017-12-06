@@ -348,36 +348,40 @@ class SavedComponent extends React.Component {
         <form className="form-horizontal"
           id="search-saved-cohort"
         >
-          <div className={'form-group'}>
-            <label
-              className="control-label col-sm-3"
-              htmlFor="saved-cohort-query"
-            >
-              Search Saved Definitions:
-            </label>
-            <div className="col-sm-6 input-group">
-              <input
-                id="definitionsQuery"
-                type="text"
-                onChange={this.handleInputChange}
-                value={this.state.definitionsQuery}
-                disabled={this.state.searchingDefinitions ? 'disabled' : null}
-                className="form-control"
-                placeholder="Enter Query Name . . ."
-              />
-              <span
-                className="input-group-btn">
-                <button
-                  className="btn btn-success"
+          <fieldset className="scheduler-border">
+            <legend className="scheduler-border">Search Saved Definitions</legend>
+            <div className={'form-group'}>
+              <label
+                className="control-label col-sm-3"
+                htmlFor="saved-cohort-query"
+              >
+                Saved Definitions:
+              </label>
+              <div className="col-sm-6 input-group">
+                <input
+                  id="definitionsQuery"
+                  type="text"
+                  onChange={this.handleInputChange}
+                  value={this.state.definitionsQuery}
                   disabled={this.state.searchingDefinitions ? 'disabled' : null}
-                  onClick={this.searchSavedDefinitions}
-                >
-                  Search
-                </button>
-              </span>
+                  className="form-control"
+                  placeholder="Enter Query Name . . ."
+                />
+                <span
+                  className="input-group-btn">
+                  <button
+                    className="btn btn-success"
+                    disabled={this.state.searchingDefinitions ? 'disabled' : null}
+                    onClick={this.searchSavedDefinitions}
+                  >
+                    Search
+                  </button>
+                </span>
+              </div>
             </div>
-          </div>
+          </fieldset>
         </form>
+
         <SavedResultsTable
           onDelete={this.deleteDefinition}
           onView={this.viewDefinition}
@@ -388,41 +392,44 @@ class SavedComponent extends React.Component {
           isSearching={this.state.searchingDefinitions}
           tableName={this.state.inSearchDefinitionMode ? 'Definition Search Results' : ''}
         />
-        <hr/>
+
         <form 
           className="form-horizontal" 
           id="search-saved-cohort"
           onSubmit={this.searchSavedCohorts}
         >
-          <div className="form-group">
-            <label
-              className="control-label col-sm-3"
-              htmlFor="saved-cohort-query"
-            >
-              Search Saved Cohorts:
-            </label>
-            <div className="col-sm-6 input-group">
-              <input
-                id="cohortsQuery"
-                type="text"
-                value={this.state.cohortsQuery}
-                disabled={this.state.searchingCohorts ? 'disabled' : null}
-                className="form-control"
-                placeholder="Enter Cohort Name . . ." 
-                onChange={this.handleInputChange}
-              />
-              <span
-                className="input-group-btn">
-                <button
-                  className="btn btn-success"
+          <fieldset className="scheduler-border">
+            <legend className="scheduler-border">Search Saved Cohorts</legend>
+            <div className="form-group">
+              <label
+                className="control-label col-sm-3"
+                htmlFor="saved-cohort-query"
+              >
+                Saved Cohorts:
+              </label>
+              <div className="col-sm-6 input-group">
+                <input
+                  id="cohortsQuery"
+                  type="text"
+                  value={this.state.cohortsQuery}
                   disabled={this.state.searchingCohorts ? 'disabled' : null}
-                  onClick={this.searchSavedCohorts}
-                >
-                  Search
-                </button>
-              </span>
+                  className="form-control"
+                  placeholder="Enter Cohort Name . . ." 
+                  onChange={this.handleInputChange}
+                />
+                <span
+                  className="input-group-btn">
+                  <button
+                    className="btn btn-success"
+                    disabled={this.state.searchingCohorts ? 'disabled' : null}
+                    onClick={this.searchSavedCohorts}
+                  >
+                    Search
+                  </button>
+                </span>
+              </div>
             </div>
-          </div>
+          </fieldset>
         </form>
         <SavedResultsTable
           onDelete={this.deleteCohort}

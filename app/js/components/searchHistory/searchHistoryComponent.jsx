@@ -180,7 +180,7 @@ class SearchHistoryComponent extends Component {
           <div className="result-window">
             {
               (history.length > 0) ?
-                <table className="table table-striped">
+                <table className="table table-striped table-bordered">
                   <thead>
                     <tr>
                       <th className="table-header">#</th>

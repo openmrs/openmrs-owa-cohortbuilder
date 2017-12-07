@@ -165,79 +165,79 @@ class CompositionComponent extends Component {
   render() {
     return (
       <div id="compositions-wrapper">
-        <div className="compositionsTitle">
-          <h3>Boolean Search</h3>
-        </div>
-        <div>
-          <p>Enter a search query and click search button below to execute:</p>
-          <i>e.g: "(1 and 2) or not 3"<br />
-              Query parameters supported are: AND, OR, NOT, UNION, INTERSECTION, !, +
-          </i>
-        </div>
         <form
           className="form-horizontal"
           id="composition-form"
           onSubmit={this.performComposition}
         >
-          <div
-            className={`form-group ${(this.state.hasCompositionError ? 'has-error' : '')}`}
-          >
-            <label
-              className="control-label col-sm-2"
-              htmlFor="composition-search-query"
+          <fieldset className="scheduler-border">
+            <legend className="scheduler-border">Boolean Search</legend>
+            <div>
+              <p>Enter a search query and click search button below to execute:</p>
+              <i>e.g: "(1 and 2) or not 3"<br />
+                  Query parameters supported are: AND, OR, NOT, UNION, INTERSECTION, !, +
+              </i>
+            </div>
+            <div
+              className={`form-group ${(this.state.hasCompositionError ? 'has-error' : '')}`}
             >
-              Composition:
-            </label>
-            <div className="col-sm-6">
-              <input
-                id="compositionQuery"
-                value={this.state.compositionQuery}
-                type="text"
-                className="form-control"
-                placeholder="Enter search query"
-                onChange={this.handleInputChange}
-              />
+              <label
+                className="control-label col-sm-2"
+                htmlFor="composition-search-query"
+              >
+                Composition:
+              </label>
+              <div className="col-sm-6">
+                <input
+                  id="compositionQuery"
+                  value={this.state.compositionQuery}
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter search query"
+                  onChange={this.handleInputChange}
+                />
+              </div>
+              <span className="inline-label">(Required)</span>
             </div>
-            <span className="inline-label">(Required)</span>
-          </div>
-          <div
-            className={`form-group ${(this.state.hasDescriptionError ? 'has-error' : '')}`}
-          >
-            <label
-              className="control-label col-sm-2"
-              htmlFor="composition-description"
+            <div
+              className={`form-group ${(this.state.hasDescriptionError ? 'has-error' : '')}`}
             >
-              Description:
-            </label>
-            <div className="col-sm-6">
-              <input
-                id="compositionLabel"
-                value={this.state.compositionLabel}
-                type="text"
-                className="form-control"
-                placeholder="Enter a description"
-                onChange={this.handleInputChange}
-              />
-            </div>
-            <span className="inline-label">(Required)</span>
-          </div>
-          <div className="form-group">
-            <div className="col-sm-offset-2 col-sm-10">
-              <button
-                type="submit"
-                className="btn btn-success"
+              <label
+                className="control-label col-sm-2"
+                htmlFor="composition-description"
               >
-                Search
-              </button>
-              <button
-                type="reset"
-                onClick={this.resetFields}
-                className="btn btn-default cancelBtn"
-              >
-                Reset
-              </button>
+                Description:
+              </label>
+              <div className="col-sm-6">
+                <input
+                  id="compositionLabel"
+                  value={this.state.compositionLabel}
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter a description"
+                  onChange={this.handleInputChange}
+                />
+              </div>
+              <span className="inline-label">(Required)</span>
             </div>
-          </div>
+            <div className="form-group">
+              <div className="col-sm-offset-2 col-sm-10">
+                <button
+                  type="submit"
+                  className="btn btn-success"
+                >
+                  Search
+                </button>
+                <button
+                  type="reset"
+                  onClick={this.resetFields}
+                  className="btn btn-default cancelBtn"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </fieldset>
         </form>
       </div>
     );

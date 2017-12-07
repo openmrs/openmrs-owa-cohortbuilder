@@ -247,3 +247,67 @@ a:hover {
     right: 0px;
     width: 70%;
 }
+
+.btn-success {
+    background: linear-gradient(#a1d030, #88af28);
+    background-color: #88af28;
+    border: 1px solid #88af28;
+}
+
+.btn-default {
+    background: linear-gradient( #ffffff, #dddddd);
+    color: #363463;
+}
+
+.form-control, #encounter .form-control {
+    color: #363463;
+    border: 1px solid #dddddd;
+}
+
+.form-control:focus {
+    outline: 2px solid #007fff;
+    box-shadow: none;
+}
+
+.table thead {
+    background-color: #eee;
+    color: #363463;
+}
+
+.table-striped > tbody > tr {
+    background-color: #fffdf7;
+}
+.table-striped > tbody > tr:nth-of-type(2n+1) {
+    background-color: #fff;
+}
+
+table > thead > th {
+    border: 1px solid #ddd;
+    background: #f3f3f3;
+}
+
+legend {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    line-height: inherit;
+    color: #333;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+legend.scheduler-border {
+    font-size: 1.2em;
+    font-weight: 700;
+    text-align: left;
+    width: auto;
+    padding: 0 10px;
+    border-bottom: none;
+}
+
+fieldset.scheduler-border {
+    border: 1px groove #ddd;
+    padding: 0 1.4em 1.4em;
+    margin: 0 0 20px 0;
+}

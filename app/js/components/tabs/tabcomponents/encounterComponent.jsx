@@ -391,10 +391,10 @@ class EncounterComponent extends Component {
   render() {
     return (
       <div className="encounter-component">
-        <h3>Search By Encounter</h3>
-        <div>
-          <h4 className="text-center">Patients having encounters</h4>
-          <form className="form-horizontal text-center" id="encounter-search">
+        <form className="form-horizontal text-center" id="encounter-search">
+          <fieldset className="scheduler-border">
+            <legend className="scheduler-border">Search By Encounter</legend>
+            <h4 className="text-center">Patients having encounters</h4>
             <div className="form-group">
               <label htmlFor="type" className="col-sm-2 control-label">
                 Of Type
@@ -495,10 +495,12 @@ class EncounterComponent extends Component {
                 <button type="reset" onClick={this.resetEncounterFields} className="btn btn-default cancelBtn">Reset</button>
               </div>
             </div>
-          </form>
-          <hr />
-          <h3>Search By Location</h3>
-          <form className="form-horizontal">
+          </fieldset>
+        </form>
+
+        <form id="search-by-location" className="form-horizontal">
+          <fieldset className="scheduler-border">
+            <legend className="scheduler-border">Search By Location</legend>
             <div className={`form-group ${this.state.locationError ? "has-error" : ""}`}>
               <label htmlFor="location" className="col-sm-2 control-label">Patients belonging to?:</label>
               <div className="col-sm-6">
@@ -525,8 +527,8 @@ class EncounterComponent extends Component {
                 <button type="reset" onClick={this.resetLocationFields} className="btn btn-default cancelBtn">Reset</button>
               </div>
             </div>
-          </form>
-        </div>
+          </fieldset>
+        </form>
       </div>
     );
   }

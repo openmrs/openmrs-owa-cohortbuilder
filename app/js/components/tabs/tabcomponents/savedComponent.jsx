@@ -349,7 +349,11 @@ class SavedComponent extends React.Component {
           id="search-saved-cohort"
         >
           <fieldset className="scheduler-border">
-            <legend className="scheduler-border">Search Saved Definitions</legend>
+            <legend className="scheduler-border">Search Saved Query Definitions</legend>
+            <i className="status-container">
+              Query Definitions can be found on the third column on the Search History table below.
+              You can only search for Query Definitions that you have saved using a Name.
+            </i>
             <div className={'form-group'}>
               <label
                 className="control-label col-sm-3"
@@ -399,7 +403,11 @@ class SavedComponent extends React.Component {
           onSubmit={this.searchSavedCohorts}
         >
           <fieldset className="scheduler-border">
-            <legend className="scheduler-border">Search Saved Cohorts</legend>
+            <legend className="scheduler-border">Search Saved Cohort Definitions</legend>
+            <i className="status-container">
+              Cohort Definitions can be found on the last column on the Search History table below.
+              You can only search for Cohort Definitions that you have saved using a Name.
+            </i>
             <div className="form-group">
               <label
                 className="control-label col-sm-3"

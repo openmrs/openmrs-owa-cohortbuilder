@@ -30,8 +30,22 @@ export const queryDescriptionBuilder = (state, conceptName) => {
     : document.querySelector("#timeModifier");
 
   const operatorText = operatorSelectInput.options[operatorSelectInput.selectedIndex].text;
+  const modifierElement = document.querySelector("#modifier");
 
-  const modifierDescription = modifier ? `${operatorText} ${modifier}` : '';
+  const newModifier = (isNaN(modifier))
+    ? modifierElement.options[modifierElement.selectedIndex].text
+    : modifier;
+
+  let modifierDescription;
+
+  if (modifier && isNaN(modifier)) {
+    modifierDescription = `= ${newModifier}`;
+  } else if (modifier) {
+    modifierDescription = `${operatorText} ${newModifier}`;
+  } else {
+    modifierDescription = '';
+  }
+
   const onOrAfterDescription = onOrAfter ? `since ${formatDate(onOrAfter)}` : '';
   const onOrBeforeDescription = onOrBefore ? `until ${formatDate(onOrBefore)}` : '';
 

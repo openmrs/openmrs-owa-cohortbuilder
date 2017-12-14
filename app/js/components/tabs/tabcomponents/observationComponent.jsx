@@ -138,6 +138,7 @@ export default class ObsFilter extends React.Component {
             value={this.state.timeModifier}
             defaultValue="ANY"
             name="timeModifier"
+            id="timeModifier"
             onChange={this.handleFormChange}>
             <option value="ANY">Any</option>
             <option value="NO">None</option>
@@ -160,6 +161,7 @@ export default class ObsFilter extends React.Component {
           <select
             className="form-control"
             name="timeModifier"
+            id="timeModifier"
             value={this.state.timeModifier}
             defaultValue="ANY"
             onChange={this.handleFormChange}>
@@ -183,6 +185,7 @@ export default class ObsFilter extends React.Component {
           <select
             className="form-control"
             name="timeModifier"
+            id="timeModifier"
             defaultValue="ANY"
             onChange={this.handleFormChange}
             value={this.state.timeModifier}>

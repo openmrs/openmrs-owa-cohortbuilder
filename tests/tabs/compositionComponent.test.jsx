@@ -17,8 +17,8 @@ import CompositionComponent from '../../app/js/components/tabs/tabcomponents/com
 describe('<CompositionComponent />', ()=>{
   it('should contain the correct HTML elements', ()=>{
     const wrapper = shallow(<CompositionComponent addToHistory={() => ({})} getHistory={() => ({})} />);
-    expect(wrapper.find("div")).to.have.length(8);
-    expect(wrapper.find("p")).to.have.length(1);
+    expect(wrapper.find("div")).to.have.length(7);
+    expect(wrapper.find("p")).to.have.length(3);
     expect(wrapper.find("form")).to.have.length(1);
     expect(wrapper.find("input")).to.have.length(2);
     expect(wrapper.find("button")).to.have.length(2);

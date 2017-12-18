@@ -172,12 +172,21 @@ class CompositionComponent extends Component {
         >
           <fieldset className="scheduler-border">
             <legend className="scheduler-border">Boolean Search</legend>
-            <div>
-              <p>Enter a search query and click search button below to execute:</p>
-              <i>e.g: "(1 and 2) or not 3"<br />
-                  Query parameters supported are: AND, OR, NOT, UNION, INTERSECTION, !, +
-              </i>
-            </div>
+            <i className="status-container">
+              <p>This query combines multiple cohorts using the logical operators:- <strong>'AND'</strong>,
+                <strong> 'OR'</strong>,
+                and <strong>'NOT'.</strong>
+              </p>
+              <p>To use this query, you need to have query results 
+                from the <strong>other queries</strong> in your <strong>search history</strong>.
+                These are the queries which will then be combined to yeild new results.
+              </p>
+              <p><strong>Example:</strong> There is a cohort of patients who weigh less than 100 KG at <strong>#1</strong>, 
+                and a cohort of patients with ages between 23 and 35 years at <strong>#2</strong> in the search history.
+                <br />You can create a query with a composition <strong>'1 AND 2' </strong> 
+                and add a brief meaningful description for the new query. To view a result for the combined queries.
+              </p>
+            </i>
             <div
               className={`form-group ${(this.state.hasCompositionError ? 'has-error' : '')}`}
             >

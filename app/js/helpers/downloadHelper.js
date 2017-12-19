@@ -9,21 +9,10 @@
  */
 
 import FileSaver from "file-saver";
-
 /**
  * Helper class for downloading files on the browser
  */
 class DowloadHelper {
-  /**
-   * Method to download data (patient data) in csv format
-   * @param {Array} data - An array containing objects (mostlikely patient data
-   * objects)
-   * @param {String} fileName - Name for the downloaded csv file
-   * @param {Object} header - Object containing the keys who's values will be
-   * the names of each column it the csv file. Uses default header if no header
-   * is supplied.
-   * @return {undefined}
-   */
   static downloadCSV(
     data,
     fileName,
@@ -43,7 +32,7 @@ class DowloadHelper {
   }
 
   /**
-   * Method to format an Array of data (objects) to CSV format
+   * Formats an Array of data (objects) to CSV format
    * @param {Array} data - Array containing the data objects
    * @return {String} - CSV formated string
    */

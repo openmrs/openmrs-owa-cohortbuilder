@@ -10,10 +10,6 @@
 
 import React, { PropTypes } from 'react';
 
-/**
- * This is the tabContent class
- * @param {*} props 
- */
 class TabContentComponent extends React.Component{
   constructor(props){
     super(props);
@@ -21,7 +17,7 @@ class TabContentComponent extends React.Component{
   }
   
   /**
-   * This method designs the tab component content
+   * Designs the tab component content
    *
    * @param {Array} tabs This is an array of all the tabs to be displayed 
    * @param {Function} fetchData

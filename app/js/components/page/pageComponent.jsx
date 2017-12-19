@@ -32,7 +32,7 @@ class PageComponent extends Component{
   }
 
   /**
-   * deleteHistory is used to remove a search history from the sessionStorage
+   * Removes search history item from the sessionStorage
    * @param {int} index 
    */
   deleteHistory(index) {
@@ -43,7 +43,7 @@ class PageComponent extends Component{
   }
 
   /**
-   * Function is used to add to search history
+   * Adds  item to search history
    * @param {string} description - it describes the search that was performed
    * @param {object} patients - the results of the search
    * @param {object} parameters - the jsonbody that was used posted to the reportingrest/adhocquery endpoint
@@ -55,7 +55,7 @@ class PageComponent extends Component{
   }
 
   /**
-   * Clear all saved searches by deleting them from session storage
+   * Clears all saved searches by deleting them from session storage
    * @return {void} void
    * @memberof SearchHistoryComponent
    */
@@ -68,9 +68,9 @@ class PageComponent extends Component{
   }
 
   /**
-   * Function to update history property in the component state
+   * Updates history property in the component state
    * @param {Array} history - new array containing history to be set in the component state
-   * @return {undefined} - returns undefined
+   * @return {Object} - Sets new state
    */
   updateStateHistory(history) {
     this.setState({ history });

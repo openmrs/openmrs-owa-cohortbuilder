@@ -35,7 +35,7 @@ class ConceptComponent extends Component {
   }
 
   /**
-   * Check if verbose is clicked and set verbose state to true
+   * Checks if verbose is clicked and set verbose state to true
    * @param {*} event 
    */
   checkVerbose(uuid) {
@@ -47,8 +47,7 @@ class ConceptComponent extends Component {
   }
     
   /**
-   * Load concepts suggestions from the backend based on entered input
-   * entered keyword
+   * Loads concept's suggestions from the backend based on entered input
    * @param {*} event 
    */
   loadConcepts(value) {
@@ -79,10 +78,6 @@ class ConceptComponent extends Component {
     }   
   }
 
-  /**
-   * setConcept set concept object
-   * @param {*} concept 
-   */
   setConcept(concepts) {
     const concept = concepts[0];
     concept ? 
@@ -98,7 +93,6 @@ class ConceptComponent extends Component {
 
   render() {
     return (
-      // display search results based on the value of selectedConcept
       <div>                   
         <div className="col-sm-6 col-sm-offset-3 custom-typehead">  
           <AsyncTypeahead

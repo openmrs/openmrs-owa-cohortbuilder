@@ -98,11 +98,10 @@ class  SavedHistory extends Component {
   }
 
   /**
-   * Method to help filter and return only required patient attributes from a
-   * saved history item
+   * Filters and returns specified patient attributes from saved history item
    * @param {Array} results - Array of patient objects
    * @return {Array} - Array containing objects containing only necessary
-   * data of patients in a saved history
+   * data of patients in saved history
    */
   preFromatForCSV(results) {
     const data = [...results];
@@ -116,12 +115,12 @@ class  SavedHistory extends Component {
   }
 
   /**
-   * Method to fetch data using the saved patients uuid, format the data and
-   *  download it on the browser
+   * Fetches data using the saved patients uuid, formats the data and
+   *  downloads it on the browser
    * @param {Number} uuid - unique saved patients history id
    * @param {String} description - Description of the patient history item
    * (to be used as the file name)
-   * @return {undefined}
+   * @return {Object} new state of downloadJobIds
    */
   downloadCSV(uuid, description) {
     return event => {

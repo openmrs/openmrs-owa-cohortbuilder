@@ -33,7 +33,6 @@ export class JSONHelper {
           searchParameters[field]
         );
       }
-      // add living status property so we can append a NOT to the filter combination
       if (
         searchParameters[field].length >= 1 &&
         searchParameters[field][0].livingStatus === "alive"
@@ -93,8 +92,6 @@ export class JSONHelper {
   }
 
   addColumnsToDisplay() {
-    // the constant columns should not be hardcoded, at the longrun, users should be able to select the columns
-    // they want displayed on the result table
     const columns = [
       {
         name: "firstname",

@@ -162,20 +162,13 @@ class EncounterComponent extends Component {
     this.resetEncounterFields();
   }
 
-  /**
-   * Method to handle selection changes from the custom encounter types Select
-   * input
-   * @param {Array} selectedEncounterTypes: Array containing Objects with data
-   * about selected encounter types
-   * @return {undefined}
-   */
   handleSelectEncounters(selectedEncounterTypes) {
     this.setState({ selectedEncounterTypes });
   }
 
   /**
-   * getEncounterSearhDescription will compose the right description for every
-   * encounter search that is performed using search parameters in state
+   * Composes the right description for every encounter search
+   * that is performed using search parameters in state
    * @return {string} the encounter search description
    */
   getEncounterSearchDescription() {
@@ -222,10 +215,9 @@ class EncounterComponent extends Component {
   }
 
   /**
-   * Method to generate a location search description based on the search values
+   * Generates a location search description based on the search values
    */
   getLocationSearchDescription() {
-    // find the location name since we only have it's uuid
     const selectedLocation = this.state.locations.find((item) => {
       return item.id === this.state.location;
     });
@@ -244,16 +236,9 @@ class EncounterComponent extends Component {
     return searchDescription;
   }
 
-  /**
-   * Method to handle search by location submit events and search for patients 
-   * from the back end using location and method selected
-   * @param {Object} event - Object containing data about the triggered event
-   * @return {undefined}
-   */
   searchByLocation(event) {
     event.preventDefault();
     const { location, method } = this.state;
-    // show location selection warning if no location was selected
     if (!location) {
       return this.setState({ locationError: true });
     }
@@ -278,10 +263,10 @@ class EncounterComponent extends Component {
   }
 
   /**
-   * Method to handle option selection in select fields. It sets the selected option
-   * value to the property in state (referred to by the option id)
+   * Sets the selected option value to the property in state
+   * (referred to by the option id)
    * @param {Object} event - Object contatining data about the triggered event
-   * @return {undefined}
+   * @return {Object} new state
    */
   handleSelectOption(event) {
     event.preventDefault();
@@ -293,7 +278,7 @@ class EncounterComponent extends Component {
   }
 
   /**
-   * Method to get an array of <option> element items from locations in the state
+   * Gets an array of <option> element items from locations in the state
    * @return {Array} - An array containing option elements of availaible methods
    */
   getLocationOptions() {
@@ -303,7 +288,7 @@ class EncounterComponent extends Component {
   }
 
   /**
-   * Method to get an array of <option> element items from methods in the state
+   * Gets an array of <option> element items from methods in the state
    * @return {Array} - An array containing option elements of availaible methods
    */
   getMethodOptions() {
@@ -315,7 +300,7 @@ class EncounterComponent extends Component {
   }
 
   /**
-   * Method to update the date key for different date types in the state
+   * Updates the date key for different date types in the state
    * @param {String} stateKey - The key in the component state that should be
    * updated
    * @return {Function} - Call back function to be executed by the date input
@@ -328,7 +313,7 @@ class EncounterComponent extends Component {
   }
 
   /**
-   * Method to get the date in the format MM-DD-YY from a date isoString
+   * Gets the date in the format MM-DD-YY from a date isoString
    * @param {String} isoString - Date in isoString format
    * @return {String} MM-DD-YY date formatted string
    */
@@ -337,7 +322,7 @@ class EncounterComponent extends Component {
   }
 
   /**
-   * Method to handle setting of the encounter count in this component
+   * Sets the encounter count 
    * @param {Object} event - Event Object
    * @return {undefined} 
    */
@@ -350,10 +335,8 @@ class EncounterComponent extends Component {
       event.preventDefault();
     } 
   }
-    
 
   handleValidateCountInput(event) {
-    // validate if the user inputs a number
     const invalidCharacters = [
       '-',
       '+',
@@ -363,11 +346,6 @@ class EncounterComponent extends Component {
     (invalidCharacters.includes(event.key)) ? event.preventDefault() : null;
   }
 
-
-  /**
-   * Metod to reset all fields in the encounter form of this component
-   * @return {undefined}
-   */
   resetEncounterFields() {
     this.setState({
       onOrBefore: '',

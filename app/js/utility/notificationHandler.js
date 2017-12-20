@@ -9,9 +9,7 @@
  */
 
 /**
- * This method handles all notifications on the system
- * *
- *
+ * Handles all notifications on the system
  * @param {String} type the type of notification
  * @param {String} message the message to display
  * @returns {Function} function that displays an error message

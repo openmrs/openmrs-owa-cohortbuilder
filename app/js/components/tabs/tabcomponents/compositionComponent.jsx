@@ -29,7 +29,7 @@ class CompositionComponent extends Component {
   }
     
   /**
-   * The function takes the input of the text field and makes a search
+   * Takes the input of the text field and makes a search
    * @param {object} event 
    */
   performComposition(event) {
@@ -97,7 +97,7 @@ class CompositionComponent extends Component {
   }
 
   /**
-   * Method to check for validity of the search input field.
+   * Checks validity of the search input field.
    * @param {search} - The search String to be validated
    * @return {Boolean} - True if the search string is valid, otherwise False
    */
@@ -109,9 +109,8 @@ class CompositionComponent extends Component {
 
   /**
    * 
-   * This function basically helps in ensuring that the number used in
-   * the customRowFilterCombination in the composition query syncs with
-   * the index of the rowFilter.
+   * Checks that number used in the customRowFilterCombination in the composition query
+   * syncs with the index of the rowFilter.
    * @param {string} filterText 
    * @param {int} numberOfSearches 
    */
@@ -119,11 +118,6 @@ class CompositionComponent extends Component {
     return filterText.replace(/\d/, theDigit => parseInt(theDigit) + numberOfSearches);
   }
 
-  /**
-   * Method to reset fields in the composition search forms
-   * @param {Object} event - Event Object
-   * @return {undefined}
-   */
   resetFields(event) {
     event.preventDefault();
     this.setState({
@@ -135,7 +129,7 @@ class CompositionComponent extends Component {
   }
 
   /**
-   * Method to handle change events from the input fields
+   * Handles changes in the input fields
    * @param{event} - Event object triggered when input fields change
    * @return{undefined} - Returns undefined
    */

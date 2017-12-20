@@ -193,7 +193,7 @@ class ActionsComponent extends Component {
   }
 
   /**
-   * Method to fetch data using the cohort uuid, format the data and download
+   * Fetches data using the cohort uuid, formats the data and download
    * it on the browser
    * @param {Number} cohortId - unique cohort id
    * @param {String} description - Description of the cohort (to be used as
@@ -229,7 +229,7 @@ class ActionsComponent extends Component {
   }
 
   /**
-   * Method to help filter and return only required patient attributes from a
+   * Filters and returns required patient attributes from a
    * cohort item
    * @return { Array } - Array containing all patients in a cohort
    * item of the specified index

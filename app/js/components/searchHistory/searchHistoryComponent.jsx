@@ -100,8 +100,7 @@ class SearchHistoryComponent extends Component {
   }
 
   /**
-   * Method to help filter and return only required patient attributes from a
-   * search history item
+   * Filters and returns specified patient attributes from search history item
    * @param { Number } index - Index of the history array to pick patients
    * @return { Array } - Array containing all patients in a search history
    * item of the specified index
@@ -117,7 +116,7 @@ class SearchHistoryComponent extends Component {
   }
 
   /**
-  * Method to download list of patients in CSV format
+  * Downloads list of patients in CSV format
   * @param { Number } index - Index of the history array to pick patients
   * @param { String} description - Description of the search (to be used as
   * the csv file name)
@@ -138,8 +137,7 @@ class SearchHistoryComponent extends Component {
   }
 
   /**
-   * checks if there is a saved search history and displays the clear 
-   * search button
+   * Checks if there is a saved search history and displays the clear search button
    * @return {void} a button element
    * @memberof SearchHistoryComponent
    */

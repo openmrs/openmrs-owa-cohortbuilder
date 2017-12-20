@@ -71,9 +71,7 @@ class PatientComponent extends Component {
     let { startDate, endDate, minAge, maxAge } = this.state;
     const searchParameters = { gender };
 
-    // add appropriate age constraints to the search parameters
     if (minAge && maxAge) {
-      // switch the min and max ages if the min age is greater than the max age
       if (parseInt(minAge) > parseInt(maxAge)) {
         const minAgeStore = minAge;
         minAge = maxAge;
@@ -95,13 +93,10 @@ class PatientComponent extends Component {
         ];
       }
     }
-    // add appropriate birthdate constraints to the search parameters
     if (startDate && endDate) {
-      // coerce the values of start date and end date to numbers for comparison    
       let startYear = Number(startDate.split('-')[0]);
       let endYear = Number(endDate.split('-')[0]);
 
-      // switch the start and end dates if the start year is before the end year
       if (startYear > endYear) {
         const startDateStore = startDate;
         startDate = endDate;
@@ -114,8 +109,6 @@ class PatientComponent extends Component {
       ];
     }
 
-    // for dead people, diedDuring period -> endDate === now
-    // for living people, diedDuring period -> endDate !== now
     const today = new Date();
     const dayFormat = this.getDateString(today.toISOString());
     
@@ -125,7 +118,6 @@ class PatientComponent extends Component {
       ];
     }
 
-    // check that there is a valid date range before performing search
     if (!(startDate && !endDate || endDate && !startDate)) {
       this.performSearch(
         searchParameters, this.getSearchByDemographicsDescription()
@@ -134,10 +126,6 @@ class PatientComponent extends Component {
     this.resetSearchByDemographics();
   }
 
-  /**
-   * Mehtod to get the search by attributes description
-   * @return {String} - Search by attributes description
-   */
   getSearchByAttributesDescription() {
     let label = 'Patients';
     const uuid = this.state.selectedAttribute;
@@ -162,10 +150,6 @@ class PatientComponent extends Component {
     return label;
   }
 
-  /**
-   * Method to get the demographic search description
-   * @return {String} - Demographic search description
-   */
   getSearchByDemographicsDescription() {
     const {
       gender, minAge, maxAge, startDate, endDate, livingStatus
@@ -199,7 +183,7 @@ class PatientComponent extends Component {
   performSearch(searchParameters, description) {
     const theParameter = Object.assign({}, searchParameters);
     const queryDetails = this.jsonHelper.composeJson(theParameter);
-    // we want to append necessary rowFilters here if user selected all patients
+
     if (searchParameters.gender === 'all') {
       const tempRowFilter = ['males', 'females', 'unknownGender'].map(item => {
         return {
@@ -223,16 +207,10 @@ class PatientComponent extends Component {
       } else {
         utility.notifications('success', 'Search completed successfully');
       }
-      // adds the current search to search history
       this.props.addToHistory( description, allPatients, results.query );
     }).catch(() => utility.notifications('error', 'Search error, check the server log for details'));
   }
 
-  /**
-   * Method to perform a search by Patient attributes
-   * @param {Object} Event Object 
-   * @return {undefined}
-   */
   searchByAttributes(event) {
     event.preventDefault();
     const searchParameters = {
@@ -283,15 +261,6 @@ class PatientComponent extends Component {
     this.setState({ gender: event.target.value });
   }
 
-  /**
-   * This method handles the validation of the user input, it ensure no age below 0
-   * and above 200 can be use to filter the search. 
-   * 
-   * @param {interger} age This is the age the user inputs
-   * @param {string} identifier This is the ID of the age 
-   * @returns {boolean} determines if error messages are shown
-   * @memberof PatientComponent
-   */
   isAgeValid(age, identifier) {
     if (age >= 0 && age <= 200 && typeof(age)==="string" && parseInt(age + 1) && age !== '-0') {
       this.setState((previousState) => {
@@ -317,25 +286,12 @@ class PatientComponent extends Component {
     return false;
   }
 
-  /**
-   * Extra validation for browsers Safari and other browsers
-   * that did not implement restriction for type number
-   * onKeyDown
-   * @param {object} event
-   */
   handleValidateAgeInput(event){
     if (typeof event.key === 'boolean' || isNaN(event.key)) {
       event.preventDefault();
     } 
   }
 
-  /**
-   * This method copies the value of the age field for the age HTML and copies
-   * it to the component state.
-   * 
-   * @param {object} event The HTML event
-   * @memberof PatientComponent
-   */
   handleSelectAge(event) {    
     if (this.isAgeValid(event.target.value, event.target.id)) {
       this.setState({ [event.target.id]: event.target.value });
@@ -354,10 +310,6 @@ class PatientComponent extends Component {
     }
   }
 
-  /**
-   * Method to reset search by attribute fields to default
-   * @return {undefined}
-   */
   resetSearchByAttributes() {
     this.setState({
       selectedAttribute: '',
@@ -365,11 +317,6 @@ class PatientComponent extends Component {
     });
   }
 
-  /**
-   * Method to reset all state related to search by demographic in this
-   * component
-   * @return {undefined}
-   */
   resetSearchByDemographics(event) {
     this.setState({
       startDate: '',
@@ -385,72 +332,37 @@ class PatientComponent extends Component {
       },
     });
 
-    /*
-    * reset minAge and maxAge by targeting the elements directly
-    * the element contents are handled with onKeyDown and onKeyUp
-    */
     let minAgeField = document.getElementById('minAge');
     let maxAgeField = document.getElementById('maxAge');
     minAgeField.value = '';
     maxAgeField.value = '';
   }
 
-  /**
-   * Method to set the end date String in state
-   * @param {String} value - isoString formatted date value
-   * @return {undefined}
-   */
   setEndDate(value) {
     this.setState({ endDate: this.getDateString(value) });
   }
 
-  /**
-   * Method to update the date key for different date types in the state
-   * @param {String} stateKey - The key in the component state that should be
-   * updated
-   * @return {Function} - Call back function to be executed by the date input
-   * field
-   */
   handleDateChange(dateType) {
     return value => this.setState({
       [dateType]: this.getDateString(value)
     });
   }
 
-  /**
-   * Method to add selected attribute values
-   * @param {Array} selectedAttributeValues - Array containing selected
-   * attribute values
-   * @return {undefined}
-   */
   handleAddAttributeValue(values) {
     this.setState({
       selectedAttributeValues: values.map(
-        // disallow entering empty text
         item => item.label.trim() ? item : ''
       ) 
     });
   }
 
-  /**
-   * Method to handle selection of different attribute types
-   * @param {Object} event - Event Object
-   * @return {undefined}
-   */
   handleSelectAttribute(event) {
     this.setState({ selectedAttribute: event.target.value });
-    // TODO: should the user be able to enter attribute values 
-    // when any attribute is selected ? For now No
     if (!event.target.value) {
       this.setState({ selectedAttributeValues: [] });
     }
   }
 
-  /**
-   * Method to get the date in the format MM-DD-YY from a date isoString
-   * @param {String} isoString - Date in isoString format
-   * @return {String} MM-DD-YY date formatted string
-   */
   getDateString(isoString) {    
     return isoString ? isoString.split('T')[0] : '';
   }

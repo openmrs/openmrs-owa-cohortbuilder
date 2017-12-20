@@ -44,14 +44,14 @@ class App extends Component {
   }
  
   render() {
-    const { display, table, history, description , getHistory, setHistory } = this.state;
+    const { display, table, history, description , getHistory } = this.state;
     return (
       <div>
         <div 
           id="tabbed-cohort" style={{display}}>
           <Header/>
           <BreadCrumbComponent/>
-          <PageComponent getHistory = {this.getHistory} setHistory = {this.setHistory} />
+          <PageComponent getHistory = {this.getHistory} />
         </div>
         <div id="body-wrapper" 
           style={{display :table}}>

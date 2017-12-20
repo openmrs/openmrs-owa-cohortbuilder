@@ -109,8 +109,7 @@ export default class ObsFilter extends React.Component {
   handleDateChange(name) {
     return (value) => this.setState({[name]: value});
   }
-  
-  // ST(Text) OR CWE(coded)
+
   inputWithUnit() {
     return (
       <div className="form-group">
@@ -128,8 +127,7 @@ export default class ObsFilter extends React.Component {
       </div>
     );
   }
-    
-  // NM(numeric) datatype
+
   firstFieldNumeric(){
     return (
       <div className="form-group" >
@@ -154,7 +152,6 @@ export default class ObsFilter extends React.Component {
     );
   }
 
-  // DT(Date) OR TS(DateTime)
   timeModifierDateOrDateTime() {
     return (
       <div className="form-group">
@@ -178,7 +175,6 @@ export default class ObsFilter extends React.Component {
     );
   }
 
-  // ST(Text)  OR CWE(Coded) OR BIT(Boolean)
   timeModifierSCB() {
     return (
       <div className="form-group">
@@ -201,7 +197,6 @@ export default class ObsFilter extends React.Component {
     );
   }
 
-  // NM(numeric) datatype
   secondFieldNumeric() {
     return(
       <div  className="form-group">
@@ -233,7 +228,6 @@ export default class ObsFilter extends React.Component {
     );
   }
 
-  // DT(Date) OR TS(DateTime)
   modifierDateOrDateTime() {
     return (
       <div className="form-group col-sm-12">
@@ -267,7 +261,6 @@ export default class ObsFilter extends React.Component {
     );
   }
 
-  //ST(Text) OR CWE(coded)
   whatValue() { 
     const { answers } = this.props.concept;
     const option = (answer) => (
@@ -291,7 +284,6 @@ export default class ObsFilter extends React.Component {
     );
   }
 
-  // BIT(Boolean)
   secondFieldBoolean() {
     return (
       <div className="form-group"> 
@@ -322,7 +314,7 @@ export default class ObsFilter extends React.Component {
               value={this.state.timeModifier}
               onChange={this.handleFormChange}>
               <option value="ANY">Patients whose observation has value { name } </option>
-              <option value="NO">Patients whose observation dose not have value { name } </option>
+              <option value="NO">Patients whose observation does not have value { name } </option>
             </select>
           </div>
         </div>

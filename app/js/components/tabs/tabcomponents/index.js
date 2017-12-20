@@ -11,7 +11,6 @@
 import ConceptComponent from "./conceptComponent";
 import PatientComponent from "./patientComponent";
 import EncounterComponent from "./encounterComponent";
-import DrugOrderComponent from "./drugOrderComponent";
 import CompositionComponent from "./compositionComponent";
 import SavedComponent from "./savedComponent";
 
@@ -19,7 +18,6 @@ export default {
   ConceptComponent,
   PatientComponent,
   EncounterComponent,
-  DrugOrderComponent,
   CompositionComponent,
   SavedComponent
 };

@@ -48,9 +48,7 @@ class SavedComponent extends React.Component {
   }
 
   /**
-   * Method which utilizes closure to delete a cohort specified by it's uuid.
-   * It makes a delete request to the backend to delete the specified cohort and
-   * fetches the updated results
+   * Deletes a cohort specified by it's uuid.
    * @param {String} uuid - unique identifier for the cohort to be deleted
    * @return {Function} - function that performs the actual deletion process
    */
@@ -76,7 +74,7 @@ class SavedComponent extends React.Component {
   }
 
   /**
-   * Mehtod that utilizes closure to download patients in a cohort to CSV format
+   * Download patients in a cohort to CSV format
    * @param {String} uuid - Unique identifier of the cohort to be downloaded 
    * @param {String} name - name of the cohort to be used as the name of the
    * CSV file
@@ -113,9 +111,9 @@ class SavedComponent extends React.Component {
   }
 
   /**
-   * Method to show the list of patients in a cohort to the user
+   * Shows the list of patients in a cohort
    * @param {String} uuid - selected cohort UUID
-   * @return {undefined} 
+   * @return {Object} List of patiends and their details
    */
   viewCohort(uuid, description) {
     const apiHelper = new ApiHelper();
@@ -135,13 +133,9 @@ class SavedComponent extends React.Component {
   }
 
   /**
-   * Method which utilizes closure to delete a query specified by it's uuid.
-   * It makes a delete request to the backend to delete the specified query and
-   * fetches the updated results
-   * 
+   * Deletes a query specified by it's uuid.
    * @param {String} uuid - unique identifier for the query to be deleted
    * @return {Function} - function that performs the actual deletion process
-   * @memberof SavedComponent
    */
   deleteDefinition(uuid, definitionName) {
     return (event) => {
@@ -166,7 +160,7 @@ class SavedComponent extends React.Component {
   }
 
   /**
-   * Mehtod that utilizes closure to download patients in a query to CSV format
+   * Downloads patients in a query to CSV format
    * @param {String} uuid - Unique identifier of the query to be downloaded 
    * @param {String} name - name of the query to be used as the name of the
    * CSV file
@@ -201,9 +195,9 @@ class SavedComponent extends React.Component {
   }
 
   /**
-   * Method to display a list of all uses in a selected definition query
+   * Lists all users in a selected definition query
    * @param {String} uuid - Selected definition query uuid
-   * @return {undefined}
+   * @return {Object} List of all users
    */
   viewDefinition(uuid, description) {
     const apiHelper = new ApiHelper();
@@ -216,9 +210,9 @@ class SavedComponent extends React.Component {
   }
 
   /**
-   * Method to search for saved cohorts and update the state
+   * Searches for saved cohorts and updates the state
    * @param {Object} event - Object containing details of this event
-   * @return {undefined}
+   * @return {Object} new state
    */
   searchSavedCohorts(event) {
     event ? event.preventDefault() : null;
@@ -253,11 +247,6 @@ class SavedComponent extends React.Component {
     }
   }
 
-  /**
-   * Method to search for saved definition queries and update the state
-   * @param {Object} event - Object containing details of this event
-   * @return {undefined}
-   */
   searchSavedDefinitions(event) {
     event ? event.preventDefault() : null;
     if(!this.state.searchingDefinitions && this.state.definitionsQuery.trim()) {
@@ -296,9 +285,9 @@ class SavedComponent extends React.Component {
   }
 
   /**
-   * Method to handle changes on text input elements in this component
+   * Handles changes on text input elements in this component
    * @param {Object} event  - Object containing details of this event
-   * @return {undefined}
+   * @return {Object} new state
    */
   handleInputChange(event) {
     this.setState({ [event.target.id]: event.target.value });
@@ -318,10 +307,6 @@ class SavedComponent extends React.Component {
     }
   }
 
-  /**
-   * Resets the form
-   * @return {undefined}
-   */
   handleReset() {
     this.setState({
       cohortsQuery: '',
@@ -340,7 +325,6 @@ class SavedComponent extends React.Component {
       isDeleteCohort: false,
     });
   }
-
 
   render() {
     return (

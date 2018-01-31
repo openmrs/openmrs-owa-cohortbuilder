@@ -1,6 +1,6 @@
 {
   "name": "cohortbuilder",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "modern refresh of the OpenMRS Cohort Builder tool",
   "repository": {
     "type": "git",

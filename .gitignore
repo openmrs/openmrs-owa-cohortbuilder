@@ -5,7 +5,7 @@ dist
 config.json
 *.log
 webpack.config.js
-cohortbuilder-1.0.0-beta.zip
+**/*.zip
 ~/
 coverage
 libs

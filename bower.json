@@ -12,7 +12,7 @@
     "Web",
     "App"
   ],
-  "homepage": "https://github.com/andela-odaniel/openmrs-owa-cohortbuilder",
+  "homepage": "https://github.com/openmrs/openmrs-owa-cohortbuilder",
   "ignore": [
     "**/.*",
     "node_modules",

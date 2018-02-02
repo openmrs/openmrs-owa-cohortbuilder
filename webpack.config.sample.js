@@ -28,10 +28,12 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WebpackOnBuildPlugin = require('on-build-webpack');
 
+const packageJson = require('./package.json');
+
 
 const nodeModulesDir = path.resolve(__dirname, '../node_modules');
 
-const THIS_APP_ID = 'cohortbuilder-1.0.0';
+const THIS_APP_ID = 'cohortbuilder-' + packageJson.version;
 
 let plugins = [];
 const nodeModules = {};

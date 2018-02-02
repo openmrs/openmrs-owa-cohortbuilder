@@ -92,7 +92,7 @@ if (env === 'production') {
 
     output.on('close', function () {
 					/*eslint-disable no-console*/
-      console.log('distributable has been zipped! size: '+archive.pointer());
+      console.log('The app has been zipped! filename: ' + THIS_APP_ID + '.zip, size: '+archive.pointer());
     });
 
     archive.on('error', function(err){

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "name": "CohortBuilder",
-  "description": "modern refresh of the OpenMRS Cohort Builder tool",
+  "name": "Cohort Builder",
+  "description": "Modern refresh of the OpenMRS Cohort Builder tool",
   "launch_path": "index.html",
   "icons": {
     "48": "/img/omrs-button.png"

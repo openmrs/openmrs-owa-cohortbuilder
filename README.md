@@ -173,7 +173,7 @@ See instructions [here](http://enable-cors.org/server_tomcat.html) for Tomcat 7 
 
 ## Releasing
 
-In order to release set a new version in package.json and bintray.json. Once you commit and pushe changes to github, go to https://github.com/openmrs/openmrs-owa-cohortbuilder/releases and create a new release named after the version you want to release. Travis CI should pick up a newly created tag and deploy the release to Bintray at https://bintray.com/openmrs/owa/openmrs-owa-cohortbuilder
+In order to release, set a new version in package.json, bintray.json and app/manifest.webapp. Once you commit and push changes to github, go to https://github.com/openmrs/openmrs-owa-cohortbuilder/releases and create a new release named after the version you want to release. Travis CI should pick up a newly created tag and deploy the release to Bintray at https://bintray.com/openmrs/owa/openmrs-owa-cohortbuilder
 
 ## Issues
 

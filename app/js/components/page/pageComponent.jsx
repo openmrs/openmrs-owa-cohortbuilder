@@ -13,7 +13,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import TabsComponent from '../tabs/tabsComponent';
 import SearchHistoryTab from '../searchHistory/searchHistoryTab.jsx';
 import './pageComponent.css';
-import 'react-confirm-alert/src/react-confirm-alert.css'
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 class PageComponent extends Component{
   constructor(props) {

@@ -9,9 +9,11 @@
  */
 
 import React, {Component ,PropTypes } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
 import TabsComponent from '../tabs/tabsComponent';
 import SearchHistoryTab from '../searchHistory/searchHistoryTab.jsx';
 import './pageComponent.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 class PageComponent extends Component{
   constructor(props) {
@@ -60,11 +62,22 @@ class PageComponent extends Component{
    * @memberof SearchHistoryComponent
    */
   clearSearchHistory() {
-    const confirmDelete = confirm('Are you sure you want to delete your saved Search History?');
-    if(confirmDelete) {
-      window.sessionStorage.removeItem('openmrsHistory');
-      this.updateStateHistory([]);
+    const options = {
+      title: 'Confirmation',
+      message: 'Are you sure you want to delete your saved Search History',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {window.sessionStorage.removeItem('openmrsHistory'); this.updateStateHistory([]);}
+        },
+        {
+          label: 'No',
+          onClick: () => {}
+        }
+      ],
     }
+
+    confirmAlert(options);
   }
 
   /**

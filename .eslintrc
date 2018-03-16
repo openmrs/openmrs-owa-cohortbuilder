@@ -29,6 +29,7 @@
     "no-debugger": 1,
     "no-var": 1,
     "import/no-unresolved": 0,
+    "import/ignore": 0,
     "semi": [1, "always"],
     "no-trailing-spaces": 0,
     "eol-last": 0,

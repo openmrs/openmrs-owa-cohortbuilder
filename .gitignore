@@ -4,7 +4,6 @@ bower_components
 dist
 config.json
 *.log
-webpack.config.js
 **/*.zip
 ~/
 coverage

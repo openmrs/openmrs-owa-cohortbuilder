@@ -15,64 +15,6 @@ For further documentation about OpenMRS Open Web Apps see
 For further documentation about the cohort builder open web app module see
 [the wiki page](https://wiki.openmrs.org/display/docs/Cohort+Builder+Open+Web+App).
 
-## Getting Started
-
-### Local Setup Instructions
-
-```
-# Get the project
-git clone https://github.com/openmrs/openmrs-owa-cohortbuilder.git
-
-# Move into the project directory
-cd openmrs-owa-cohortbuilder
-
-# Install the dependencies
-npm install
-
-# Copy the webpack configuration from webpack.config.sample.js to webpack.config.js
-cp webpack.config.sample.js webpack.config.js
-
-# Locate the 'appdata/owa' directory and type the following command to get the path to the 'appdata/owa' directory and copy it to the clipboard.
-pwd | pbcopy
-
-An example of the path is: /Users/andeladeveloper/Downloads/referenceapplication-standalone-2.6.0/appdata/owa/
-
-# Open the webpack.config.js file, locate the getConfig function and update the config object with the following
-{
-  "LOCAL_OWA_FOLDER": "PASTE_THE_PATH_YOU_COPIED_HERE",
-  "APP_ENTRY_POINT": "http://localhost:8081/openmrs-standalone/owa/cohortbuilder/index.html"
-}
-
-Note: Start your cohort builder standalone server locally. Make sure you tomcat port is 8081, if not, change the APP_ENTRY_POINT localhost port to be the same as your tomcat port.
-
-# Run the app
-npm run watch
-```
-
-<p><b>Adding the cohort builder link to the reference application</b> </p>
-When on Reference Application Menu, enter `System Administration` -> `Manage Apps` -> `Add App Definition` and input following text inside:
-
-````sh
-{
-    "id": "YOUR_OPENMRS_ID_HERE",
-    "description": "A modern refresh of the OpenMRS Cohort Builder tool",
-    "order": 0,
-    "extensions": [
-        {
-            "id": "demoapp.homepageLink",
-            "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
-            "type": "link",
-            "label": "Cohort Builder",
-            "url": "owa/cohortbuilder/index.html",
-            "icon": "icon-list-alt",
-        }
-    ]
-}
-````
-Save changes, now cohort builder OWA is visible at the homepage
-
-For further documentation about adding the cohort builder link to the reference application [the wiki page](https://wiki.openmrs.org/display/docs/Adding+OWA+Icon+to+the+Reference+Application+Homepage).
-
 ## Development
 
 ### Production Build
@@ -170,6 +112,31 @@ being set by OpenMRS. To fix this you'll need to enable Cross-Origin Resource
 Sharing in Tomcat.
 
 See instructions [here](http://enable-cors.org/server_tomcat.html) for Tomcat 7 and [here](https://www.dforge.net/2013/09/16/enabling-cors-on-apache-tomcat-6/) for Tomcat 6.
+
+## Adding the Cohort Builder to the Reference Application</b> </p>
+When on Reference Application Menu, enter `System Administration` -> `Manage Apps` -> `Add App Definition` and input following text inside:
+
+````sh
+{
+    "id": "YOUR_OPENMRS_ID_HERE",
+    "description": "A modern refresh of the OpenMRS Cohort Builder tool",
+    "order": 0,
+    "extensions": [
+        {
+            "id": "demoapp.homepageLink",
+            "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
+            "type": "link",
+            "label": "Cohort Builder",
+            "url": "owa/cohortbuilder/index.html",
+            "icon": "icon-list-alt",
+        }
+    ]
+}
+````
+Save changes, now cohort builder OWA is visible at the homepage
+
+For further documentation about adding the cohort builder link to the reference application [the wiki page](https://wiki.openmrs.org/display/docs/Adding+OWA+Icon+to+the+Reference+Application+Homepage).
+
 
 ## Releasing
 

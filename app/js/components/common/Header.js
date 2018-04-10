@@ -14,11 +14,13 @@ import { ApiHelper } from "../../helpers/apiHelper";
 
 const NUMBER_OF_COLUMNS = 3;
 
+const LOGIN_LOCATION_TAG_NAME = 'Login%20Location';
+
 export class Header extends Component {
   constructor() {
     super();
     this.state = {
-      locationTags: [],
+      locations: [],
       currentLocationTag: "",
       defaultLocation: "",
       currentUser: "",
@@ -29,9 +31,9 @@ export class Header extends Component {
   }
 
   componentWillMount() {
-    this.fetchLocation("/location").then(response => {
-      this.setState({ locationTags: response.results });
-      this.setState({ defaultLocation: response.results[0].display });
+    this.fetchLocation("/location?tag="+LOGIN_LOCATION_TAG_NAME).then(response => {
+      this.setState({ locations: response.results });
+      this.setState({ defaultLocation: response.results.length > 0 ? response.results[0].display : null });
       this.getUri();
     });
 
@@ -41,13 +43,13 @@ export class Header extends Component {
   }
 
   getLocations() {
-    return this.state.locationTags.map(location => {
+    return this.state.locations.map(location => {
       return location.display;
     });
   }
 
   getUri() {
-    this.state.locationTags.map(location => {
+    this.state.locations.map(location => {
       let url = location.links[0].uri;
       let arrUrl = url.split("/");
       let customUrl = `/${arrUrl[3]}/appui/header/logout.action?successUrl=${
@@ -80,9 +82,9 @@ export class Header extends Component {
     this.handleClick(e);
   }
 
-  dropDownMenu(locationTags) {
+  dropDownMenu(locations) {
     const menuDisplay = [];
-    const numPerColumn = Math.ceil(locationTags.length / NUMBER_OF_COLUMNS);
+    const numPerColumn = Math.ceil(locations.length / NUMBER_OF_COLUMNS);
     for (let cols = 0; cols < NUMBER_OF_COLUMNS; cols++) {
       const menuInColumns = [];
       let colStart = cols * numPerColumn;
@@ -92,10 +94,10 @@ export class Header extends Component {
           <a
             href="#"
             key={menuIndex}
-            id={locationTags[menuIndex]}
+            id={locations[menuIndex]}
             onClick={this.dropDownMenuClick}
           >
-            {locationTags[menuIndex]}
+            {locations[menuIndex]}
           </a>
         );
       }

@@ -22,6 +22,7 @@ describe('tabContentComponent', () => {
     {active: true, name: 'Concept / Observation', divId: 'concept', component: Components.ConceptComponent,  },
     {active: false, name: 'Patient Attributes', divId: 'patient', component: Components.PatientComponent },
     {active: false, name: 'Encounter', divId: 'encounter', component: Components.EncounterComponent},
+    {active: false, name: 'Condition', divId: 'condition', component: Components.ConditionComponent},
 ]
   beforeEach(() => {
     renderedComponent = shallow(<TabContentComponent tabs={tabs} fetchData={() => ({})} search={() => ({})} addToHistory={() => ({})} getHistory={() => ({})} />);

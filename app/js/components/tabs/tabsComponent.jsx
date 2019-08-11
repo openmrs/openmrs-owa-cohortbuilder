@@ -25,6 +25,7 @@ class TabsComponent extends Component {
     this.state = {
       tabs: [
         {active: true, name: 'Concept / Observation', divId: 'concept', component: Components.ConceptComponent },
+        {active: false, name: 'Condition', divId: 'condition', component: Components.ConditionComponent},
         {active: false, name: 'Patient Attributes', divId: 'patient', component: Components.PatientComponent },
         {active: false, name: 'Encounter', divId: 'encounter', component: Components.EncounterComponent},
         {active: false, name: 'Composition', divId: 'composition', component:  Components.CompositionComponent },

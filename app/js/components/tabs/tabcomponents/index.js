@@ -13,9 +13,11 @@ import PatientComponent from "./patientComponent";
 import EncounterComponent from "./encounterComponent";
 import CompositionComponent from "./compositionComponent";
 import SavedComponent from "./savedComponent";
+import ConditionComponent from "./conditionComponent";
 
 export default {
   ConceptComponent,
+  ConditionComponent,
   PatientComponent,
   EncounterComponent,
   CompositionComponent,

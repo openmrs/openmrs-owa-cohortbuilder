@@ -32,13 +32,17 @@ export class Header extends Component {
 
   componentWillMount() {
     this.fetchLocation("/location?tag="+LOGIN_LOCATION_TAG_NAME).then(response => {
-      this.setState({ locations: response.results });
-      this.setState({ defaultLocation: response.results.length > 0 ? response.results[0].display : null });
-      this.getUri();
+      if (response && response.results) {
+        this.setState({ locations: response.results });
+        this.setState({ defaultLocation: response.results.length > 0 ? response.results[0].display : null });
+        this.getUri();
+      }
     });
 
     this.fetchLocation("/session").then(response => {
-      this.setState({ currentUser: response.user.display });
+      if (response && response.user) {
+        this.setState({ currentUser: response.user.display });
+      }
     });
   }
 
@@ -63,10 +67,8 @@ export class Header extends Component {
   fetchLocation(url) {
     const apiHelper = new ApiHelper(null);
     const getData = new Promise(function(resolve, reject) {
-      apiHelper.get(url).then(response => {
-        response.json().then(data => {
-          resolve(data);
-        });
+      apiHelper.get(url).then(data => {
+         resolve(data);
       });
     });
     return getData;

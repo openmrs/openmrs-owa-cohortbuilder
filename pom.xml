@@ -57,7 +57,7 @@
                             <artifactId>${project.artifactId}</artifactId>
                             <groupId>${project.groupId}</groupId>
                             <version>${project.version}</version>
-                            <file>orderentry-${project.version}.zip</file>
+                            <file>${project.artifactId}-${project.version}.zip</file>
                             <packaging>zip</packaging>
                         </configuration>
                     </plugin>

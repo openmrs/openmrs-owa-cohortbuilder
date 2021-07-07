@@ -27,6 +27,7 @@ export default class ObsFilter extends React.Component {
       onOrBefore: '',
       onOrAfter: '',
       formToRender: '',
+      markHide: props.markHide,
     };
     this.jsonHelper = new JSONHelper();
 
@@ -129,8 +130,9 @@ export default class ObsFilter extends React.Component {
   }
 
   firstFieldNumeric(){
+    const style = this.state.markHide? {display:'none'} : {};
     return (
-      <div className="form-group" >
+      <div className="form-group" style={style}>
         <label className="col-sm-3 control-label">Which observations?</label>
         <div className="col-sm-6">
           <select 
@@ -154,8 +156,9 @@ export default class ObsFilter extends React.Component {
   }
 
   timeModifierDateOrDateTime() {
+    const style = this.state.markHide? {display:'none'} : {};
     return (
-      <div className="form-group">
+      <div className="form-group" style={style}>
         <label className="col-sm-4 control-label"> Which observations? </label>
         <div className="col-sm-4">
           <select
@@ -178,8 +181,9 @@ export default class ObsFilter extends React.Component {
   }
 
   timeModifierSCB() {
+    const style = this.state.markHide? {display:'none'} : {};
     return (
-      <div className="form-group">
+      <div className="form-group" style={style}>
         <label className="col-sm-4 control-label"> Which observations? </label>
         <div className="col-sm-4">
           <select
@@ -266,12 +270,13 @@ export default class ObsFilter extends React.Component {
 
   whatValue() { 
     const { answers } = this.props.concept;
+    const style = this.state.markHide? {display:'none'} : {};
     const option = (answer) => (
       <option key={answer.uuid} value={answer.uuid} > {answer.display} </option>
     );
     return( 
       answers.length > 0  ?
-        <div className="form-group col-sm-12">
+        <div className="form-group col-sm-12" style={style}>
           <label className="col-sm-4 control-label" >(optional) What value?</label>
           <div className="col-sm-4">
             <select className="form-control"
@@ -288,8 +293,9 @@ export default class ObsFilter extends React.Component {
   }
 
   secondFieldBoolean() {
+    const style = this.state.markHide? {display:'none'} : {};
     return (
-      <div className="form-group"> 
+      <div className="form-group" style={style}>  
         <label  className="col-sm-4 control-label">(optional) What values?</label>
         <div className="col-sm-6" name="modifier">
           <select className="form-control" 
@@ -307,8 +313,9 @@ export default class ObsFilter extends React.Component {
     
   nullDatatype() {
     const { name } = this.props.concept;
+    const style = this.state.markHide? {display:'none'} : {};
     return (
-      <div>
+      <div style={style}>
         <div className="form-group">
           <div className="col-sm-6 col-sm-offset-3">
             <select className="form-control" 

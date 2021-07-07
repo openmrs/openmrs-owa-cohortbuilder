@@ -27,11 +27,18 @@ class TabContentComponent extends React.Component{
    */
   drawComponent(tabs, fetchData, search, addToHistory, getHistory) {
     return tabs.map((tab,index) => {
+      if(tab.divId === 'condition'){
       return(
         <div id={tab.divId} key={index} className={'tab-pane ' + (tab.active ? 'active' : '')}>
-          <tab.component fetchData={fetchData} search={search} addToHistory={addToHistory} getHistory={getHistory} />
+          <tab.component fetchData={fetchData} search={search} addToHistory={addToHistory} getHistory={getHistory} markHide={true} />
         </div>
-      );
+      ); } else {
+        return(
+          <div id={tab.divId} key={index} className={'tab-pane ' + (tab.active ? 'active' : '')}>
+            <tab.component fetchData={fetchData} search={search} addToHistory={addToHistory} getHistory={getHistory} markHide={false} />
+          </div>
+        );
+      }
     });
   }
     

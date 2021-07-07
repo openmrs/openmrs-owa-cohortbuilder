@@ -14,7 +14,7 @@ import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import ObservationComponent from './observationComponent';
 
 
-class ConceptComponent extends Component {
+class ConditionComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,7 +48,7 @@ class ConceptComponent extends Component {
   }
     
   /**
-   * Loads concept's suggestions from the backend based on entered input
+   * Loads concept's(condition) suggestions from the backend based on entered input
    * @param {*} event 
    */
   loadConcepts(value) {
@@ -60,7 +60,8 @@ class ConceptComponent extends Component {
       this.props.fetchData(`/concept?v=full&q=${conceptName}`).then(data => {
         let allConcepts = [];
         if (data.results.length > 0 ) {
-          allConcepts = data.results.map(concept => {
+          const conditions = data.results.filter(condition => condition.conceptClass.uuid == '8d4918b0-c2cc-11de-8d13-0010c6dffd0f'||condition.conceptClass.uuid == '8d492954-c2cc-11de-8d13-0010c6dffd0f' || condition.conceptClass.uuid == '8d491a9a-c2cc-11de-8d13-0010c6dffd0f' || condition.conceptClass.uuid == '8d492b2a-c2cc-11de-8d13-0010c6dffd0f');
+          allConcepts = conditions.map(concept => {
             const description= concept.descriptions.filter(des => des.locale == 'en' ? des.description: '');
             const conceptData = {
               uuid: concept.uuid,
@@ -94,20 +95,21 @@ class ConceptComponent extends Component {
 
   render() {
     return (
-      <div>                   
+      <div> 
+        <label style={{position: 'absolute', left: '170px', top: '90px'}}>Condition: </label>                   
         <div className="col-sm-6 col-sm-offset-3 custom-typehead">  
           <AsyncTypeahead
             labelKey={this.setLabelKey}
             onSearch= {this.loadConcepts}
             options={this.state.conceptsResults}
-            placeholder="search concepts"
+            placeholder="search conditions"
             onChange={this.setConcept}
             useCache={false}
             paginate
           />
         </div>
         {(this.state.selectedConcept)
-          ? <ObservationComponent search={this.props.search} addToHistory={this.props.addToHistory} concept={this.state.conceptObject} markHide={this.state.markHide} />
+          ? <ObservationComponent search={this.props.search} addToHistory={this.props.addToHistory} concept={this.state.conceptObject} markHide={this.state.markHide}/>
           : null
         }
       </div>
@@ -115,10 +117,10 @@ class ConceptComponent extends Component {
   }
 }
 
-ConceptComponent.propTypes = {
+ConditionComponent.propTypes = {
   search: React.PropTypes.func.isRequired,
   fetchData: React.PropTypes.func.isRequired,
   addToHistory: React.PropTypes.func.isRequired
 };
 
-export default ConceptComponent;
+export default ConditionComponent;

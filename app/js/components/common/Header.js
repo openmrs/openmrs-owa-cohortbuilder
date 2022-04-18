@@ -9,7 +9,7 @@
  */
 
 import React, { Component } from "react";
-import { Link, IndexLink } from "react-router";
+import { Link } from "react-router";
 import { ApiHelper } from "../../helpers/apiHelper";
 
 const NUMBER_OF_COLUMNS = 3;

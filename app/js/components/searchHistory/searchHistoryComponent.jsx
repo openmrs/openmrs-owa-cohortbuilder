@@ -10,9 +10,7 @@
 
 import React, {Component, PropTypes} from 'react';
 import shortId from 'shortid';
-import { ApiHelper } from '../../helpers/apiHelper';
 import DownloadHelper from '../../helpers/downloadHelper';
-import { JSONHelper } from '../../helpers/jsonHelper';
 import CohortModal from '../cohorts/cohortModal';
 
 import Modal from './saveModal.jsx';

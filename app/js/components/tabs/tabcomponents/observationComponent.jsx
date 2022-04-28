@@ -10,10 +10,9 @@
 
 import React from 'react';
 import DatePicker from "react-bootstrap-date-picker";
-import shortid from 'shortid';
 import { JSONHelper } from '../../../helpers/jsonHelper';
 import utility from '../../../utility';
-import { formatDate, queryDescriptionBuilder } from '../../../helpers/helpers';
+import { queryDescriptionBuilder } from '../../../helpers/helpers';
 
 export default class ObsFilter extends React.Component {
 

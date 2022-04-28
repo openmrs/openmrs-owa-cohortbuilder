@@ -9,7 +9,6 @@
  */
 
 import React, {Component} from 'react';
-import shortId from 'shortid';
 import DatePicker from "react-bootstrap-date-picker";
 import { Creatable } from 'react-select';
 import utility from '../../../utility';

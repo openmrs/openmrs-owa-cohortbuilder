@@ -11,7 +11,6 @@
 import React,{ Component, PropTypes } from 'react';
 import shortId from 'shortid';
 import DownloadHelper from '../../helpers/downloadHelper';
-import SearchHistory from './searchHistoryComponent.jsx';
 import { ApiHelper }  from '../../helpers/apiHelper';
 
 

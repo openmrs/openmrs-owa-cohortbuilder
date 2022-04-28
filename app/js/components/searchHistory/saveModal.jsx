@@ -10,9 +10,6 @@
 
 import React,{ Component, PropTypes } from 'react';
 
-import { ApiHelper } from '../../helpers/apiHelper';
-import { JSONHelper } from '../../helpers/jsonHelper';
-
 class Modal extends Component {
 
   constructor (props) {

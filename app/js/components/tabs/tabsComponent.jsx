@@ -14,7 +14,6 @@ import Components from './tabcomponents';
 import TabBarComponent from './tabBarComponent';
 import TabContentComponent from './tabContentComponent';
 import { ApiHelper } from '../../helpers/apiHelper';
-import { JSONHelper } from '../../helpers/jsonHelper';
 import utility from '../../utility';
 
 import './tabs.css';

@@ -13,7 +13,6 @@ import { ApiHelper } from '../../helpers/apiHelper';
 import { JSONHelper } from '../../helpers/jsonHelper'; 
 
 import SearchHistory from './searchHistoryComponent.jsx';
-import SavedHistory from './savedHistory.jsx';
 
 class  SearchHistoryTab  extends Component {
   constructor(props) {
